@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "completed_at_utc": "2026-09-28T10:50:13.518445+00:00",
+  "project_root": "D:\\Code\\ReadCue",
+  "runtime_root": "E:\\CodexRuntime\\ReadCue",
+  "migration": {
+    "status": "complete",
+    "regular_files": 20711,
+    "bytes": 9062185703,
+    "groups": {
+      "models": {
+        "files": 18,
+        "bytes": 2722780173,
+        "directories": 3,
+        "symlinks": 0
+      },
+      ".venv-linux": {
+        "files": 20693,
+        "bytes": 6339405530,
+        "directories": 1925,
+        "symlinks": 4
+      }
+    },
+    "linux_symlinks_preserved": 4,
+    "original_d_copies_removed": true,
+    "manifest_sha256": "7e2f7784b19941fb0d1049ab6be35ea52ace316a6c48fe5b3dd71437f95ea4ce",
+    "records": "E:\\CodexRuntime\\ReadCue\\maintenance\\2026-09-28"
+  },
+  "external_cleanup": {
+    "files": 13,
+    "bytes": 2377774971,
+    "c_bytes": 1558690250,
+    "d_bytes": 819084721,
+    "archive": "E:\\CodexRuntime\\ReadCue\\archives\\cleanup-2026-09-28\\install-residuals-13files.tar",
+    "archive_sha256": "25c17e99cf2bd8a7a608698790b2e49ddd852e0a788fd4a7ca2108c8460997a3"
+  },
+  "ubuntu_compaction": {
+    "status": "complete",
+    "before_allocated_bytes": 10599006208,
+    "after_allocated_bytes": 4234149888,
+    "reclaimed_bytes": 6364856320,
+    "backup": "E:\\CodexRuntime\\ReadCue\\maintenance\\wsl-2026-09-28\\ubuntu-before-compaction.vhdx",
+    "backup_sha256": "0d9596fd1b44d1a602b22ca7dc9ab0d512c72d6406e08470ba19536efdf2e079",
+    "records": "E:\\CodexRuntime\\ReadCue\\maintenance\\wsl-2026-09-28",
+    "wsl_boot_verified": true,
+    "torch_pynini_cuda_verified": true
+  },
+  "verification": {
+    "copied_files_independent_sha256": true,
+    "linux_metadata_verified": true,
+    "frozen_files": 7,
+    "models_checked": [
+      {
+        "path": "/mnt/d/Code/ReadCue/models/qwen3-0.6b",
+        "resolved": "/mnt/e/CodexRuntime/ReadCue/models/qwen3-0.6b",
+        "repo": "Qwen/Qwen3-0.6B",
+        "files": 9
+      },
+      {
+        "path": "/mnt/d/Code/ReadCue/models/zh-tn",
+        "resolved": "/mnt/e/CodexRuntime/ReadCue/models/zh-tn",
+        "repo": "leeoxiang/qwen3-0.6b-zh-tn",
+        "files": 7
+      }
+    ],
+    "cuda_device": "NVIDIA GeForce RTX 2060",
+    "identity_smoke": "passed",
+    "tn_smoke_matches_historical_prediction": true,
+    "smoke_case_count": 1,
+    "training": false,
+    "external_api_cost_usd": 0,
+    "protected_original_tracked_files_checked": 72,
+    "unexpected_drift": [],
+    "intentional_documentation_change": "docs/STORAGE.md"
+  },
+  "volume_free_bytes": {
+    "first_measurement_this_turn": {
+      "C": 5805256704,
+      "D": 13980082176,
+      "E": 347617411072
+    },
+    "final": {
+      "C": 13416120320,
+      "D": 23909425152,
+      "E": 325496930304
+    }
+  },
+  "note": "Volume deltas include concurrent system activity; exact operation bytes are recorded separately. Backups remain on E. No recursive link targets were deleted."
+}
