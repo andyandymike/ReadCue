@@ -40,4 +40,10 @@ Git 历史 75 个 blob 合计约 587 KiB，最大文件约 36 KiB，没有跟踪
 - 发布物内容检查通过；核心 wheel 为 17,492 字节，源码包约 150 KiB。认证文件名的拒绝检查通过，不仅依赖 Git 忽略规则。
 - 92 个 Markdown 本地文件目标均存在。42 个受保护文件与本轮开始时 SHA-256 一致，包括冻结证据、研究报告与此前未提交的存储记录。`git diff --check` 通过。
 
-这些是本机验证结果；3.10 与 Linux 的新增 CI 组合尚未在远端执行。验证环境、构建日志与临时产物放在 E 盘维护目录，不加入 Git。
+上述本地验证使用 Windows / Python 3.12。验证环境、构建日志与临时产物放在 E 盘维护目录，不加入 Git。
+
+## 提交后的远端验证
+
+配置提交 `a5e549f` 的[首次四组合 CI](https://github.com/andyandymike/ReadCue/actions/runs/36426828889)中，Python 3.12 的 Windows/Linux 通过；Python 3.10 两个平台均在归档汇总精确比较时失败。原因是 [Python 3.12 改变了浮点数 sum 的算法](https://docs.python.org/3/library/functions.html#sum)，耗时总和末位不同，例如 TN 为 `17.960065127999943` 与历史 `17.96006512799994`。模型输出、匹配数与评分没有差异。
+
+修复将新归档入口的耗时求和明确为 `math.fsum`。四个基线的已有耗时汇总均与该算法完全一致，不改历史报告、不改冻结哈希，也不放宽已有精确比较测试。修复后的四组合结果由 [main 分支 CI](https://github.com/andyandymike/ReadCue/actions/workflows/ci.yml?query=branch%3Amain)核验；保留首次失败记录供追溯。

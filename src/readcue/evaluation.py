@@ -2,6 +2,7 @@
 import csv
 import importlib.util
 import json
+import math
 from pathlib import Path
 import shutil
 import statistics
@@ -105,7 +106,8 @@ def archive_pilot(project, run, output):
             timings = [record["latency_ms"] for record in predictions]
             summary[name] = dict(overall=result["overall"], by_track=result["by_track"], families=result["families"],
                 latency_ms_median=statistics.median(timings), latency_ms_max=max(timings),
-                total_inference_seconds=sum(sorted(timings)) / 1000, load_seconds=metadata["load_seconds"])
+                # Built-in float sum changed in Python 3.12; keep historical totals on 3.10 too.
+                total_inference_seconds=math.fsum(timings) / 1000, load_seconds=metadata["load_seconds"])
             lines = [f"# {name}: unmatched cases", "", "Exact-match failures are not automatically semantic/pronunciation errors.", ""]
             for row in result["cases"]:
                 if not row["surface_correct"]:
