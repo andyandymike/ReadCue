@@ -1,0 +1,12 @@
+include AGENTS.md CONTRIBUTING.md SECURITY.md
+include requirements-zh-pilot.lock
+recursive-include src/readcue *.py
+recursive-include tests *.py
+recursive-include scripts *.py
+recursive-include tools *.py
+recursive-include docs *.md *.json
+recursive-include eval/zh_reading_pilot_v1 *.md *.json *.jsonl
+recursive-include reports/zh-pilot-v1 *.md *.json *.jsonl *.tsv
+recursive-include research/ugtphon-2026-09-28 *.md *.json *.py
+global-exclude __pycache__ *.py[cod]
+global-exclude .env .env.* *.pem *.key .netrc _netrc .pypirc credentials.json service-account.json service_account.json

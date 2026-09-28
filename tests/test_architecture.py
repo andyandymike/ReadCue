@@ -76,6 +76,26 @@ class ArchitectureTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validate_run_metadata("tn", REPORT / "tn.jsonl", {**original, **changes}, freeze)
 
+    def test_archive_rejects_changed_or_missing_wetext_configuration(self):
+        freeze = verify_pilot(PROJECT)
+        original = read_json(REPORT / "wetext.meta.json")
+        predictions = REPORT / "wetext.jsonl"
+        validate_run_metadata("wetext", predictions, original, freeze)
+        wrong_values = {"wetext_version": "9.9.9", "remove_erhua": True,
+                        "remove_interjections": True, "traditional_to_simple": True}
+        for field, wrong in wrong_values.items():
+            for missing in (False, True):
+                with self.subTest(field=field, missing=missing):
+                    metadata = {**original, field: wrong}
+                    if missing:
+                        del metadata[field]
+                    with self.assertRaises(ValueError):
+                        validate_run_metadata("wetext", predictions, metadata, freeze)
+        for option in ("remove_erhua", "remove_interjections", "traditional_to_simple"):
+            with self.subTest(option=option, invalid_boolean=0):
+                with self.assertRaises(ValueError):
+                    validate_run_metadata("wetext", predictions, {**original, option: 0}, freeze)
+
     def test_wrapped_run_layout_archives_and_rejects_incomplete_runs(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

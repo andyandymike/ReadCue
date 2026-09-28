@@ -15,13 +15,14 @@ concurrency:
 
 jobs:
   test:
-    name: Python 3.12 / ${{ matrix.os }}
+    name: Python ${{ matrix.python }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.12"]
     env:
       PYTHONUTF8: "1"
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
@@ -37,7 +38,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
 
       - name: Run standard-library tests without installing dependencies
         env:
@@ -45,13 +46,26 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Install build tools
-        run: python -m pip install "setuptools>=68" wheel
+        run: python -m pip install build "setuptools>=77" wheel
 
-      - name: Install the core package without runtime dependencies
-        run: python -m pip install --no-deps --no-build-isolation .
+      - name: Build wheel and source distribution
+        run: python -m build --no-isolation
 
-      - name: Check installed CLI
-        run: python -m readcue --help
+      - name: Check distribution contents
+        run: python tools/check_distribution.py --dist dist
 
-      - name: Test the installed package
-        run: python -m unittest discover -s tests -v
+      - name: Install and check the wheel outside the checkout
+        run: >-
+          python -c "import os, pathlib, subprocess, sys, tempfile;
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']);
+          artifact = next((root / 'dist').glob('*.whl'));
+          subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps', '--no-build-isolation', '--force-reinstall', str(artifact)], check=True);
+          subprocess.run([sys.executable, '-I', '-m', 'readcue', '--project', str(root), 'verify'], cwd=tempfile.gettempdir(), check=True)"
+
+      - name: Install and check the source distribution outside the checkout
+        run: >-
+          python -c "import os, pathlib, subprocess, sys, tempfile;
+          root = pathlib.Path(os.environ['GITHUB_WORKSPACE']);
+          artifact = next((root / 'dist').glob('*.tar.gz'));
+          subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps', '--no-build-isolation', '--force-reinstall', str(artifact)], check=True);
+          subprocess.run([sys.executable, '-I', '-m', 'readcue', '--project', str(root), 'verify'], cwd=tempfile.gettempdir(), check=True)"

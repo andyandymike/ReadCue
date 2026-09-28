@@ -15,7 +15,9 @@ wandb/
 # Python and tooling
 .venv/
 .venv-linux/
+.venv-*/
 venv/
+venv-*/
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -31,5 +33,11 @@ dist/
 !.env.example
 *.pem
 *.key
+.netrc
+_netrc
+.pypirc
+credentials.json
+service-account.json
+service_account.json
 .DS_Store
 Thumbs.db

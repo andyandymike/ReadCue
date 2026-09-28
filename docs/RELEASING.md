@@ -1,0 +1,35 @@
+# 发布说明
+
+源码工具与 Hugging Face 模型是不同交付。当前只有研究工具、原创 pilot 和现成基线的实测记录；没有 ReadCue 权重，也没有已确定的中文训练方案。包中的版本号不表示已向 PyPI 或 Hugging Face 发布。
+
+## 源码与 Python 包
+
+发布前在干净环境按 [README](../README.md#lightweight-development) 安装核心包，运行冻结核验和标准库测试。改动应有明确说明；历史样例、脚本和结果保持可追溯，不能为了通过检查更新冻结哈希。
+
+在仓库根目录使用新建的构建输出目录检查分发内容，例如首次构建时：
+
+```sh
+python -m pip install build "setuptools>=77" wheel
+python -m readcue verify
+python -m unittest discover -s tests -v
+python -m build --no-isolation
+python tools/check_distribution.py --dist dist
+```
+
+若已有 `dist/`，先保留需要的历史产物，再使用另一个新目录：`python -m build --no-isolation --outdir dist/new-build`，并让内容检查的 `--dist` 指向同一目录。
+
+- wheel 只包含核心包及其安装元数据，不携带模型或历史实验资产；从 wheel 使用实验功能仍需要匹配的 checkout。
+- 源码分发包包含复现所需的代码、文档、原创评测和历史报告，不能包含缓存、虚拟环境、模型、第三方原始语料或私人运行输出。
+- 分别在独立环境安装 wheel 和源码分发包，核对 `python -m readcue --help`；在 checkout 外使用 `--project` 指向保留的实验目录验证。CI 已配置相应检查，发布时查看目标提交的实际结果，不把本地通过当作远端通过。
+- 检查实际 Git 差异、许可证、发行产物和变更说明后，再由维护者确定版本、标签及发布位置。上述构建命令不会上传或创建 release。
+
+## 将来的 Hugging Face 权重
+
+只有[项目计划](PROJECT_PLAN.md)中的训练与独立评估条件满足后，才准备模型发布。发布前至少需有：
+
+- 可追溯的实际训练记录：基座与 tokenizer 的固定版本、数据来源和划分、预处理、超参数、运行环境、成本与检查点哈希。
+- 对实际使用的基座、训练数据、词典和再分发材料逐项核清的许可及归因；单独确定权重条款。仓库 Apache-2.0 不自动适用于权重，现有非商业 TN 对照也不能改名作为 ReadCue 自训模型上传。见[数据与许可](DATA_AND_LICENSES.md)。
+- 可独立加载的完整权重，或声明精确基座的 adapter；配套 tokenizer、依赖与最小输入/输出示例，说明失败情况和适用范围。
+- 模型卡中的实测对照、评估来源与限制。论文成绩、数据审计和 ReadCue 测量分别报告；公开 pilot 和已经查看的 UGTPhon test 不能标成盲测。若用 pilot 调参或训练，另建独立评估。
+
+完成这些材料不自动授权训练支出或上传。不要提前填写虚构模型地址、训练成绩、DOI 或商用保证；来源尚未核清的事项应明确列为未完成。

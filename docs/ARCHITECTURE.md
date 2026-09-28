@@ -28,7 +28,7 @@ python -m readcue verify
 python -m readcue score --cases eval/zh_reading_pilot_v1/cases.jsonl --predictions reports/zh-pilot-v1/tn.jsonl --output runs/inspection/tn.score.json
 ```
 
-上述安装需要已有 setuptools>=68 和 wheel。历史 GPU / WeText 环境仍按 [复现说明](REPRODUCING_ZH_PILOT.md)的独立锁文件准备；`requirements-zh-pilot.lock` 是那次 Linux 环境记录，不是所有使用者都要安装的核心依赖。
+上述安装需要已有 setuptools>=77 和 wheel。历史 GPU / WeText 环境仍按 [复现说明](REPRODUCING_ZH_PILOT.md)的独立锁文件准备；`requirements-zh-pilot.lock` 是那次 Linux 环境记录，不是所有使用者都要安装的核心依赖。
 
 新运行使用一个全新目录，即使导入、模型加载或预热失败，也会留下 `run.json` 和已产生的日志。不会把未运行的模型当作能力零分：
 
@@ -48,7 +48,7 @@ python -m readcue run --inputs eval/zh_reading_pilot_v1/inputs.jsonl --baseline 
 python -m readcue archive --run runs/new-pilot --output reports/new-pilot
 ```
 
-该归档命令只接受原始 pilot 的输入哈希和四个已记录的基线身份；新样例可单独调用 `score`，不能冒充原始 pilot。原始预测可以包含逐例失败，但未完成的外层运行不能伪装为完整归档。归档写入失败会留下明确失败状态，不覆盖旧报告。
+该归档命令只接受原始 pilot 的输入哈希和四个已记录的基线身份，包括 WeTextProcessing 1.2.0 与协议中三个明确为 false 的规则选项；新样例可单独调用 `score`，不能冒充原始 pilot。原始预测可以包含逐例失败，但未完成的外层运行不能伪装为完整归档。归档写入失败会留下明确失败状态，不覆盖旧报告。
 
 ## 扩展方式
 

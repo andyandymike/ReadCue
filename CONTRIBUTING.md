@@ -6,7 +6,7 @@ ReadCue 当前在验证中文朗读规范化是否存在值得自训的缺口，
 
 ## 本地检查
 
-使用 Python 3.12 和独立虚拟环境。核心包没有必装的模型运行依赖：
+先按 [README](README.md#lightweight-development) 克隆并进入仓库。核心包支持 Python 3.10 及以上，建议使用 Python 3.12 和独立虚拟环境；没有必装的模型运行依赖：
 
 ```sh
 python -m venv .venv
@@ -15,13 +15,14 @@ python -m venv .venv
 激活环境后运行；Windows PowerShell 使用 `.venv\Scripts\Activate.ps1`，Linux 使用 `source .venv/bin/activate`：
 
 ```sh
-python -m pip install "setuptools>=68" wheel
+python -m pip install "setuptools>=77" wheel
 python -m pip install --no-deps --no-build-isolation -e .
+python -m readcue verify
 python -m unittest discover -s tests -v
 python -m readcue --help
 ```
 
-测试使用本地样例和标准库，不需要 GPU、模型权重或付费服务。CI 在 Windows、Linux 的 Python 3.12 上运行同类检查，并检查普通安装后的包。模型基线复现另见[中文 pilot 复现说明](docs/REPRODUCING_ZH_PILOT.md)；不要为了跑核心测试安装该推理环境。
+测试使用本地样例和标准库，不需要 GPU、模型权重或付费服务。CI 配置覆盖 Windows、Linux 的 Python 3.10/3.12，并检查 wheel 和源码分发包的内容与安装；具体通过状态以对应提交的 Actions 结果为准。模型基线复现另见[中文 pilot 复现说明](docs/REPRODUCING_ZH_PILOT.md)；核心开发无需安装该推理环境。
 
 ## 提交内容与证据
 
@@ -32,3 +33,5 @@ python -m readcue --help
 - 新数据说明来源、授权和处理过程。不要提交模型、缓存、第三方原始语料、密钥或私人用户内容；代码的 Apache-2.0 不替代数据与模型的条款。
 
 GitHub Actions 由 Dependabot 按月提出更新。既有实验的依赖锁文件应随新的复现实验有意更新，并保留原版本记录。
+
+源码打包与未来 Hugging Face 权重发布的要求见[发布说明](docs/RELEASING.md)；二者是不同交付。文档入口见[文档导航](docs/README.md)。

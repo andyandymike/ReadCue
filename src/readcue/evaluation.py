@@ -63,6 +63,12 @@ def validate_run_metadata(name, predictions, metadata, freeze):
             raise ValueError("Model revision mismatch: " + name)
     elif metadata.get("revision") is not None:
         raise ValueError("Unexpected model revision for non-model baseline: " + name)
+    if name == "wetext":
+        if metadata.get("wetext_version") != "1.2.0":
+            raise ValueError("WeText version does not match the frozen pilot: " + name)
+        for option in ("remove_erhua", "remove_interjections", "traditional_to_simple"):
+            if metadata.get(option) is not False:
+                raise ValueError("WeText option does not match the frozen pilot: " + option)
     if metadata.get("external_api_cost_usd") != 0 or metadata.get("training") is not False:
         raise ValueError("Only this original-data, free inference pilot can be archived here")
     if hash_file(predictions) != metadata.get("predictions_sha256"):
