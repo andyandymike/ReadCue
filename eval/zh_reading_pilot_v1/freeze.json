@@ -1,0 +1,167 @@
+{
+  "version": "zh_reading_pilot_v1",
+  "frozen_before_predictions": false,
+  "human_reviewed": false,
+  "files_sha256": {
+    "eval/zh_reading_pilot_v1/cases.jsonl": "6cb8f42125858c399bbba97e001a3ee0eade4d095bc161039a514bc4ddbafba0",
+    "eval/zh_reading_pilot_v1/inputs.jsonl": "85f21d6a7e1142cc615932e2b089f0fbff05d1c24c4461d254f95120c194626e",
+    "eval/zh_reading_pilot_v1/README.md": "314d1bf74577432deda1c69884728ac62e2d5f16686af0cc5dea2e9746d55e2e",
+    "scripts/score_zh_pilot.py": "121442591458dc12cceb8f55543369b84501a7bf96c4fe11259b611683048272",
+    "scripts/run_zh_baseline.py": "d4370fac2ef8dd6be1f49c41bc96c5a2df737b231b966e9eca86f33d8ce9101c",
+    "docs/EXPERIMENT_PROTOCOL.md": "0f849d427c45d7cef55881d262e4779974af1d88bf2ccfdacbe77695c9a10cf7",
+    "scripts/prepare_zh_models.py": "64cc7cd4182f856edaffdce502b29ad7da1620b7a0cec1819a3dec74aef77cfc"
+  },
+  "pre_freeze_change": "Added 二个 as alternative for zhp1_mixed_text_02 before any inference.",
+  "pre_run_review": [
+    "Kept Latin word boundaries in surface scorer before first inference.",
+    "Preserved original error status alongside output validity."
+  ],
+  "frozen_at_utc": "2026-09-28T09:17:56.371746+00:00",
+  "baseline_assets": [
+    {
+      "repo": "leeoxiang/qwen3-0.6b-zh-tn",
+      "revision": "97f7860d117f651f9aeba1bc6558eec7c378c958",
+      "files": [
+        {
+          "name": "README.md",
+          "bytes": 4825,
+          "sha256": "ac5838fd5c3c0f38f47b559d52bd5577629f4066b3ef09ae7655a287ac90d184",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "chat_template.jinja",
+          "bytes": 4116,
+          "sha256": "87a2728cb8dc9fe424d624542f6060ec05a1d285ebbec578bb078900e33396b5",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "config.json",
+          "bytes": 1418,
+          "sha256": "cf7fbaafa8b19618995eaf5c466bb9b9e5f59f65d51986f3822c7df6bb92f275",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "generation_config.json",
+          "bytes": 139,
+          "sha256": "e0ccfaf3d3fd26c00cc64a0e97d3c4d5ad912486d7683e75805728a2cbd96564",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "model.safetensors",
+          "bytes": 1192135096,
+          "sha256": "d3a32aca27595e820c8c098ffb12e8be60889cc17b96bf2adad3b1dbfa9ce3c8",
+          "upstream_lfs_sha256": "d3a32aca27595e820c8c098ffb12e8be60889cc17b96bf2adad3b1dbfa9ce3c8"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 11422650,
+          "sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506",
+          "upstream_lfs_sha256": "be75606093db2094d7cd20f3c2f385c212750648bd6ea4fb2bf507a6a4c55506"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "bytes": 697,
+          "sha256": "ddb9f850ca6559a928bb25d511f72e3c6eff81395334a4e0eeec670448333d09",
+          "upstream_lfs_sha256": null
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen3-0.6B",
+      "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+      "files": [
+        {
+          "name": "LICENSE",
+          "bytes": 11343,
+          "sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "README.md",
+          "bytes": 13965,
+          "sha256": "1ab64a26fcb3b461423b89a433a8c858f1bf8d4086f979cbb3ff878d47cf20e9",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "config.json",
+          "bytes": 726,
+          "sha256": "660db3b73d788119c04535e48cf9be5f55bc3100841a718637ae695b442f27dd",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "generation_config.json",
+          "bytes": 239,
+          "sha256": "2325da0f15bb848e018c5ae071b7943332e9f871d6b60e2ed22ca97d4cb993d2",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "merges.txt",
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "model.safetensors",
+          "bytes": 1503300328,
+          "sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b",
+          "upstream_lfs_sha256": "f47f71177f32bcd101b7573ec9171e6a57f4f4d31148d38e382306f42996874b"
+        },
+        {
+          "name": "tokenizer.json",
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+          "upstream_lfs_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        {
+          "name": "tokenizer_config.json",
+          "bytes": 9732,
+          "sha256": "d5d09f07b48c3086c508b30d1c9114bd1189145b74e982a265350c923acd8101",
+          "upstream_lfs_sha256": null
+        },
+        {
+          "name": "vocab.json",
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910",
+          "upstream_lfs_sha256": null
+        }
+      ]
+    }
+  ],
+  "pre_inference_line_endings": {
+    "reason": "Normalize authored files to LF for stable Git checkout hashes before neural/rule inference.",
+    "previous_file_hashes": {
+      "eval\\zh_reading_pilot_v1\\cases.jsonl": "424e146f9d8a9021825f72cb3128428d1c1fe0f6d5f2957e0a3692b50711c996",
+      "eval\\zh_reading_pilot_v1\\inputs.jsonl": "baab5d38c80fa4ce87d0b163d96dbadcd439accac586d4d63e1ff51583ec2097",
+      "eval\\zh_reading_pilot_v1\\README.md": "314d1bf74577432deda1c69884728ac62e2d5f16686af0cc5dea2e9746d55e2e",
+      "scripts\\score_zh_pilot.py": "121442591458dc12cceb8f55543369b84501a7bf96c4fe11259b611683048272",
+      "scripts\\run_zh_baseline.py": "61fa63e46676fa813e9501f7a33d5f6bba0781d5d46d71c2a0e888753b14fca8",
+      "docs/EXPERIMENT_PROTOCOL.md": "d48590fd03c4c1f41cafb6c64c50d2ec4862820fc1f3ef9ad91add7aa5a9c48f",
+      "scripts/prepare_zh_models.py": "64cc7cd4182f856edaffdce502b29ad7da1620b7a0cec1819a3dec74aef77cfc"
+    },
+    "initial_identity_diagnostic": "runs/zh-pilot-v1; not part of the official frozen batch"
+  },
+  "official_run_directory": "runs/zh-pilot-v1-frozen",
+  "pre_rule_inference_config_review": {
+    "reason": "API inspected before rule/model execution. Disable interjection removal and traditional-script conversion to match shared preservation policy. Rebuild FST cache. No rule/model predictions observed.",
+    "previous_runner_sha256": "61fa63e46676fa813e9501f7a33d5f6bba0781d5d46d71c2a0e888753b14fca8"
+  },
+  "neural_loading_compatibility_revision": {
+    "recorded_at_utc": "2026-09-28T09:29:18.192706+00:00",
+    "previous_runner_sha256": "b1a5d996fa4b502f15223119ddc32352e812c3f963a5873b2bcdbc6b8e11ad89",
+    "timing": "After identity and WeText execution; before any neural predictions or warmup were produced.",
+    "initial_failure": "TN AutoTokenizer initialization failed: AttributeError: 'list' object has no attribute 'keys'; secondary protobuf error followed. No prediction file created.",
+    "changes": [
+      "Map tokenizer list extra_special_tokens to Transformers 4.x additional_special_tokens; verify every serialized vocabulary ID.",
+      "Map default rope_parameters.rope_theta=1000000 to rope_theta, instead of silently accepting runtime default 10000.",
+      "Preserve all original model assets, prompt, decoding, references and earlier prediction metadata.",
+      "Verify added-token special flags and FIM marker single-token IDs. Explicitly enable inference KV cache for both neural baselines to remove config ambiguity; serialized model use_cache=false is not proof that GenerationConfig would disable it. Recorded before neural execution."
+    ],
+    "scope": "Loading compatibility only; no outcome-based prompt or label adjustment."
+  },
+  "freeze_scope_note": "Case/reference content and inference-only inputs were fixed before the scored baselines. The identity control predates final manifest timestamp and uses an earlier runner revision; rule configuration and neural loading compatibility changes are recorded separately below. This manifest is not an immutable pre-registration.",
+  "identity_timing_note": {
+    "started_at_utc": "2026-09-28T09:14:29Z",
+    "input_sha256": "85f21d6a7e1142cc615932e2b089f0fbff05d1c24c4461d254f95120c194626e",
+    "reason": "Deterministic unchanged-text control; input hash matches current frozen inputs. Preserve original timestamps and metadata."
+  }
+}

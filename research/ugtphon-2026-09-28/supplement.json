@@ -1,0 +1,347 @@
+{
+  "en": {
+    "raw_surface_no_normalization_train_keys": 1413,
+    "raw_surface_no_normalization_test_hits": 941,
+    "lookup_error_breakdown": {
+      "canonical_correct_ipa_correct": 912,
+      "canonical_wrong_ipa_wrong": 27,
+      "canonical_correct_ipa_wrong": 2,
+      "canonical_correct_ipa_wrong_gold_ipa_seen_for_same_train_surface_canonical": 2
+    },
+    "test_multilabel_surfaces_after_case_punctuation_alternative_collapse": 10,
+    "test_context_free_oracle_lower_bound_errors_after_canonical_casefold": 14,
+    "train_surface_canonical_pairs_with_multiple_ipa_strings": 0,
+    "train_surface_canonical_pairs_total": 1462,
+    "ungated_lookup_all_tokens_miss_identity_no_gold_routing": {
+      "canonical": {
+        "tokens": 14966,
+        "lookup_hit": 734,
+        "rewritten": 724,
+        "normalization_em_correct": 10062,
+        "leave_as_is_em_correct": 10262,
+        "rewritten_but_wrong_vs_gold": 724,
+        "introduced_error_from_correct_leave_as_is": 200,
+        "fixed_leave_as_is_error": 0,
+        "em_rate": 0.6723239342509688,
+        "wrong_rewrite_rate_all_tokens": 0.04837631965789122
+      },
+      "noncanonical": {
+        "tokens": 1327,
+        "lookup_hit": 941,
+        "rewritten": 915,
+        "normalization_em_correct": 918,
+        "leave_as_is_em_correct": 30,
+        "rewritten_but_wrong_vs_gold": 26,
+        "introduced_error_from_correct_leave_as_is": 1,
+        "fixed_leave_as_is_error": 889,
+        "em_rate": 0.691785983421251,
+        "wrong_rewrite_rate_all_tokens": 0.019593067068575734
+      }
+    },
+    "canonical_wrong_rewrite_sensitivity": {
+      "wrong_rewrites_after_casefold": 724,
+      "wrong_rewrites_after_casefold_remove_punctuation": 712,
+      "introduced_errors_after_casefold_remove_punctuation": 710
+    },
+    "top_10_wrong_canonical_rewrite_word_triples_count_at_least_10_no_sentences": [
+      {
+        "surface": "RT",
+        "prediction": "retweet",
+        "gold": "rt",
+        "count": 318
+      },
+      {
+        "surface": "I",
+        "prediction": "in",
+        "gold": "i",
+        "count": 157
+      },
+      {
+        "surface": "be",
+        "prediction": "but",
+        "gold": "be",
+        "count": 45
+      },
+      {
+        "surface": "no",
+        "prediction": "know",
+        "gold": "no",
+        "count": 29
+      },
+      {
+        "surface": "A",
+        "prediction": "always",
+        "gold": "a",
+        "count": 21
+      },
+      {
+        "surface": "2",
+        "prediction": "to",
+        "gold": "2",
+        "count": 15
+      }
+    ],
+    "generic_lexemes_ipa_variants_no_sentences": {
+      "ur": {
+        "your": {
+          "train_ipa_counts": {
+            "ˈjɔɹ,ˈjʊɹ": 33
+          },
+          "test_ipa_counts": {
+            "ˈjɔɹ,ˈjʊɹ": 6
+          }
+        },
+        "you're": {
+          "train_ipa_counts": {
+            "ˈjuɹ,ˈjʊɹ": 10
+          },
+          "test_ipa_counts": {
+            "ˈjuɹ,ˈjʊɹ": 4
+          }
+        },
+        "you": {
+          "train_ipa_counts": {
+            "ˈju": 1
+          },
+          "test_ipa_counts": {}
+        }
+      },
+      "u": {
+        "you": {
+          "train_ipa_counts": {
+            "ˈju": 327
+          },
+          "test_ipa_counts": {
+            "ˈju": 100
+          }
+        },
+        "you're": {
+          "train_ipa_counts": {
+            "ˈjuɹ,ˈjʊɹ": 1
+          },
+          "test_ipa_counts": {
+            "ˈjuɹ,ˈjʊɹ": 1
+          }
+        },
+        "your": {
+          "train_ipa_counts": {
+            "ˈjɔɹ,ˈjʊɹ": 3
+          },
+          "test_ipa_counts": {}
+        }
+      },
+      "k": {},
+      "m": {},
+      "c": {}
+    }
+  },
+  "vi": {
+    "raw_surface_no_normalization_train_keys": 3674,
+    "raw_surface_no_normalization_test_hits": 1785,
+    "lookup_error_breakdown": {
+      "canonical_correct_ipa_correct": 1234,
+      "canonical_correct_ipa_wrong": 429,
+      "canonical_correct_ipa_wrong_gold_ipa_seen_for_same_train_surface_canonical": 270,
+      "canonical_wrong_ipa_wrong": 110,
+      "canonical_correct_ipa_wrong_gold_ipa_NOT_seen_for_same_train_surface_canonical": 159,
+      "canonical_wrong_ipa_correct": 13
+    },
+    "test_multilabel_surfaces_after_case_punctuation_alternative_collapse": 35,
+    "test_context_free_oracle_lower_bound_errors_after_canonical_casefold": 68,
+    "train_surface_canonical_pairs_with_multiple_ipa_strings": 58,
+    "train_surface_canonical_pairs_total": 3979,
+    "ungated_lookup_all_tokens_miss_identity_no_gold_routing": {
+      "canonical": {
+        "tokens": 11643,
+        "lookup_hit": 2455,
+        "rewritten": 2243,
+        "normalization_em_correct": 9397,
+        "leave_as_is_em_correct": 11640,
+        "rewritten_but_wrong_vs_gold": 2243,
+        "introduced_error_from_correct_leave_as_is": 2243,
+        "fixed_leave_as_is_error": 0,
+        "em_rate": 0.8070943914798592,
+        "wrong_rewrite_rate_all_tokens": 0.1926479429700249
+      },
+      "noncanonical": {
+        "tokens": 2152,
+        "lookup_hit": 1786,
+        "rewritten": 1739,
+        "normalization_em_correct": 1676,
+        "leave_as_is_em_correct": 61,
+        "rewritten_but_wrong_vs_gold": 122,
+        "introduced_error_from_correct_leave_as_is": 2,
+        "fixed_leave_as_is_error": 1617,
+        "em_rate": 0.7788104089219331,
+        "wrong_rewrite_rate_all_tokens": 0.056691449814126396
+      }
+    },
+    "canonical_wrong_rewrite_sensitivity": {
+      "wrong_rewrites_after_casefold": 2243,
+      "wrong_rewrites_after_casefold_remove_punctuation": 2221,
+      "introduced_errors_after_casefold_remove_punctuation": 2221
+    },
+    "top_10_wrong_canonical_rewrite_word_triples_count_at_least_10_no_sentences": [
+      {
+        "surface": "có",
+        "prediction": "thú",
+        "gold": "có",
+        "count": 199
+      },
+      {
+        "surface": "là",
+        "prediction": "thì",
+        "gold": "là",
+        "count": 165
+      },
+      {
+        "surface": "đi",
+        "prediction": "quảng",
+        "gold": "đi",
+        "count": 141
+      },
+      {
+        "surface": "làm",
+        "prediction": "là",
+        "gold": "làm",
+        "count": 82
+      },
+      {
+        "surface": "cái",
+        "prediction": "gái",
+        "gold": "cái",
+        "count": 74
+      },
+      {
+        "surface": "gì",
+        "prediction": "dì",
+        "gold": "gì",
+        "count": 67
+      },
+      {
+        "surface": "còn",
+        "prediction": "càn",
+        "gold": "còn",
+        "count": 64
+      },
+      {
+        "surface": "1",
+        "prediction": "một",
+        "gold": "1",
+        "count": 50
+      },
+      {
+        "surface": "nhưng",
+        "prediction": "như",
+        "gold": "nhưng",
+        "count": 41
+      },
+      {
+        "surface": "nữa",
+        "prediction": "nửa",
+        "gold": "nữa",
+        "count": 40
+      }
+    ],
+    "generic_lexemes_ipa_variants_no_sentences": {
+      "u": {},
+      "k": {
+        "không": {
+          "train_ipa_counts": {
+            "xoŋ͡m˧˧": 850
+          },
+          "test_ipa_counts": {
+            "xoŋ͡m˧˧": 102
+          }
+        }
+      },
+      "ko": {
+        "không": {
+          "train_ipa_counts": {
+            "xoŋ͡m˧˧": 868
+          },
+          "test_ipa_counts": {
+            "xoŋ͡m˧˧": 123
+          }
+        }
+      },
+      "t": {
+        "tôi": {
+          "train_ipa_counts": {
+            "toj˧˧": 892
+          },
+          "test_ipa_counts": {
+            "toj˧˧": 91
+          }
+        },
+        "tao": {
+          "train_ipa_counts": {
+            "taw˧˧": 145
+          },
+          "test_ipa_counts": {
+            "taw˧˧": 24
+          }
+        }
+      },
+      "m": {
+        "mình": {
+          "train_ipa_counts": {
+            "miŋ˧˨": 27
+          },
+          "test_ipa_counts": {
+            "miŋ˧˨": 4
+          }
+        },
+        "mày": {
+          "train_ipa_counts": {
+            "măj˧˨": 219
+          },
+          "test_ipa_counts": {
+            "măj˧˨": 27
+          }
+        }
+      },
+      "c": {
+        "cậu": {
+          "train_ipa_counts": {
+            "kɤ̆w˨ˀ˩ʔ": 68
+          },
+          "test_ipa_counts": {
+            "kɤ̆w˨ˀ˩ʔ": 11
+          }
+        },
+        "chị": {
+          "train_ipa_counts": {
+            "ci˨ˀ˩ʔ": 52
+          },
+          "test_ipa_counts": {
+            "tɕi˨ˀ˩ʔ": 3
+          }
+        }
+      },
+      "đc": {
+        "được": {
+          "train_ipa_counts": {
+            "dɯək̚˨ˀ˩": 24,
+            "dɯək˨ˀ˩": 470
+          },
+          "test_ipa_counts": {
+            "dɯək̚˨ˀ˩": 47
+          }
+        }
+      },
+      "dc": {
+        "được": {
+          "train_ipa_counts": {
+            "dɯək̚˨ˀ˩": 10,
+            "dɯək˨ˀ˩": 155
+          },
+          "test_ipa_counts": {
+            "dɯək̚˨ˀ˩": 22,
+            "dɯək̚˨ˀ˩ xoŋ͡m˧˧": 1
+          }
+        }
+      }
+    }
+  }
+}

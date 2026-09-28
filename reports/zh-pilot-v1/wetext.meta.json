@@ -1,0 +1,20 @@
+{
+  "baseline": "wetext",
+  "model_dir": null,
+  "revision": null,
+  "input_sha256": "85f21d6a7e1142cc615932e2b089f0fbff05d1c24c4461d254f95120c194626e",
+  "runner_sha256": "b1a5d996fa4b502f15223119ddc32352e812c3f963a5873b2bcdbc6b8e11ad89",
+  "started_at": "2026-09-28T09:23:39Z",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "external_api_cost_usd": 0,
+  "training": false,
+  "case_count": 72,
+  "wetext_version": "1.2.0",
+  "remove_erhua": false,
+  "remove_interjections": false,
+  "traditional_to_simple": false,
+  "load_seconds": 4.207178295999995,
+  "finished_at": "2026-09-28T09:23:43Z",
+  "predictions_sha256": "acdcd9e463c2acb1a52f7c85212c55205a905e337e199a0661db2f2630c1c38b"
+}

@@ -1,0 +1,1120 @@
+{
+  "method": {
+    "content_keys": "NFC + collapse whitespace; primary case sensitive; supplemental casefold",
+    "majority_tie_break": "largest train count, then lexicographic canonical",
+    "em": "normalization exact match, NOT phoneme error rate",
+    "no_inference_from_ids": true
+  },
+  "languages": {
+    "en": {
+      "splits": {
+        "train": {
+          "rows": 3329,
+          "source_counts": {
+            "lexnorm2015": 3218,
+            "augmented": 111
+          },
+          "all_tokens": 49518,
+          "nc_tokens": 4106,
+          "nc_categories": {
+            "C2": 1325,
+            "C3": 768,
+            "A1": 501,
+            "A2": 267,
+            "C1": 441,
+            "A3": 422,
+            "B2": 92,
+            "C4": 145,
+            "B1": 145
+          },
+          "raw_text_nfc_changed_rows": 0,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 0,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        },
+        "dev": {
+          "rows": 600,
+          "source_counts": {
+            "lexnorm2015": 579,
+            "augmented": 21
+          },
+          "all_tokens": 8641,
+          "nc_tokens": 737,
+          "nc_categories": {
+            "C2": 234,
+            "A3": 82,
+            "C3": 135,
+            "B1": 30,
+            "A1": 94,
+            "C1": 74,
+            "A2": 46,
+            "B2": 21,
+            "C4": 21
+          },
+          "raw_text_nfc_changed_rows": 0,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 0,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        },
+        "test": {
+          "rows": 1100,
+          "source_counts": {
+            "lexnorm2015": 1057,
+            "augmented": 43
+          },
+          "all_tokens": 16293,
+          "nc_tokens": 1327,
+          "nc_categories": {
+            "C4": 62,
+            "C2": 405,
+            "C3": 236,
+            "B1": 75,
+            "A1": 166,
+            "A2": 82,
+            "C1": 140,
+            "A3": 117,
+            "B2": 44
+          },
+          "raw_text_nfc_changed_rows": 0,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 0,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        }
+      },
+      "cross_split": {
+        "train_dev": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "right_duplicate_rows_by_source": {},
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        },
+        "train_test": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "right_duplicate_rows_by_source": {},
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        },
+        "dev_test": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "right_duplicate_rows_by_source": {},
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        }
+      },
+      "lexical_normalization": {
+        "nfc_whitespace_exact_surface": {
+          "train_distinct_nc_surfaces": 1413,
+          "train_multilabel_nc_surfaces": 41,
+          "test_nc_tokens": 1327,
+          "test_hit_tokens": 941,
+          "test_hit_rate": 0.7091183119819141,
+          "test_unseen_surface_tokens": 386,
+          "train_majority_strict_em_correct_on_hits": 914,
+          "train_majority_strict_em_rate_on_hits": 0.971307120085016,
+          "train_majority_strict_em_rate_all_test_unseen_counted_wrong": 0.6887716654107008,
+          "train_majority_variant_tolerant_correct_on_hits": 914,
+          "test_hit_gold_canonical_seen_in_any_train_variant": 932,
+          "test_tokens_with_train_ambiguous_surface": 247,
+          "test_ambiguous_hit_strict_em_correct": 229,
+          "test_multilabel_surface_count_with_distinct_contexts": 10,
+          "test_multilabel_surface_count_after_canonical_casefold": 10,
+          "test_tokens_on_multilabel_surface_with_distinct_contexts": 148,
+          "surfaces_multilabel_in_train_and_test_with_distinct_test_contexts": 6,
+          "test_optimal_context_free_dictionary_error_lower_bound_tokens": 14,
+          "source_breakdown": {
+            "augmented": {
+              "nc_tokens": 43,
+              "hit_tokens": 32,
+              "majority_em_correct": 31
+            },
+            "lexnorm2015": {
+              "nc_tokens": 1284,
+              "hit_tokens": 909,
+              "majority_em_correct": 883
+            }
+          },
+          "category_breakdown": {
+            "A1": {
+              "nc_tokens": 166,
+              "hit_tokens": 102,
+              "majority_em_correct": 98
+            },
+            "A2": {
+              "nc_tokens": 82,
+              "hit_tokens": 61,
+              "majority_em_correct": 57
+            },
+            "A3": {
+              "nc_tokens": 117,
+              "hit_tokens": 91,
+              "majority_em_correct": 90
+            },
+            "B1": {
+              "nc_tokens": 75,
+              "hit_tokens": 18,
+              "majority_em_correct": 17
+            },
+            "B2": {
+              "nc_tokens": 44,
+              "hit_tokens": 27,
+              "majority_em_correct": 27
+            },
+            "C1": {
+              "nc_tokens": 140,
+              "hit_tokens": 42,
+              "majority_em_correct": 41
+            },
+            "C2": {
+              "nc_tokens": 405,
+              "hit_tokens": 333,
+              "majority_em_correct": 333
+            },
+            "C3": {
+              "nc_tokens": 236,
+              "hit_tokens": 209,
+              "majority_em_correct": 194
+            },
+            "C4": {
+              "nc_tokens": 62,
+              "hit_tokens": 58,
+              "majority_em_correct": 57
+            }
+          },
+          "train_majority_ipa": {
+            "train_surface_keys_with_ipa": 1413,
+            "test_nc_tokens_with_nonempty_ipa": 1327,
+            "test_hit_tokens": 941,
+            "test_hit_rate": 0.7091183119819141,
+            "exact_ipa_match_count_on_hits": 912,
+            "exact_ipa_match_rate_on_hits": 0.9691817215727949,
+            "exact_ipa_match_rate_all_nonempty_test_missing_wrong": 0.6872645064054258,
+            "variant_tolerant_ipa_match_count_on_hits": 917,
+            "variant_tolerant_ipa_match_rate_all_nonempty_test_missing_wrong": 0.6910324039186134,
+            "note": "String-level IPA exact match; NOT paper PER. Variant tolerance splits comma alternatives only."
+          },
+          "generic_lexeme_examples_no_sentences": {
+            "u": {
+              "train_canonical_counts": {
+                "you": 327,
+                "you're": 1,
+                "your": 3
+              },
+              "test_canonical_counts": {
+                "you": 100,
+                "you're": 1
+              },
+              "distinct_test_context_count": 81
+            },
+            "ur": {
+              "train_canonical_counts": {
+                "your": 33,
+                "you're": 10,
+                "you": 1
+              },
+              "test_canonical_counts": {
+                "your": 6,
+                "you're": 4
+              },
+              "distinct_test_context_count": 9
+            }
+          }
+        },
+        "nfc_whitespace_casefold_surface": {
+          "train_distinct_nc_surfaces": 1183,
+          "train_multilabel_nc_surfaces": 44,
+          "test_nc_tokens": 1327,
+          "test_hit_tokens": 1016,
+          "test_hit_rate": 0.7656367746797287,
+          "test_unseen_surface_tokens": 311,
+          "train_majority_strict_em_correct_on_hits": 977,
+          "train_majority_strict_em_rate_on_hits": 0.9616141732283464,
+          "train_majority_strict_em_rate_all_test_unseen_counted_wrong": 0.7362471740768651,
+          "train_majority_variant_tolerant_correct_on_hits": 977,
+          "test_hit_gold_canonical_seen_in_any_train_variant": 998,
+          "test_tokens_with_train_ambiguous_surface": 329,
+          "test_ambiguous_hit_strict_em_correct": 305,
+          "test_multilabel_surface_count_with_distinct_contexts": 13,
+          "test_multilabel_surface_count_after_canonical_casefold": 11,
+          "test_tokens_on_multilabel_surface_with_distinct_contexts": 192,
+          "surfaces_multilabel_in_train_and_test_with_distinct_test_contexts": 8,
+          "test_optimal_context_free_dictionary_error_lower_bound_tokens": 18,
+          "source_breakdown": {
+            "augmented": {
+              "nc_tokens": 43,
+              "hit_tokens": 32,
+              "majority_em_correct": 31
+            },
+            "lexnorm2015": {
+              "nc_tokens": 1284,
+              "hit_tokens": 984,
+              "majority_em_correct": 946
+            }
+          },
+          "category_breakdown": {
+            "A1": {
+              "nc_tokens": 166,
+              "hit_tokens": 110,
+              "majority_em_correct": 106
+            },
+            "A2": {
+              "nc_tokens": 82,
+              "hit_tokens": 63,
+              "majority_em_correct": 59
+            },
+            "A3": {
+              "nc_tokens": 117,
+              "hit_tokens": 102,
+              "majority_em_correct": 99
+            },
+            "B1": {
+              "nc_tokens": 75,
+              "hit_tokens": 21,
+              "majority_em_correct": 20
+            },
+            "B2": {
+              "nc_tokens": 44,
+              "hit_tokens": 29,
+              "majority_em_correct": 29
+            },
+            "C1": {
+              "nc_tokens": 140,
+              "hit_tokens": 60,
+              "majority_em_correct": 55
+            },
+            "C2": {
+              "nc_tokens": 405,
+              "hit_tokens": 355,
+              "majority_em_correct": 354
+            },
+            "C3": {
+              "nc_tokens": 236,
+              "hit_tokens": 215,
+              "majority_em_correct": 199
+            },
+            "C4": {
+              "nc_tokens": 62,
+              "hit_tokens": 61,
+              "majority_em_correct": 56
+            }
+          },
+          "train_majority_ipa": {
+            "train_surface_keys_with_ipa": 1183,
+            "test_nc_tokens_with_nonempty_ipa": 1327,
+            "test_hit_tokens": 1016,
+            "test_hit_rate": 0.7656367746797287,
+            "exact_ipa_match_count_on_hits": 979,
+            "exact_ipa_match_rate_on_hits": 0.9635826771653543,
+            "exact_ipa_match_rate_all_nonempty_test_missing_wrong": 0.7377543330821401,
+            "variant_tolerant_ipa_match_count_on_hits": 984,
+            "variant_tolerant_ipa_match_rate_all_nonempty_test_missing_wrong": 0.7415222305953278,
+            "note": "String-level IPA exact match; NOT paper PER. Variant tolerance splits comma alternatives only."
+          },
+          "generic_lexeme_examples_no_sentences": {
+            "u": {
+              "train_canonical_counts": {
+                "you": 379,
+                "you're": 1,
+                "your": 3
+              },
+              "test_canonical_counts": {
+                "you": 115,
+                "you're": 1
+              },
+              "distinct_test_context_count": 94
+            },
+            "ur": {
+              "train_canonical_counts": {
+                "your": 35,
+                "you're": 10,
+                "you": 1
+              },
+              "test_canonical_counts": {
+                "your": 8,
+                "you're": 4
+              },
+              "distinct_test_context_count": 11
+            }
+          }
+        }
+      },
+      "augmentation": {
+        "train": {
+          "rows": 111,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          }
+        },
+        "dev": {
+          "rows": 21,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          }
+        },
+        "test": {
+          "rows": 43,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          }
+        }
+      }
+    },
+    "vi": {
+      "splits": {
+        "train": {
+          "rows": 8597,
+          "source_counts": {
+            "vilexnorm": 8369,
+            "augmented": 228
+          },
+          "all_tokens": 103101,
+          "nc_tokens": 15836,
+          "nc_categories": {
+            "A2": 4089,
+            "C2": 1927,
+            "C1": 2077,
+            "C3": 2595,
+            "A1": 2747,
+            "A3": 1763,
+            "B1": 420,
+            "C4": 101,
+            "B2": 117
+          },
+          "raw_text_nfc_changed_rows": 26,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 11,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        },
+        "dev": {
+          "rows": 1129,
+          "source_counts": {
+            "vilexnorm": 1049,
+            "augmented": 80
+          },
+          "all_tokens": 14200,
+          "nc_tokens": 2112,
+          "nc_categories": {
+            "C2": 237,
+            "C3": 302,
+            "A1": 365,
+            "A2": 520,
+            "A3": 257,
+            "C1": 308,
+            "B1": 55,
+            "C4": 28,
+            "B2": 40
+          },
+          "raw_text_nfc_changed_rows": 1,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 0,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        },
+        "test": {
+          "rows": 1121,
+          "source_counts": {
+            "vilexnorm": 1044,
+            "augmented": 77
+          },
+          "all_tokens": 13795,
+          "nc_tokens": 2152,
+          "nc_categories": {
+            "A2": 496,
+            "A1": 327,
+            "C3": 369,
+            "A3": 225,
+            "C1": 368,
+            "C2": 247,
+            "B1": 43,
+            "B2": 38,
+            "C4": 39
+          },
+          "raw_text_nfc_changed_rows": 6,
+          "within_split_duplicate_raw_rows": 0,
+          "within_split_duplicate_canonical_rows": 0,
+          "row_keys": [
+            "canonical",
+            "id",
+            "lang",
+            "phonemes",
+            "source",
+            "split",
+            "text",
+            "tokens"
+          ],
+          "token_keys": [
+            "canonical",
+            "is_nc",
+            "nc_type",
+            "phoneme",
+            "text"
+          ]
+        }
+      },
+      "cross_split": {
+        "train_dev": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 3,
+            "left_rows_in_overlap": 3,
+            "right_rows_in_overlap": 3
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 4,
+            "left_rows_in_overlap": 6,
+            "right_rows_in_overlap": 4
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "right_duplicate_rows_by_source": {},
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        },
+        "train_test": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 0,
+            "left_rows_in_overlap": 0,
+            "right_rows_in_overlap": 0
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 3,
+            "left_rows_in_overlap": 3,
+            "right_rows_in_overlap": 3
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 4,
+            "left_rows_in_overlap": 4,
+            "right_rows_in_overlap": 4
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          },
+          "right_duplicate_rows_by_source": {},
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        },
+        "dev_test": {
+          "raw_nfc_whitespace": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "raw_nfc_whitespace_casefold": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "canonical_nfc_whitespace": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "canonical_nfc_whitespace_casefold": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "nc_masked_canonical_skeleton_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "right_duplicate_rows_by_source": {
+            "augmented": 1
+          },
+          "same_context_target_conflicting_canonical_right_tokens": 0
+        }
+      },
+      "lexical_normalization": {
+        "nfc_whitespace_exact_surface": {
+          "train_distinct_nc_surfaces": 3667,
+          "train_multilabel_nc_surfaces": 240,
+          "test_nc_tokens": 2152,
+          "test_hit_tokens": 1786,
+          "test_hit_rate": 0.8299256505576208,
+          "test_unseen_surface_tokens": 366,
+          "train_majority_strict_em_correct_on_hits": 1663,
+          "train_majority_strict_em_rate_on_hits": 0.931131019036954,
+          "train_majority_strict_em_rate_all_test_unseen_counted_wrong": 0.7727695167286245,
+          "train_majority_variant_tolerant_correct_on_hits": 1664,
+          "test_hit_gold_canonical_seen_in_any_train_variant": 1742,
+          "test_tokens_with_train_ambiguous_surface": 952,
+          "test_ambiguous_hit_strict_em_correct": 865,
+          "test_multilabel_surface_count_with_distinct_contexts": 38,
+          "test_multilabel_surface_count_after_canonical_casefold": 35,
+          "test_tokens_on_multilabel_surface_with_distinct_contexts": 414,
+          "surfaces_multilabel_in_train_and_test_with_distinct_test_contexts": 29,
+          "test_optimal_context_free_dictionary_error_lower_bound_tokens": 72,
+          "source_breakdown": {
+            "augmented": {
+              "nc_tokens": 77,
+              "hit_tokens": 59,
+              "majority_em_correct": 57
+            },
+            "vilexnorm": {
+              "nc_tokens": 2075,
+              "hit_tokens": 1727,
+              "majority_em_correct": 1606
+            }
+          },
+          "category_breakdown": {
+            "A1": {
+              "nc_tokens": 327,
+              "hit_tokens": 313,
+              "majority_em_correct": 303
+            },
+            "A2": {
+              "nc_tokens": 496,
+              "hit_tokens": 484,
+              "majority_em_correct": 448
+            },
+            "A3": {
+              "nc_tokens": 225,
+              "hit_tokens": 171,
+              "majority_em_correct": 155
+            },
+            "B1": {
+              "nc_tokens": 43,
+              "hit_tokens": 12,
+              "majority_em_correct": 11
+            },
+            "B2": {
+              "nc_tokens": 38,
+              "hit_tokens": 35,
+              "majority_em_correct": 35
+            },
+            "C1": {
+              "nc_tokens": 368,
+              "hit_tokens": 211,
+              "majority_em_correct": 180
+            },
+            "C2": {
+              "nc_tokens": 247,
+              "hit_tokens": 227,
+              "majority_em_correct": 217
+            },
+            "C3": {
+              "nc_tokens": 369,
+              "hit_tokens": 309,
+              "majority_em_correct": 292
+            },
+            "C4": {
+              "nc_tokens": 39,
+              "hit_tokens": 24,
+              "majority_em_correct": 22
+            }
+          },
+          "train_majority_ipa": {
+            "train_surface_keys_with_ipa": 3666,
+            "test_nc_tokens_with_nonempty_ipa": 2152,
+            "test_hit_tokens": 1786,
+            "test_hit_rate": 0.8299256505576208,
+            "exact_ipa_match_count_on_hits": 1247,
+            "exact_ipa_match_rate_on_hits": 0.6982082866741322,
+            "exact_ipa_match_rate_all_nonempty_test_missing_wrong": 0.5794609665427509,
+            "variant_tolerant_ipa_match_count_on_hits": 1247,
+            "variant_tolerant_ipa_match_rate_all_nonempty_test_missing_wrong": 0.5794609665427509,
+            "note": "String-level IPA exact match; NOT paper PER. Variant tolerance splits comma alternatives only."
+          },
+          "generic_lexeme_examples_no_sentences": {
+            "c": {
+              "train_canonical_counts": {
+                "cậu": 68,
+                "chị": 52,
+                "con": 1
+              },
+              "test_canonical_counts": {
+                "cậu": 11,
+                "chị": 3,
+                "cặc": 1
+              },
+              "distinct_test_context_count": 14
+            },
+            "k": {
+              "train_canonical_counts": {
+                "không": 850,
+                "k": 1
+              },
+              "test_canonical_counts": {
+                "không": 102,
+                "khôgn": 1
+              },
+              "distinct_test_context_count": 89
+            },
+            "m": {
+              "train_canonical_counts": {
+                "mình": 27,
+                "mày": 219,
+                "má": 1,
+                "mẹ": 1,
+                "mi": 1,
+                "mọi người": 1
+              },
+              "test_canonical_counts": {
+                "mình": 4,
+                "mày": 27,
+                "hứng": 1
+              },
+              "distinct_test_context_count": 29
+            },
+            "t": {
+              "train_canonical_counts": {
+                "tôi": 892,
+                "thằng": 1,
+                "tao": 145,
+                "tớ": 6,
+                "tui": 4,
+                "tồi": 1,
+                "ta": 1,
+                "tới": 1
+              },
+              "test_canonical_counts": {
+                "tao": 24,
+                "tôi": 91,
+                "tuổi": 1
+              },
+              "distinct_test_context_count": 91
+            }
+          }
+        },
+        "nfc_whitespace_casefold_surface": {
+          "train_distinct_nc_surfaces": 3449,
+          "train_multilabel_nc_surfaces": 360,
+          "test_nc_tokens": 2152,
+          "test_hit_tokens": 1812,
+          "test_hit_rate": 0.8420074349442379,
+          "test_unseen_surface_tokens": 340,
+          "train_majority_strict_em_correct_on_hits": 1596,
+          "train_majority_strict_em_rate_on_hits": 0.8807947019867549,
+          "train_majority_strict_em_rate_all_test_unseen_counted_wrong": 0.741635687732342,
+          "train_majority_variant_tolerant_correct_on_hits": 1597,
+          "test_hit_gold_canonical_seen_in_any_train_variant": 1748,
+          "test_tokens_with_train_ambiguous_surface": 1322,
+          "test_ambiguous_hit_strict_em_correct": 1151,
+          "test_multilabel_surface_count_with_distinct_contexts": 72,
+          "test_multilabel_surface_count_after_canonical_casefold": 34,
+          "test_tokens_on_multilabel_surface_with_distinct_contexts": 889,
+          "surfaces_multilabel_in_train_and_test_with_distinct_test_contexts": 61,
+          "test_optimal_context_free_dictionary_error_lower_bound_tokens": 143,
+          "source_breakdown": {
+            "augmented": {
+              "nc_tokens": 77,
+              "hit_tokens": 64,
+              "majority_em_correct": 44
+            },
+            "vilexnorm": {
+              "nc_tokens": 2075,
+              "hit_tokens": 1748,
+              "majority_em_correct": 1552
+            }
+          },
+          "category_breakdown": {
+            "A1": {
+              "nc_tokens": 327,
+              "hit_tokens": 315,
+              "majority_em_correct": 294
+            },
+            "A2": {
+              "nc_tokens": 496,
+              "hit_tokens": 484,
+              "majority_em_correct": 420
+            },
+            "A3": {
+              "nc_tokens": 225,
+              "hit_tokens": 180,
+              "majority_em_correct": 149
+            },
+            "B1": {
+              "nc_tokens": 43,
+              "hit_tokens": 12,
+              "majority_em_correct": 11
+            },
+            "B2": {
+              "nc_tokens": 38,
+              "hit_tokens": 35,
+              "majority_em_correct": 35
+            },
+            "C1": {
+              "nc_tokens": 368,
+              "hit_tokens": 219,
+              "majority_em_correct": 178
+            },
+            "C2": {
+              "nc_tokens": 247,
+              "hit_tokens": 228,
+              "majority_em_correct": 211
+            },
+            "C3": {
+              "nc_tokens": 369,
+              "hit_tokens": 310,
+              "majority_em_correct": 289
+            },
+            "C4": {
+              "nc_tokens": 39,
+              "hit_tokens": 29,
+              "majority_em_correct": 9
+            }
+          },
+          "train_majority_ipa": {
+            "train_surface_keys_with_ipa": 3448,
+            "test_nc_tokens_with_nonempty_ipa": 2152,
+            "test_hit_tokens": 1812,
+            "test_hit_rate": 0.8420074349442379,
+            "exact_ipa_match_count_on_hits": 1255,
+            "exact_ipa_match_rate_on_hits": 0.6926048565121413,
+            "exact_ipa_match_rate_all_nonempty_test_missing_wrong": 0.58317843866171,
+            "variant_tolerant_ipa_match_count_on_hits": 1255,
+            "variant_tolerant_ipa_match_rate_all_nonempty_test_missing_wrong": 0.58317843866171,
+            "note": "String-level IPA exact match; NOT paper PER. Variant tolerance splits comma alternatives only."
+          },
+          "generic_lexeme_examples_no_sentences": {
+            "a": {
+              "train_canonical_counts": {
+                "anh": 164,
+                "Anh": 18,
+                "à": 2,
+                "ạ": 1
+              },
+              "test_canonical_counts": {
+                "anh": 27,
+                "Anh": 2
+              },
+              "distinct_test_context_count": 25
+            },
+            "c": {
+              "train_canonical_counts": {
+                "cậu": 68,
+                "chị": 52,
+                "con": 1,
+                "Cậu": 3
+              },
+              "test_canonical_counts": {
+                "cậu": 11,
+                "chị": 3,
+                "Cậu": 1,
+                "cặc": 1
+              },
+              "distinct_test_context_count": 15
+            },
+            "k": {
+              "train_canonical_counts": {
+                "không": 851,
+                "Không": 53,
+                "k": 1
+              },
+              "test_canonical_counts": {
+                "Không": 9,
+                "không": 102,
+                "khôgn": 1
+              },
+              "distinct_test_context_count": 93
+            },
+            "ko": {
+              "train_canonical_counts": {
+                "không": 868,
+                "Không": 52,
+                "khôngo": 1
+              },
+              "test_canonical_counts": {
+                "không": 123,
+                "Không": 7
+              },
+              "distinct_test_context_count": 117
+            },
+            "m": {
+              "train_canonical_counts": {
+                "mình": 27,
+                "mày": 219,
+                "má": 1,
+                "Mày": 5,
+                "Mình": 3,
+                "mẹ": 1,
+                "mi": 1,
+                "mọi người": 1
+              },
+              "test_canonical_counts": {
+                "mình": 4,
+                "mày": 27,
+                "hứng": 1,
+                "Mày": 1
+              },
+              "distinct_test_context_count": 30
+            },
+            "mk": {
+              "train_canonical_counts": {
+                "mình": 50,
+                "Mình": 3,
+                "mà": 1
+              },
+              "test_canonical_counts": {
+                "mình": 5,
+                "Mình": 2
+              },
+              "distinct_test_context_count": 6
+            },
+            "t": {
+              "train_canonical_counts": {
+                "tôi": 893,
+                "Tôi": 111,
+                "thằng": 1,
+                "tao": 145,
+                "tớ": 6,
+                "Tớ": 1,
+                "tui": 4,
+                "tồi": 1,
+                "Tao": 3,
+                "ta": 1,
+                "tới": 1
+              },
+              "test_canonical_counts": {
+                "tao": 24,
+                "tôi": 91,
+                "Tôi": 11,
+                "tuổi": 1
+              },
+              "distinct_test_context_count": 101
+            },
+            "đc": {
+              "train_canonical_counts": {
+                "được": 494,
+                "đượ": 1,
+                "Được": 2
+              },
+              "test_canonical_counts": {
+                "được": 47,
+                "Được": 1
+              },
+              "distinct_test_context_count": 48
+            }
+          }
+        }
+      },
+      "augmentation": {
+        "train": {
+          "rows": 228,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          }
+        },
+        "dev": {
+          "rows": 80,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 1,
+            "left_rows_in_overlap": 1,
+            "right_rows_in_overlap": 1
+          }
+        },
+        "test": {
+          "rows": 77,
+          "canonical_sentence_matches_other_splits": {
+            "unique_overlap": 2,
+            "left_rows_in_overlap": 2,
+            "right_rows_in_overlap": 2
+          },
+          "masked_skeleton_matches_other_splits_proxy": {
+            "unique_overlap": 3,
+            "left_rows_in_overlap": 3,
+            "right_rows_in_overlap": 3
+          }
+        }
+      }
+    }
+  }
+}

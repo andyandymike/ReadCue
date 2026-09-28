@@ -1,0 +1,16 @@
+{
+  "baseline": "identity",
+  "model_dir": null,
+  "revision": null,
+  "input_sha256": "85f21d6a7e1142cc615932e2b089f0fbff05d1c24c4461d254f95120c194626e",
+  "runner_sha256": "61fa63e46676fa813e9501f7a33d5f6bba0781d5d46d71c2a0e888753b14fca8",
+  "started_at": "2026-09-28T09:14:29Z",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.10",
+  "external_api_cost_usd": 0,
+  "training": false,
+  "case_count": 72,
+  "load_seconds": 1.7999991541728377e-06,
+  "finished_at": "2026-09-28T09:14:29Z",
+  "predictions_sha256": "9a65f7442049d374d40b1175c4d502ef07c5afd06f485dbff6cc4ae47f0bf111"
+}

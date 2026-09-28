@@ -1,0 +1,38 @@
+{
+  "baseline": "tn",
+  "model_dir": "models/zh-tn",
+  "revision": "97f7860d117f651f9aeba1bc6558eec7c378c958",
+  "input_sha256": "85f21d6a7e1142cc615932e2b089f0fbff05d1c24c4461d254f95120c194626e",
+  "runner_sha256": "d4370fac2ef8dd6be1f49c41bc96c5a2df737b231b966e9eca86f33d8ce9101c",
+  "started_at": "2026-09-28T09:29:46Z",
+  "platform": "Linux-6.6.114.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "external_api_cost_usd": 0,
+  "training": false,
+  "case_count": 72,
+  "loading_compatibility": {
+    "special_token_field_mapping": "extra_special_tokens list -> additional_special_tokens",
+    "rope_field_mapping": {
+      "rope_theta": 1000000,
+      "rope_type": "default"
+    },
+    "full_vocabulary_ids_verified": true,
+    "added_token_flags_and_fim_markers_verified": true,
+    "effective_rope_theta": 1000000,
+    "serialized_use_cache": false,
+    "inference_use_cache": true
+  },
+  "torch": "2.6.0+cu124",
+  "transformers": "4.57.6",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 2060",
+  "dtype": "torch.float16",
+  "max_new_tokens": 160,
+  "seed": 20260928,
+  "enable_thinking": false,
+  "decoding": "greedy",
+  "prompt": "<|fim_prefix|>{text}<|fim_suffix|>",
+  "load_seconds": 90.17082506599999,
+  "finished_at": "2026-09-28T09:31:33Z",
+  "predictions_sha256": "f9a7ea5fffd0b169e28310f72a22f8a108037b5173a62cf4ca02d3d0a15640d9"
+}

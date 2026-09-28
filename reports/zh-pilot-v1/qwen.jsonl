@@ -1,0 +1,72 @@
+{"id": "zhp1_calendar_01", "prediction": "会议定在2026年9月28日，地点还是上次那间教室。", "raw_output": "会议定在2026年9月28日，地点还是上次那间教室。", "status": "ok", "latency_ms": 1022.8227710000226, "generated_tokens": 22}
+{"id": "zhp1_calendar_02", "prediction": "这张照片拍摄于2024年2月29日。", "raw_output": "这张照片拍摄于2024年2月29日。", "status": "ok", "latency_ms": 824.6391929999959, "generated_tokens": 16}
+{"id": "zhp1_calendar_03", "prediction": "图书馆将于10月1日恢复开放。", "raw_output": "图书馆将于10月1日恢复开放。", "status": "ok", "latency_ms": 545.9580730000084, "generated_tokens": 11}
+{"id": "zhp1_calendar_04", "prediction": "他的生日是12月31日，总在年底庆祝。", "raw_output": "他的生日是12月31日，总在年底庆祝。", "status": "ok", "latency_ms": 739.156314000013, "generated_tokens": 16}
+{"id": "zhp1_clock_duration_01", "prediction": "明天上午9:30开会，记得提前到。", "raw_output": "明天上午9:30开会，记得提前到。", "status": "ok", "latency_ms": 614.4236559999854, "generated_tokens": 13}
+{"id": "zhp1_clock_duration_02", "prediction": "火车将于下午2:15发车。", "raw_output": "火车将于下午2:15发车。", "status": "ok", "latency_ms": 697.3559159999922, "generated_tokens": 11}
+{"id": "zhp1_clock_duration_03", "prediction": "闹钟设在早上7:05，别忘了打开。", "raw_output": "闹钟设在早上7:05，别忘了打开。", "status": "ok", "latency_ms": 720.0362279999979, "generated_tokens": 15}
+{"id": "zhp1_clock_duration_04", "prediction": "我已经在门口等了45分钟。", "raw_output": "我已经在门口等了45分钟。", "status": "ok", "latency_ms": 495.36212099999943, "generated_tokens": 10}
+{"id": "zhp1_money_01", "prediction": "这杯豆浆卖12.5元，已含包装费。", "raw_output": "这杯豆浆卖12.5元，已含包装费。", "status": "ok", "latency_ms": 719.8141210000131, "generated_tokens": 16}
+{"id": "zhp1_money_02", "prediction": "我付了20元，不用找了。", "raw_output": "我付了20元，不用找了。", "status": "ok", "latency_ms": 518.5523279999984, "generated_tokens": 11}
+{"id": "zhp1_money_03", "prediction": "这张明信片的售价是3.50元。", "raw_output": "这张明信片的售价是3.50元。", "status": "ok", "latency_ms": 636.3803640000185, "generated_tokens": 14}
+{"id": "zhp1_money_04", "prediction": "这次活动的场地费是1000元。", "raw_output": "这次活动的场地费是1000元。", "status": "ok", "latency_ms": 545.404652000002, "generated_tokens": 13}
+{"id": "zhp1_measurement_01", "prediction": "这块木板长1.75米，正好能放进车里。", "raw_output": "这块木板长1.75米，正好能放进车里。", "status": "ok", "latency_ms": 716.4093970000067, "generated_tokens": 17}
+{"id": "zhp1_measurement_02", "prediction": "2公斤", "raw_output": "2公斤", "status": "ok", "latency_ms": 139.28105400000845, "generated_tokens": 3}
+{"id": "zhp1_measurement_03", "prediction": "量杯里还剩250毫升水。", "raw_output": "量杯里还剩250毫升水。", "status": "ok", "latency_ms": 522.7782789999935, "generated_tokens": 12}
+{"id": "zhp1_measurement_04", "prediction": "明天清晨的气温可能降到负3摄氏度。", "raw_output": "明天清晨的气温可能降到负3摄氏度。", "status": "ok", "latency_ms": 554.8179970000149, "generated_tokens": 13}
+{"id": "zhp1_percentage_01", "prediction": "目前已完成30%的安装工作。", "raw_output": "目前已完成30%的安装工作。", "status": "ok", "latency_ms": 422.4942589999898, "generated_tokens": 10}
+{"id": "zhp1_percentage_02", "prediction": "这批样品的不合格率是2.5%。", "raw_output": "这批样品的不合格率是2.5%。", "status": "ok", "latency_ms": 500.2022820000036, "generated_tokens": 12}
+{"id": "zhp1_percentage_03", "prediction": "两次测量的差异小于 0.5%。", "raw_output": "两次测量的差异小于 0.5%。", "status": "ok", "latency_ms": 502.76752700000316, "generated_tokens": 12}
+{"id": "zhp1_percentage_04", "prediction": "进度条已经到了100%，可以拔掉数据线了。", "raw_output": "进度条已经到了100%，可以拔掉数据线了。", "status": "ok", "latency_ms": 657.4582240000097, "generated_tokens": 16}
+{"id": "zhp1_count_ordinal_01", "prediction": "桌上还放着3本没看完的书。", "raw_output": "桌上还放着3本没看完的书。", "status": "ok", "latency_ms": 521.678100999992, "generated_tokens": 12}
+{"id": "zhp1_count_ordinal_02", "prediction": "这次培训一共有21名学员参加。", "raw_output": "这次培训一共有21名学员参加。", "status": "ok", "latency_ms": 461.2370730000066, "generated_tokens": 11}
+{"id": "zhp1_count_ordinal_03", "prediction": "请翻到第12页，我们从这里继续。", "raw_output": "请翻到第12页，我们从这里继续。", "status": "ok", "latency_ms": 606.513925999991, "generated_tokens": 14}
+{"id": "zhp1_count_ordinal_04", "prediction": "会议室里还有4人没有离开。", "raw_output": "会议室里还有4人没有离开。", "status": "ok", "latency_ms": 382.26002099997913, "generated_tokens": 9}
+{"id": "zhp1_six_context_01", "prediction": "弹幕里一排666，大家都在夸这次操作。", "raw_output": "弹幕里一排666，大家都在夸这次操作。", "status": "ok", "latency_ms": 627.9802570000186, "generated_tokens": 15}
+{"id": "zhp1_six_context_02", "prediction": "这一手反杀是666。", "raw_output": "这一手反杀是666。", "status": "ok", "latency_ms": 425.433527000024, "generated_tokens": 10}
+{"id": "zhp1_six_context_03", "prediction": "这件外套的价格是666元，暂时没有折扣。", "raw_output": "这件外套的价格是666元，暂时没有折扣。", "status": "ok", "latency_ms": 590.7106890000193, "generated_tokens": 14}
+{"id": "zhp1_six_context_04", "prediction": "验证码是666，输入后再点确认。", "raw_output": "验证码是666，输入后再点确认。", "status": "ok", "latency_ms": 505.70902000001183, "generated_tokens": 12}
+{"id": "zhp1_chat_digit_context_01", "prediction": "他在群里回了个233，然后发来一串笑脸。", "raw_output": "他在群里回了个233，然后发来一串笑脸。", "status": "ok", "latency_ms": 677.0030319999876, "generated_tokens": 16}
+{"id": "zhp1_chat_digit_context_02", "prediction": "这张票一共233元，我已经付过了。", "raw_output": "这张票一共233元，我已经付过了。", "status": "ok", "latency_ms": 585.8829430000014, "generated_tokens": 13}
+{"id": "zhp1_chat_digit_context_03", "prediction": "下线前他发了个88，随后就退出了聊天。", "raw_output": "下线前他发了个88，随后就退出了聊天。", "status": "ok", "latency_ms": 776.0873779999997, "generated_tokens": 16}
+{"id": "zhp1_chat_digit_context_04", "prediction": "这份套餐是88元，两个人吃刚好。", "raw_output": "这份套餐是88元，两个人吃刚好。", "status": "ok", "latency_ms": 594.1802160000123, "generated_tokens": 12}
+{"id": "zhp1_yyds_preserve_01", "prediction": "这家店的牛肉面真是yyds。", "raw_output": "这家店的牛肉面真是yyds。", "status": "ok", "latency_ms": 561.1394970000276, "generated_tokens": 10}
+{"id": "zhp1_yyds_preserve_02", "prediction": "她把歌单名改成了YYDS。", "raw_output": "她把歌单名改成了YYDS。", "status": "ok", "latency_ms": 530.4034179999917, "generated_tokens": 11}
+{"id": "zhp1_yyds_preserve_03", "prediction": "比赛结束后，群里刷起了yyds。", "raw_output": "比赛结束后，群里刷起了yyds。", "status": "ok", "latency_ms": 450.5657790000157, "generated_tokens": 10}
+{"id": "zhp1_yyds_preserve_04", "prediction": "我看不懂这句yyds，只好先收藏起来。", "raw_output": "我看不懂这句yyds，只好先收藏起来。", "status": "ok", "latency_ms": 551.824584000002, "generated_tokens": 13}
+{"id": "zhp1_other_abbreviation_01", "prediction": "这只小猫也太可爱了，awsl。", "raw_output": "这只小猫也太可爱了，awsl。", "status": "ok", "latency_ms": 513.0468600000029, "generated_tokens": 12}
+{"id": "zhp1_other_abbreviation_02", "prediction": "他迟到后只回了句 dbq。", "raw_output": "他迟到后只回了句 dbq。", "status": "ok", "latency_ms": 484.2673620000255, "generated_tokens": 11}
+{"id": "zhp1_other_abbreviation_03", "prediction": "看到结尾我直接xswl。", "raw_output": "看到结尾我直接xswl。", "status": "ok", "latency_ms": 391.49614499999075, "generated_tokens": 9}
+{"id": "zhp1_other_abbreviation_04", "prediction": "u1s1，这个价格确实不便宜。", "raw_output": "u1s1，这个价格确实不便宜。", "status": "ok", "latency_ms": 518.972433999977, "generated_tokens": 12}
+{"id": "zhp1_digit_identifiers_01", "prediction": "取件码是1202，包裹在右边柜子。", "raw_output": "取件码是1202，包裹在右边柜子。", "status": "ok", "latency_ms": 667.7657169999804, "generated_tokens": 16}
+{"id": "zhp1_digit_identifiers_02", "prediction": "核对尾号2038，别转错账户。", "raw_output": "核对尾号2038，别转错账户。", "status": "ok", "latency_ms": 628.9534349999997, "generated_tokens": 15}
+{"id": "zhp1_digit_identifiers_03", "prediction": "短信中的校验码是1016，有效时间很短。", "raw_output": "短信中的校验码是1016，有效时间很短。", "status": "ok", "latency_ms": 726.4369989999864, "generated_tokens": 17}
+{"id": "zhp1_digit_identifiers_04", "prediction": "订单末四位是2208，麻烦再核对一遍。", "raw_output": "订单末四位是2208，麻烦再核对一遍。", "status": "ok", "latency_ms": 685.9132010000053, "generated_tokens": 16}
+{"id": "zhp1_mixed_text_01", "prediction": "这局MVP拿到了3次击杀。", "raw_output": "这局MVP拿到了3次击杀。", "status": "ok", "latency_ms": 424.4470219999812, "generated_tokens": 10}
+{"id": "zhp1_mixed_text_02", "prediction": "今晚用WiFi上传2个视频。", "raw_output": "今晚用WiFi上传2个视频。", "status": "ok", "latency_ms": 389.77658099997825, "generated_tokens": 9}
+{"id": "zhp1_mixed_text_03", "prediction": "我把BGM音量调到了30%。", "raw_output": "我把BGM音量调到了30%。", "status": "ok", "latency_ms": 518.2243910000182, "generated_tokens": 12}
+{"id": "zhp1_mixed_text_04", "prediction": "这个bug已经复现了2次。", "raw_output": "这个bug已经复现了2次。", "status": "ok", "latency_ms": 426.00351100000466, "generated_tokens": 10}
+{"id": "zhp1_ordinary_sentence_01", "prediction": "今天风很大，出门记得带件外套。", "raw_output": "今天风很大，出门记得带件外套。", "status": "ok", "latency_ms": 476.5489890000083, "generated_tokens": 11}
+{"id": "zhp1_ordinary_sentence_02", "prediction": "她想了很久，还是决定先把饭吃完。", "raw_output": "她想了很久，还是决定先把饭吃完。", "status": "ok", "latency_ms": 466.32206499998574, "generated_tokens": 11}
+{"id": "zhp1_ordinary_sentence_03", "prediction": "这句话有点绕，我得再读一遍。", "raw_output": "这句话有点绕，我得再读一遍。", "status": "ok", "latency_ms": 478.4054159999869, "generated_tokens": 11}
+{"id": "zhp1_ordinary_sentence_04", "prediction": "别着急，等大家都到齐了再开始。", "raw_output": "别着急，等大家都到齐了再开始。", "status": "ok", "latency_ms": 522.6973839999971, "generated_tokens": 12}
+{"id": "zhp1_proper_names_01", "prediction": "林知夏把借来的书放回了桌上。", "raw_output": "林知夏把借来的书放回了桌上。", "status": "ok", "latency_ms": 540.0976850000063, "generated_tokens": 13}
+{"id": "zhp1_proper_names_02", "prediction": "我们约在听雨书屋门口见面。", "raw_output": "我们约在听雨书屋门口见面。", "status": "ok", "latency_ms": 471.4764149999837, "generated_tokens": 11}
+{"id": "zhp1_proper_names_03", "prediction": "青禾工作室今天发来了一份样稿。", "raw_output": "青禾工作室今天发来了一份样稿。", "status": "ok", "latency_ms": 483.40790399998923, "generated_tokens": 11}
+{"id": "zhp1_proper_names_04", "prediction": "顾南星正在整理上周的访谈记录。", "raw_output": "顾南星正在整理上周的访谈记录。", "status": "ok", "latency_ms": 479.0418030000012, "generated_tokens": 11}
+{"id": "zhp1_literal_quotes_01", "prediction": "稍后再说", "raw_output": "稍后再说", "status": "ok", "latency_ms": 180.0620520000109, "generated_tokens": 4}
+{"id": "zhp1_literal_quotes_02", "prediction": "慢慢来，旁边画了一只猫。", "raw_output": "慢慢来，旁边画了一只猫。", "status": "ok", "latency_ms": 419.45296100001883, "generated_tokens": 10}
+{"id": "zhp1_literal_quotes_03", "prediction": "她把“哈哈哈”三个字圈了起来。", "raw_output": "她把“哈哈哈”三个字圈了起来。", "status": "ok", "latency_ms": 461.1118019999765, "generated_tokens": 11}
+{"id": "zhp1_literal_quotes_04", "prediction": "书签上印着“风从海上来”。", "raw_output": "书签上印着“风从海上来”。", "status": "ok", "latency_ms": 523.9458060000004, "generated_tokens": 12}
+{"id": "zhp1_code_identifiers_01", "prediction": "user_id", "raw_output": "user_id", "status": "ok", "latency_ms": 140.68307799999502, "generated_tokens": 3}
+{"id": "zhp1_code_identifiers_02", "prediction": "配置项 enable_cache 目前保持默认值。", "raw_output": "配置项 enable_cache 目前保持默认值。", "status": "ok", "latency_ms": 515.6515559999946, "generated_tokens": 12}
+{"id": "zhp1_code_identifiers_03", "prediction": "这次报错指向 read_file 函数。", "raw_output": "这次报错指向 read_file 函数。", "status": "ok", "latency_ms": 429.50731199999836, "generated_tokens": 10}
+{"id": "zhp1_code_identifiers_04", "prediction": "页面上显示了ERR_TIMEOUT错误。", "raw_output": "页面上显示了ERR_TIMEOUT错误。", "status": "ok", "latency_ms": 398.2689909999806, "generated_tokens": 9}
+{"id": "zhp1_product_models_01", "prediction": "她把iPhone 16放在桌上。", "raw_output": "她把iPhone 16放在桌上。", "status": "ok", "latency_ms": 449.4933400000036, "generated_tokens": 10}
+{"id": "zhp1_product_models_02", "prediction": "这台相机是EOS R50。", "raw_output": "这台相机是EOS R50。", "status": "ok", "latency_ms": 437.8379120000204, "generated_tokens": 10}
+{"id": "zhp1_product_models_03", "prediction": "他在比较 RTX 4060 和 RTX 4070。", "raw_output": "他在比较 RTX 4060 和 RTX 4070。", "status": "ok", "latency_ms": 802.1253709999883, "generated_tokens": 19}
+{"id": "zhp1_product_models_04", "prediction": "工位上放着一台ThinkPad T14。", "raw_output": "工位上放着一台ThinkPad T14。", "status": "ok", "latency_ms": 551.7477889999896, "generated_tokens": 13}
+{"id": "zhp1_latin_tokens_01", "prediction": "这份文件已导出为PDF。", "raw_output": "这份文件已导出为PDF。", "status": "ok", "latency_ms": 388.82109700000456, "generated_tokens": 9}
+{"id": "zhp1_latin_tokens_02", "prediction": "浏览器提示 HTTP 连接失败。", "raw_output": "浏览器提示 HTTP 连接失败。", "status": "ok", "latency_ms": 396.12177599997267, "generated_tokens": 9}
+{"id": "zhp1_latin_tokens_03", "prediction": "会议记录存在README文件里。", "raw_output": "会议记录存在README文件里。", "status": "ok", "latency_ms": 347.5343080000357, "generated_tokens": 8}
+{"id": "zhp1_latin_tokens_04", "prediction": "她在邮件末尾写道：感谢。", "raw_output": "她在邮件末尾写道：感谢。", "status": "ok", "latency_ms": 392.5588179999977, "generated_tokens": 9}

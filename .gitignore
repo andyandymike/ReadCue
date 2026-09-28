@@ -1,0 +1,35 @@
+# Local datasets and model artifacts
+data/
+models/
+checkpoints/
+outputs/
+runs/
+wandb/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.onnx
+*.gguf
+
+# Python and tooling
+.venv/
+.venv-linux/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.cache/
+*.egg-info/
+build/
+dist/
+
+# Credentials and local settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+Thumbs.db

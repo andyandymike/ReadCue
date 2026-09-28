@@ -1,0 +1,49 @@
+{
+  "checked_current_main": "da2b3ee84e15e98ba48b388f7ee291ba4c3579b2",
+  "pinned_commit": "da2b3ee84e15e98ba48b388f7ee291ba4c3579b2",
+  "total_declared_bytes": 38278189,
+  "files": [
+    {
+      "path": "en/train.json",
+      "bytes": 9130847,
+      "git_blob_sha1": "eac0b8ab5573ed51fb602c2bf971e9989cc29c51",
+      "sha256": "d196367d4be6f6f08152c3d24618eacef2bf0acbb9639fdf3339cec673bb6da7",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/en/train.json"
+    },
+    {
+      "path": "en/dev.json",
+      "bytes": 1598819,
+      "git_blob_sha1": "72d32ed3bbd6ffee75fee33456b16b16e54e83d7",
+      "sha256": "062a450744efeaeac7a9f7b0ffd9b16dd98ddf61b92bf4b1435b1cfb258f4359",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/en/dev.json"
+    },
+    {
+      "path": "en/test.json",
+      "bytes": 3006008,
+      "git_blob_sha1": "a0e8f14705af1d73cfc3f7ea8b74196ea3cf8f4e",
+      "sha256": "ddbe2180292d5b0bd08dd69a9bf24507db31bb4cdb9278a47c8e74e935e335fd",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/en/test.json"
+    },
+    {
+      "path": "vi/train.json",
+      "bytes": 19308198,
+      "git_blob_sha1": "c7c27658ea33cfdee1f613cc068a5dbf18d2236c",
+      "sha256": "4e4ca67468aef8f1d93b735eaf8bbd839a914b575126b169c502239e1e5562de",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/vi/train.json"
+    },
+    {
+      "path": "vi/dev.json",
+      "bytes": 2652650,
+      "git_blob_sha1": "d422dd94ff977afd5f003b695959189018eda429",
+      "sha256": "54d1885fabf527ca9431ddff068e88286aa3558d64a9647a55ed913aa82c49a4",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/vi/dev.json"
+    },
+    {
+      "path": "vi/test.json",
+      "bytes": 2581667,
+      "git_blob_sha1": "d4de14adc50fde28ce133a7ea1ee40b17cb8f190",
+      "sha256": "0b799442d51a85555436039c5b559c5c899553711893f24f949467cf46e39ab7",
+      "url": "https://raw.githubusercontent.com/naver-ai/UGTPHON/da2b3ee84e15e98ba48b388f7ee291ba4c3579b2/vi/test.json"
+    }
+  ]
+}

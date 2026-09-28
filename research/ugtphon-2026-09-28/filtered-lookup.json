@@ -1,0 +1,79 @@
+{
+  "en": {
+    "train_nc_keys": 1413,
+    "filtered_keys": 1279,
+    "removed_keys": 134,
+    "test_all_tokens_no_gold_routing": {
+      "canonical": {
+        "tokens": 14966,
+        "hits": 16,
+        "em_correct": 10247,
+        "introduced_errors_from_correct_identity": 15,
+        "rewritten_wrong_vs_gold": 16
+      },
+      "noncanonical": {
+        "tokens": 1327,
+        "hits": 696,
+        "em_correct": 703,
+        "introduced_errors_from_correct_identity": 1,
+        "rewritten_wrong_vs_gold": 12
+      }
+    },
+    "targeted_alignment_diagnostics_no_sentences": []
+  },
+  "vi": {
+    "train_nc_keys": 3667,
+    "filtered_keys": 3076,
+    "removed_keys": 591,
+    "test_all_tokens_no_gold_routing": {
+      "canonical": {
+        "tokens": 11643,
+        "hits": 24,
+        "em_correct": 11616,
+        "introduced_errors_from_correct_identity": 24,
+        "rewritten_wrong_vs_gold": 24
+      },
+      "noncanonical": {
+        "tokens": 2152,
+        "hits": 888,
+        "em_correct": 840,
+        "introduced_errors_from_correct_identity": 2,
+        "rewritten_wrong_vs_gold": 63
+      }
+    },
+    "targeted_alignment_diagnostics_no_sentences": [
+      {
+        "surface": "đi",
+        "token_canonical": "quảng",
+        "source": "vilexnorm",
+        "raw_word_count": 11,
+        "canonical_word_count": 11,
+        "raw_target_index": 7,
+        "token_derived_canonical_index": 7,
+        "joined_raw_tokens_equals_sentence": true,
+        "joined_canonical_tokens_equals_canonical_sentence": true,
+        "sequence_matcher_identity_alignment": [],
+        "surface_nc_train_counts": {
+          "quảng": 1
+        },
+        "surface_also_in_train_canonical": true
+      },
+      {
+        "surface": "có",
+        "token_canonical": "thú",
+        "source": "vilexnorm",
+        "raw_word_count": 6,
+        "canonical_word_count": 6,
+        "raw_target_index": 3,
+        "token_derived_canonical_index": 3,
+        "joined_raw_tokens_equals_sentence": true,
+        "joined_canonical_tokens_equals_canonical_sentence": true,
+        "sequence_matcher_identity_alignment": [],
+        "surface_nc_train_counts": {
+          "thú": 1
+        },
+        "surface_also_in_train_canonical": true
+      }
+    ]
+  }
+}
