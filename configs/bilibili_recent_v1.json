@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "source_id": "bilibili-job-change-ai",
+  "repo": "yunyunfanfan/job_change_as_ai",
+  "revision": "752b8ee5a2cb4ddc20de7b68a4f3994a1ca40f63",
+  "capture_date": "2026-09-29",
+  "license": {
+    "status": "unresolved_research_candidate",
+    "note": "README states academic research and platform terms; no independent standard data license found. No training or redistribution grant inferred."
+  },
+  "files": [
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV15ysoeqEcm.csv",
+      "bytes": 64054,
+      "sha256": "3a4501513b2b78d67ac984edf17acab4f9b5a2af4371628c6200a105f0b13663",
+      "git_blob_sha": "9e29249fe95b2ea2fbde2cf0d8db73f65dc024dd"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1bc411H7q7.csv",
+      "bytes": 55756,
+      "sha256": "1a3bc789ff50b4674de0a5ba381e5a6c2ee9f207b05a409556848741270fb8c1",
+      "git_blob_sha": "92cf4404e5f47fce1d5016645fcc8e30669302a3"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1d5ntzuEbA.csv",
+      "bytes": 179762,
+      "sha256": "689afd6e3da64234719cc6301ac403d9dcbdcb2ee6d8e7ca5a13215b416a1c0a",
+      "git_blob_sha": "f52c9b92e389ea032b5abb678fe2db19eaf9d099"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1gD421u7oT.csv",
+      "bytes": 22710,
+      "sha256": "45ab5ab6fbfd5413026dc7744333f5bf8862c692ede6d6a5773444b50c3186c4",
+      "git_blob_sha": "adadbd6dd5a8a2ba4aea82f72e3029c87cd4afea"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1iofBYsEyc.csv",
+      "bytes": 80211,
+      "sha256": "356595d20bd66c88ef7b121f39310ed7023d8f6089fb161ee46700bee634e568",
+      "git_blob_sha": "3dd4e797c029fc33cba6baa9591defbce29bf04d"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1kWQ5Y5Eci.csv",
+      "bytes": 38217,
+      "sha256": "5f304f4cb5cb905de02bb7b7e52f99cb10354d217e5d61c509a655c4b50d5390",
+      "git_blob_sha": "53c60c81b411feed3bbe2fcbe4b0392be6366d3a"
+    },
+    {
+      "path": "data/data_bilibili/bilibili_comments_BV1yX4y1R7fp.csv",
+      "bytes": 108003,
+      "sha256": "f4662d1b59f555318c998dc66a759c8d51d2d40cc6c7c053a9ad397db9998a58",
+      "git_blob_sha": "b1eca985c012c297ae97008667ddd63296690743"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "README.md",
+      "bytes": 18736,
+      "sha256": "3123c63668e3afd660fe4e3eff49841bd94bb2a31ad61ad038fa46010498b502",
+      "git_blob_sha": "eb8d786f6027b5c8a9ab898d057275ab684242cb"
+    },
+    {
+      "path": "fetch_bilibili_comments.py",
+      "bytes": 8967,
+      "sha256": "b1732fddd6913d7d115435ca471413258ea56999155efcd30b34a5fde5f8dcba",
+      "git_blob_sha": "f9f126b4eb049eda255bd6ba5956d98953a53227"
+    }
+  ],
+  "sampling": {
+    "since": "2024-01-01",
+    "until": "2026-01-01",
+    "seed": 20260929,
+    "candidates": 112,
+    "controls": 28
+  },
+  "context": {
+    "parent_semantics": "root_only",
+    "note": "上游采集器把每条二级回复的 parent_rpid 固定为根评论ID；只保留根评论上下文，真实直接回复对象未保留。"
+  }
+}

@@ -36,16 +36,22 @@ Expected normalized sentence matches: **32/72** (`core_tn` 0/24, `context_readin
 
 ## Current work
 
-We are evaluating Chinese text normalization before committing to a training direction: turn clear written quantities into spoken forms while preserving meaning, tone, names and literal identifiers.
+The current milestone is a bounded Chinese small-model research experiment: learn context-dependent reading transformations while preserving the rest of the input. The task remains full-sentence text normalization. There is no ReadCue checkpoint yet.
 
-The first pilot compares rules, a published Chinese TN model, a general small language model and unchanged text. Its 72 scenarios are **assistant-authored, not human-reviewed, field-collected or a blind benchmark**. This evaluates normalized text, not polyphone accuracy or synthesized speech.
+The recent rules/TTS exploration has been reviewed and withdrawn as the ongoing workstream. Its frozen versions remain reproducible comparisons. Demonstrating an overall TTS improvement is not a prerequisite for discussing a first training experiment; data suitability, isolated evaluation and a bounded run must be established first. Negative results are valid research outcomes.
 
-- [Completed local comparison and decision](reports/zh-pilot-v1/REPORT.md): existing TN matches 67/72 authored cases; this is not yet sufficient evidence to start training.
-- [Reproduce the local pilot](docs/REPRODUCING_ZH_PILOT.md)
-- [Project plan (Chinese)](docs/PROJECT_PLAN.md)
-- [Evaluation protocol](docs/EXPERIMENT_PROTOCOL.md)
-- [Pilot cases and provenance](eval/zh_reading_pilot_v1/README.md)
-- [Data and licensing](docs/DATA_AND_LICENSES.md)
+- [Current project plan](docs/PROJECT_PLAN.md) and [first model experiment](docs/MODEL_EXPERIMENT_V1.md): task contract, data roles, comparisons and completion conditions.
+- [Review and corrective actions](docs/WORK_REVIEW_2026-10-01.md): what was withdrawn, corrected, retained and still needs evidence.
+- [Data and licensing](docs/DATA_AND_LICENSES.md): human review does not resolve source rights or approve model publication.
+- [Data preparation and review](docs/DATA_PIPELINE.md), [annotation policy](docs/AI_PREANNOTATION.md) and [local workbench](docs/REVIEW_WORKBENCH.md): user-approved functionality remains available.
+
+Historical evidence, with original scopes and limitations:
+
+- [72-case pilot](reports/zh-pilot-v1/REPORT.md), [reproduction](docs/REPRODUCING_ZH_PILOT.md) and [frozen protocol](docs/EXPERIMENT_PROTOCOL.md): assistant-authored development scenarios, not a blind benchmark.
+- [138 reviewed comments](reports/bilibili-data-v1/BASELINE_REPORT.md): exploratory comparisons of existing systems under the selected reading policy.
+- [Comment rules](reports/bilibili-data-v1/PIPELINE_REPORT.md), [reading rules/TTS diagnostics](reports/bilibili-data-v1/READING_REPORT.md), [context rules](reports/bilibili-data-v1/CONTEXT_REPORT.md), [semantic rules](reports/bilibili-data-v1/SEMANTIC_REPORT.md): development improvements and known limitations of fixed baselines, not trained ReadCue results.
+
+Historical recommendations to keep extending rules or to require stable TTS gains before a training experiment are superseded by the current plan. Original data, scores and frozen protocols are retained.
 
 ## Research background
 
@@ -59,7 +65,8 @@ Paper-reported results, dataset audits and actual measurements remain separate. 
 | --- | --- |
 | [`src/readcue/`](src/readcue/) | Core CLI, asset verification and experiment orchestration |
 | [`tests/`](tests/) | Lightweight checks using local fixtures |
-| [`scripts/`](scripts/) | Historical pilot entry points; new runs use the core CLI |
+| [`configs/`](configs/) | Portable source hashes and sampling settings; no raw datasets |
+| [`scripts/`](scripts/) | Frozen pilot and separately versioned reviewed-comment experiment runners |
 | [`tools/`](tools/) | Distribution and storage maintenance checks |
 | [`eval/`](eval/) | Original pilot cases, provenance and frozen hashes |
 | [`reports/`](reports/) | Recorded baseline outputs and analysis |

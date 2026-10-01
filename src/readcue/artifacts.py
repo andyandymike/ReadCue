@@ -56,7 +56,8 @@ def read_json(path):
 
 
 def read_jsonl(path):
-    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines() if line.strip()]
+    # JSONL separates records with LF, not Unicode separators within a string.
+    return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").split("\n") if line.strip()]
 
 
 def write_json(path, value):

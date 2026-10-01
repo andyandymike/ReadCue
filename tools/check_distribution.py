@@ -47,9 +47,9 @@ def check_wheel(path):
         metadata_name = metadata_names[0]
         metadata_root = metadata_name.rsplit("/", 1)[0]
         for name in names:
-            if not (name.startswith("readcue/") and name.endswith(".py")) and not name.startswith(metadata_root + "/"):
+            if not (name.startswith("readcue/") and name.endswith(".py")) and name != "readcue/review.html" and not name.startswith(metadata_root + "/"):
                 raise ValueError("Unexpected payload in core wheel: " + name)
-        for name in ("readcue/__init__.py", "readcue/__main__.py", "readcue/cli.py",
+        for name in ("readcue/__init__.py", "readcue/__main__.py", "readcue/cli.py", "readcue/review.html",
                      metadata_root + "/entry_points.txt", metadata_root + "/licenses/LICENSE"):
             if name not in names:
                 raise ValueError("Missing wheel member: " + name)
@@ -76,9 +76,10 @@ def check_sdist(path):
         if len(members) != sum(item.isfile() for item in entries):
             raise ValueError("Duplicate source members")
         required = ("LICENSE", "README.md", "CONTRIBUTING.md", "SECURITY.md", "pyproject.toml",
-                    "src/readcue/cli.py", "tests/test_architecture.py", "tests/test_zh_pilot.py",
+                    "src/readcue/cli.py", "src/readcue/review.html", "tests/test_architecture.py", "tests/test_zh_pilot.py",
                     "eval/zh_reading_pilot_v1/freeze.json", "reports/zh-pilot-v1/summary.json",
-                    "scripts/archive_zh_pilot.py", "docs/REPRODUCING_ZH_PILOT.md")
+                    "scripts/archive_zh_pilot.py", "docs/REPRODUCING_ZH_PILOT.md",
+                    "tools/synthesize_reading_demo.ps1")
         for name in required:
             if name not in members:
                 raise ValueError("Incomplete research source archive: " + name)

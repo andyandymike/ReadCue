@@ -14,6 +14,8 @@ ReadCue 目前是小规模研究项目，没有训练框架或产品服务。可
 | `src/readcue/evaluation.py` | 校验后加载 v1 原始评分器；校验每个系统身份、revision和结果哈希，再归档 |
 | `src/readcue/baselines.py` | 严格 id/text 输入、模型资产预检、子进程调用历史 runner、持久状态和错误日志 |
 | `src/readcue/cli.py` | 薄命令入口，组织 verify / fetch / run / score / archive |
+| `src/readcue/comment_sources.py` | 固定本地CSV与证据文件核验、原文保真导入和异常记录 |
+| `src/readcue/data_pipeline.py` | 离线质量标记、确定性抽样、审阅快照与无参考泄漏的导出 |
 | `scripts/archive_zh_pilot.py` | 未被旧冻结清单绑定的兼容入口，转到新归档实现 |
 
 评分不复制第二套实现；新包核对旧评分器及协议后再调用它。神经推理也不复制，继续使用已审查的历史 runner。模型与 WeText 库只在明确执行相应 baseline 的子进程中加载。新架构不是一个训练结果，不改变首轮研究结论。
@@ -56,7 +58,11 @@ python -m readcue archive --run runs/new-pilot --output reports/new-pilot
 
 目前没有抽象模型注册中心、插件发现、训练调度、自动发布或自动 GPU 申请。是否训练、花费多少以及数据能否发布仍按项目计划决定。
 
+真实评论的第一条轻量数据准备流程已接入 `readcue data prepare/export`，见[操作说明](DATA_PIPELINE.md)。它复用原始哈希和输入契约，单独保留来源、审核与上下文限制；只有已填写审核的批准记录才导出 `id/text` 输入。本轮材料是探索集，不更改v1或自动划分训练／测试。JSONL读取按LF分隔，导出时转义Unicode行分隔符而保留原字符串值，以兼容冻结的历史runner。
+
 ## 验证
+
+`readcue data review` 为上述离线流程提供本机浏览器审阅入口。`review_server.py` 使用标准库HTTP服务，`review.html` 随核心包分发；随机路径与同源校验限制访问，写入只接受单条 `review` 对象。冻结材料、原文和来源字段每次保存都校验；可编辑标注使用版本检查、原子替换和旧版本快照。页面不连接模型、不生成参考，不改变既有导出和推理隔离边界。详见[审阅页说明](REVIEW_WORKBENCH.md)。
 
 CI 不安装模型依赖，也不联网下载或运行神经模型。新增测试用已有四组共 288 条预测逐项重算，要求所有历史评分和汇总不变；另覆盖系统/revision错标、gold字段和重复id拒绝、子进程失败持久记录、伪网络的 Git/LFS 校验、校验失败不发布文件，以及损坏缓存不覆盖。identity 子进程检查只返回原文。
 
@@ -65,3 +71,11 @@ python -m unittest discover -s tests -v
 ```
 
 已有七项评分/解析测试继续保留。新包的任何整理都不应通过“更新参考、覆盖旧预测、改写冻结哈希”获得通过。
+
+## 近期探索代码的处置（2026-10-01）
+
+当前CLI的`run`仍调用历史基线，`data`只提供用户要求的准备、审阅和导出。`comment_policy*`、`reading_policy`、`context_reading_policy*`、`semantic_emoji_policy`及对应组合脚本属于探索实验，不是自训ReadCue推理接口；没有默认接入审阅页或`readcue run`，不能把它们的词表增量当成模型能力。
+
+旧v4发现宽学校语境误判和跨阶段保护缺项，撤回其作为后续可靠处理入口的地位，保留原文件用于历史复现。审计修正只撤销不成立的推断、补上保护和记录独立版本，不继续扩词。具体修正、可用入口与验证见[工作复查](WORK_REVIEW_2026-10-01.md)。
+
+新的模型研究遵循[模型实验v1](MODEL_EXPERIMENT_V1.md)：模型直接接收原文，仅用训练目标监督，不以规则预处理结果替换评测输入或自动充当gold。规则对照与模型输出分别保存。原审阅UI、用户标注及其版本恢复功能保留。

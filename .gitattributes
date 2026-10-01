@@ -2,3 +2,5 @@
 # Preserve measured outputs and maintenance receipt bytes across checkout.
 reports/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 docs/maintenance/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# Preserve the source-capture config checksum recorded in the data report.
+configs/bilibili_recent_v1.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

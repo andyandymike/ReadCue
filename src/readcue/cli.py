@@ -32,6 +32,21 @@ def main(argv=None):
     archive = commands.add_parser("archive", help="Validate and archive all four frozen-pilot baselines")
     archive.add_argument("--run", type=Path, required=True)
     archive.add_argument("--output", type=Path, required=True)
+    data = commands.add_parser("data", help="Prepare offline comments and export reviewed cases")
+    data_commands = data.add_subparsers(dest="data_command", required=True)
+    prepare = data_commands.add_parser("prepare", help="Verify raw files and build a pending review sample")
+    prepare.add_argument("--source-root", type=Path, required=True, help="Local directory containing config-relative source files")
+    prepare.add_argument("--config", type=Path, required=True)
+    prepare.add_argument("--output", type=Path, required=True, help="New external or Git-ignored directory")
+    export = data_commands.add_parser("export", help="Validate completed review and isolate inputs from references")
+    export.add_argument("--prepared", type=Path, required=True)
+    export.add_argument("--review", type=Path, required=True, help="Completed annotations.jsonl copy")
+    export.add_argument("--output", type=Path, required=True, help="New external or Git-ignored directory")
+    review = data_commands.add_parser("review", help="Open a local, resumable human-review workbench")
+    review.add_argument("--prepared", type=Path, required=True)
+    review.add_argument("--annotations", type=Path, help="Existing editable copy (default: prepared/annotations.jsonl)")
+    review.add_argument("--port", type=int, default=8765, help="Loopback port; 0 chooses a free port (default: 8765)")
+    review.add_argument("--reviewer", help="Default reviewer name (default: current local user)")
     args = parser.parse_args(argv)
     try:
         if args.command == "verify":
@@ -49,6 +64,24 @@ def main(argv=None):
             result = score_files(args.project, args.cases, args.predictions)
             write_json(args.output, result)
             result = result["by_track"]
+        elif args.command == "data":
+            from .data_pipeline import export_review, prepare_data
+            if args.data_command == "prepare":
+                result = prepare_data(args.source_root, args.config, args.output)
+            elif args.data_command == "review":
+                from .review_server import create_server
+                server = create_server(args.prepared, args.annotations, args.port, reviewer=args.reviewer)
+                print(json.dumps({"url": server.base_url, "annotations": str(server.annotation_path),
+                                  "stop": "Ctrl+C"}, ensure_ascii=False, indent=2), flush=True)
+                try:
+                    server.serve_forever()
+                except KeyboardInterrupt:
+                    pass
+                finally:
+                    server.server_close()
+                return 0
+            else:
+                result = export_review(args.prepared, args.review, args.output)
         else:
             result = archive_pilot(args.project, args.run, args.output)
         print(json.dumps(result, ensure_ascii=False, indent=2))
