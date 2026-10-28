@@ -45,7 +45,8 @@ class CommentPipelineTests(unittest.TestCase):
             pipeline._write_jsonl(output / "predictions.jsonl", predictions)
             sources = {name: pipeline.hash_file(PROJECT / name) for name in
                        ("scripts/run_zh_reviewed_baseline.py", "scripts/run_zh_baseline.py",
-                        "src/readcue/artifacts.py", "src/readcue/baselines.py")}
+                        "src/readcue/artifacts.py", "src/readcue/baselines.py",
+                        "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py")}
             meta = dict(experiment="bilibili-reviewed-v1", baseline="tn", training=False, external_api_cost_usd=0,
                         input_sha256=pipeline.hash_file(options["--inputs"]),
                         settings_sha256=pipeline.hash_file(options["--settings"]),
@@ -154,6 +155,23 @@ class CommentPipelineTests(unittest.TestCase):
             args = self.fixture(directory, [dict(id="one", text="30元")])
             with self.assertRaisesRegex(ValueError, "every transformed input"):
                 pipeline.run(args, executor=self.executor({}, omit_last=True))
+            self.assertEqual(pipeline.read_json(Path(args.output) / "run.json")["status"], "failed")
+
+    def test_child_cannot_omit_a_shared_contract_from_its_source_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            args = self.fixture(directory, [dict(id="one", text="30元")])
+            execute = self.executor({})
+
+            def missing_contract(command, **kwargs):
+                result = execute(command, **kwargs)
+                path = Path(args.output) / "tn/predictions.meta.json"
+                meta = pipeline.read_json(path)
+                del meta["source_sha256"]["src/readcue/inference_contract.py"]
+                pipeline.write_json(path, meta)
+                return result
+
+            with self.assertRaisesRegex(ValueError, "source manifest is incomplete"):
+                pipeline.run(args, executor=missing_contract)
             self.assertEqual(pipeline.read_json(Path(args.output) / "run.json")["status"], "failed")
 
     def test_changed_resources_invalidate_run_and_existing_output_is_preserved(self):

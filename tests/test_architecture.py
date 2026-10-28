@@ -14,6 +14,7 @@ from urllib.parse import urlsplit
 from readcue.artifacts import BASELINE_REPOS, fetch_model, hash_file, read_json, verify_model, verify_pilot
 from readcue.baselines import run_baseline, validate_inputs
 from readcue.evaluation import archive_pilot, score_files, validate_run_metadata
+from readcue.inference_contract import jsonl_bytes, parse_inputs, serialize_jsonl
 
 PROJECT = Path(__file__).resolve().parents[1]
 REPORT = PROJECT / "reports/zh-pilot-v1"
@@ -76,6 +77,43 @@ class ArchitectureTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     validate_run_metadata("tn", REPORT / "tn.jsonl", {**original, **changes}, freeze)
 
+    def test_archive_rejects_cpu_neural_run_as_frozen_pilot(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "runs"
+            source.mkdir()
+            for name in ("identity", "wetext", "tn", "qwen"):
+                for suffix in ("jsonl", "meta.json"):
+                    shutil.copyfile(REPORT / f"{name}.{suffix}", source / f"{name}.{suffix}")
+            metadata = read_json(source / "tn.meta.json")
+            metadata.update(device="cpu", dtype="torch.float32")
+            (source / "tn.meta.json").write_text(json.dumps(metadata), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "configuration.*device"):
+                archive_pilot(PROJECT, source, root / "archive")
+            self.assertFalse((root / "archive").exists())
+
+    def test_neural_configuration_fields_cannot_be_missing_or_changed(self):
+        freeze = verify_pilot(PROJECT)
+        wrong = {"device": "cpu", "dtype": "torch.float32", "max_new_tokens": 1,
+                 "seed": 1, "enable_thinking": True, "decoding": "other", "prompt": "other task"}
+        for name in ("tn", "qwen"):
+            original = read_json(REPORT / f"{name}.meta.json")
+            for field, value in wrong.items():
+                for missing in (False, True):
+                    with self.subTest(baseline=name, field=field, missing=missing):
+                        metadata = {**original, field: value}
+                        if missing:
+                            del metadata[field]
+                        with self.assertRaisesRegex(ValueError, "configuration"):
+                            validate_run_metadata(name, REPORT / f"{name}.jsonl", metadata, freeze)
+            for field in ("full_vocabulary_ids_verified", "added_token_flags_and_fim_markers_verified",
+                          "inference_use_cache", "serialized_use_cache", "effective_rope_theta"):
+                with self.subTest(baseline=name, loading_field=field):
+                    metadata = {**original, "loading_compatibility": dict(original["loading_compatibility"])}
+                    del metadata["loading_compatibility"][field]
+                    with self.assertRaisesRegex(ValueError, "configuration"):
+                        validate_run_metadata(name, REPORT / f"{name}.jsonl", metadata, freeze)
+
     def test_archive_rejects_changed_or_missing_wetext_configuration(self):
         freeze = verify_pilot(PROJECT)
         original = read_json(REPORT / "wetext.meta.json")
@@ -106,8 +144,28 @@ class ArchitectureTests(unittest.TestCase):
                 shutil.copyfile(REPORT / f"{name}.meta.json", directory / "predictions.meta.json")
                 state = {"status": "complete", "baseline": name,
                          "predictions_sha256": hash_file(directory / "predictions.jsonl")}
+                shutil.copyfile(INPUTS, directory / "inputs.original.jsonl")
+                shutil.copyfile(INPUTS, directory / "inputs.runner.jsonl")
+                state.update(original_input_file="inputs.original.jsonl", runner_input_file="inputs.runner.jsonl",
+                             original_input_sha256=hash_file(INPUTS), runner_input_sha256=hash_file(INPUTS))
+                if name in BASELINE_REPOS:
+                    manifest = next(asset for asset in verify_pilot(PROJECT)["baseline_assets"]
+                                    if asset["repo"] == BASELINE_REPOS[name])
+                    (directory / "model_manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+                    state.update(model_manifest_file="model_manifest.json",
+                                 model_manifest_sha256=hash_file(directory / "model_manifest.json"),
+                                 model_verification="frozen_manifest")
                 (directory / "run.json").write_text(json.dumps(state), encoding="utf-8")
             self.assertEqual(archive_pilot(PROJECT, root / "runs", root / "archive"), read_json(REPORT / "summary.json"))
+            for name in ("identity", "wetext", "tn", "qwen"):
+                evidence = root / "archive/run_evidence" / name
+                archived_state = read_json(evidence / "run.json")
+                self.assertEqual(hash_file(evidence / "run.json"), hash_file(root / "runs" / name / "run.json"))
+                for path_field, hash_field in (("original_input_file", "original_input_sha256"),
+                                               ("runner_input_file", "runner_input_sha256"),
+                                               ("model_manifest_file", "model_manifest_sha256")):
+                    if path_field in archived_state:
+                        self.assertEqual(hash_file(evidence / archived_state[path_field]), archived_state[hash_field])
             state["status"] = "failed"
             (directory / "run.json").write_text(json.dumps(state), encoding="utf-8")
             with self.assertRaises(ValueError):
@@ -140,14 +198,81 @@ class ArchitectureTests(unittest.TestCase):
             self.assertIn("simulated", (output / "stderr.log").read_text())
             self.assertFalse((output / "predictions.jsonl").exists())
 
+    def test_child_loading_failure_preserves_verified_model_manifest(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            _, opener = upstream_fixture()
+            manifest = fetch_model("tn", root / "model", REVISION, opener=opener)
+            with self.assertRaises(RuntimeError):
+                run_baseline(PROJECT, INPUTS, "tn", root / "run", model_dir=root / "model", revision=REVISION,
+                             executor=lambda *args, **kwargs: SimpleNamespace(returncode=1))
+            state = read_json(root / "run/run.json")
+            manifest_copy = root / "run" / state["model_manifest_file"]
+            self.assertEqual(state["status"], "failed")
+            self.assertEqual(state["model_manifest_sha256"], hash_file(manifest_copy))
+            self.assertEqual(manifest_copy.read_bytes(), (root / "model/readcue_manifest.json").read_bytes())
+            self.assertEqual(read_json(manifest_copy), manifest)
+
     def test_identity_wrapper_runs_without_optional_dependencies(self):
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary) / "identity"
             state = run_baseline(PROJECT, INPUTS, "identity", output)
             self.assertEqual(state["status"], "complete")
             self.assertEqual(state["failed_cases"], 0)
+            self.assertEqual(state["original_input_sha256"], hash_file(INPUTS))
+            self.assertEqual(state["runner_input_sha256"], hash_file(INPUTS))
             score = score_files(PROJECT, CASES, output / "predictions.jsonl")
             self.assertEqual(score["overall"]["surface_correct"], 32)
+
+    def test_identity_preserves_literal_unicode_lines_and_original_input_bytes(self):
+        rows = [{"id": f"case-{index}" + separator, "text": "第一行" + separator + "第二行"}
+                for index, separator in enumerate(("\u0085", "\u2028", "\u2029"))]
+        original = ("\r\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\r\n").encode("utf-8")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "inputs.jsonl"
+            source.write_bytes(original)
+            self.assertEqual(validate_inputs(source), rows)
+            output = root / "identity"
+            state = run_baseline(PROJECT, source, "identity", output)
+            self.assertEqual(state["status"], "complete")
+            self.assertEqual(source.read_bytes(), original)
+            self.assertEqual((output / state["original_input_file"]).read_bytes(), original)
+            self.assertEqual(state["original_input_sha256"], hashlib.sha256(original).hexdigest())
+            self.assertNotEqual(state["runner_input_sha256"], state["original_input_sha256"])
+            self.assertEqual(validate_inputs(output / state["runner_input_file"]), rows)
+            self.assertEqual(read_json(output / "predictions.meta.json")["input_sha256"], state["runner_input_sha256"])
+            predictions = [json.loads(line) for line in (output / "predictions.jsonl").read_text(encoding="utf-8").split("\n") if line]
+            self.assertEqual([(row["id"], row["prediction"], row["status"]) for row in predictions],
+                             [(row["id"], row["text"], "ok") for row in rows])
+
+    def test_shared_jsonl_contract_keeps_values_and_rejects_gold_inputs(self):
+        rows = [{"text": "字\u0085字\u2028字\u2029字", "id": "sample"}]
+        serialized = serialize_jsonl(rows, sort_keys=True)
+        self.assertEqual(parse_inputs(serialized), rows)
+        self.assertEqual(jsonl_bytes(rows, sort_keys=True), serialized.encode("utf-8"))
+        self.assertEqual(len(serialized.splitlines()), 1)
+        with self.assertRaisesRegex(ValueError, "only id and text"):
+            parse_inputs(serialize_jsonl([{**rows[0], "acceptable_outputs": ["答案"]}]))
+        with self.assertRaises(ValueError):
+            serialize_jsonl([{"value": float("nan")}])
+
+    def test_gold_input_is_rejected_before_snapshot_or_child(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "inputs.jsonl"
+            source.write_text(json.dumps({"id": "a", "text": "原文", "acceptable_outputs": ["答案"]}), encoding="utf-8")
+            executor = Mock()
+            with self.assertRaisesRegex(ValueError, "only id and text"):
+                run_baseline(PROJECT, source, "identity", root / "run", executor=executor)
+            executor.assert_not_called()
+            self.assertFalse((root / "run/inputs.runner.jsonl").exists())
+            self.assertEqual(read_json(root / "run/run.json")["status"], "failed")
+
+    def test_input_contract_imports_no_model_or_evaluation_modules(self):
+        code = ("import sys; import readcue.inference_contract; "
+                "assert not any(x in sys.modules for x in ['torch', 'transformers', 'tn', 'readcue.evaluation', 'readcue.baselines'])")
+        subprocess.run([sys.executable, "-B", "-c", code], check=True)
 
     def test_wrong_model_revision_fails_before_child_launch(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -1,0 +1,715 @@
+{
+  "schema_version": 1,
+  "review_version": "v2-seed-assistant-semantic-review-2026-10-27",
+  "reviewer": "/root/v2_label_review",
+  "reviewer_role": "assistant",
+  "human_reviewed": false,
+  "policy": {
+    "path": "docs/MODEL_TASK_V1.md",
+    "sha256": "10c12a8dc40bc0153ef769072f3d3e57de7d2e04f280face61169fb65181a684"
+  },
+  "source_files": [
+    {
+      "path": "eval/zh_reading_model_v2_seed/numeric.draft.jsonl",
+      "sha256": "46e4e219ab328988f8079ec37b1f47fbd537e233ba28fd71287263a5b8ece8a8"
+    },
+    {
+      "path": "eval/zh_reading_model_v2_seed/context.draft.jsonl",
+      "sha256": "b2e8ad413a9d2a5d2656aa04a2476767de1173302091a17dd679e477926e353e"
+    }
+  ],
+  "method": "逐条阅读72条原文、候选目标、理由与固定政策，检查数值、否定、实体、标点空白和转换/保留边界；结构计数仅用于验证记录完整，不代替语义判断。",
+  "scope": "独立于本批两名样例编写任务的助手审阅；继承项目高层背景与历史错误摘要。没有读取旧heldout参考或模型预测，不宣称完全未接触历史项目信息。",
+  "verdict_meaning": "accept仅表示该候选目标按当前固定政策可接受，不确认跨版本划分、训练资格、独立测试资格、真实分布覆盖或语音效果。",
+  "training_ready": false,
+  "independent_test_eligible": false,
+  "summary": {
+    "total": 72,
+    "accept": 72,
+    "pending": 0,
+    "revise": 0,
+    "targets_changed": 0
+  },
+  "coverage_observations": [
+    {
+      "severity": "limitation",
+      "topic": "protected_preservation",
+      "note": "多数保留案例通过代码、路径或明确逐字提示确定保护范围，标签清楚，但不能据此声称模型已学会一般未知语义或隐喻的保留边界。"
+    },
+    {
+      "severity": "limitation",
+      "topic": "numeric_forms",
+      "note": "百分数覆盖整数和一位小数，度量仅少数长度/质量/容量，日期时间为明确单位写法；负值、零值、多级时间格式和复杂单位仍未由这批系统覆盖。"
+    },
+    {
+      "severity": "limitation",
+      "topic": "emoji",
+      "note": "训练包含苹果字面名词和笑脸附加情绪，验证玫瑰为另一对象；未知隐喻、不带明确照抄提示的保留，以及纯表情未在这批覆盖。"
+    },
+    {
+      "severity": "limitation",
+      "topic": "template_scope",
+      "note": "组内对照关系合理，没有从本批阅读发现只是改数字/实体却跨角色的成对句；相同技能必然共享操作规则，三组情境不等于三种独立语言能力。跨版本近重复由另行文本审计确认。"
+    },
+    {
+      "severity": "limitation",
+      "topic": "initialism_generalization",
+      "note": "YYDS和JDK有训练展开正例，API置于验证，覆盖是已见/未见缩写迁移的混合。每种缩写的覆盖需在与v1合并后报告，不把技能总数当逐词覆盖。"
+    },
+    {
+      "severity": "note",
+      "topic": "track_interpretation",
+      "note": "quantity_identifier组中的普通金额句按情境对照归入context_reading，english_word_boundary等也含普通数字展开。track是本批分层定义，不能用组计数代替各局部操作的计数。"
+    }
+  ],
+  "rows": [
+    {
+      "id": "V2N-001",
+      "verdict": "accept",
+      "reason": "46为杯子数量，四十六正确；正文和句号不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "d59169be894ae9370565f177a401c8fdcf6173c267b8665632c84f27b5c3c74f",
+      "target_sha256": "9d10d7f50334ae98eef9175f99c55bce9e7d558e1d62e5ee5a858798221f678b"
+    },
+    {
+      "id": "V2N-002",
+      "verdict": "accept",
+      "reason": "登记编号46按四六逐位读，未改写成数量；同组数量对照保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "2732def186692c6fbd5d625c58514f4ea181389fafb7cf7ef75f9ca940c3c0cf",
+      "target_sha256": "3a0f642dcdfea36558d22cb46073eddf7d43b536356fa7813b3225c4b69558b3"
+    },
+    {
+      "id": "V2N-003",
+      "verdict": "accept",
+      "reason": "108元展开为一百零八元，零位与金额单位均保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "2861a4e3027cdb34d9715cd9f05e303dc66bf8c7c9aee640869a82979d37d040",
+      "target_sha256": "8f1617fc5711994dcdaa203bfd5a8b61e4db44542b823a40985a2f975a32b7b0"
+    },
+    {
+      "id": "V2N-004",
+      "verdict": "accept",
+      "reason": "流水编号108展开为一零八，三个数字及顺序正确。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "38493a7fa83e6e6b844c51d57a51e1f1be6d9f0447896764e3f7fabc71d2823c",
+      "target_sha256": "90d7498d167ff4b3d42aaa5d58c1c1bcc84823c3a3566af03d5e7b812836a2bc"
+    },
+    {
+      "id": "V2N-005",
+      "verdict": "accept",
+      "reason": "211工程语境明确，二幺幺符合既定项目政策。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "2752342dbeb6ae92d1a70abf30b77d15520793939c7c38b55ad1516c6f31b87c",
+      "target_sha256": "9594482e82d1d49f151fdebe4d7a25d6a99154304abb9d83dab2064a260b9797"
+    },
+    {
+      "id": "V2N-006",
+      "verdict": "accept",
+      "reason": "211封是来信数量，二百一十一正确，没有被学校背景误导。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "4b5e84a2f735853b014b7dab8304233411694378c3d8507fccb575966c564805",
+      "target_sha256": "c885b7dc358e66dce6ab39ef3b1f89473d4b376c59df1cf8a28b97f4f62ab139"
+    },
+    {
+      "id": "V2N-007",
+      "verdict": "accept",
+      "reason": "1.06元展开为一点零六元，小数零位及金额含义保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "6087cf0a50e2b4354d44bf19eb354bef32be4ef047713db81491b2ce17062652",
+      "target_sha256": "b3ce3e839c71b3f14e1831191fc7f0305df55a4886ced5e97f12a7493a55d43f"
+    },
+    {
+      "id": "V2N-008",
+      "verdict": "accept",
+      "reason": "gain == 1.06属于明确代码，连空格、符号及小数均原样保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9bb897a540c8d6cc16cd7668da879b4d2b19c052998d91f06c8910899c76b1f4",
+      "target_sha256": "9bb897a540c8d6cc16cd7668da879b4d2b19c052998d91f06c8910899c76b1f4"
+    },
+    {
+      "id": "V2N-009",
+      "verdict": "accept",
+      "reason": "4.70展开为四点七零，小数末尾零未被省略。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "de7a83cfb9eccf6a8e93fa208d522ba07d81a21a1c3806f3801f2dc1e34d9fef",
+      "target_sha256": "5978792d686d31c0015d12732beba94aba2c1e62f54e1cb96363d1432a36b0a3"
+    },
+    {
+      "id": "V2N-010",
+      "verdict": "accept",
+      "reason": "逐字印制标签构成明确保护，4.70及引号保持原样。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "abbe681d1bd8ee7d6bd0f583acb5b60be82c333ac6587bdcef6f8c5f895c08f9",
+      "target_sha256": "abbe681d1bd8ee7d6bd0f583acb5b60be82c333ac6587bdcef6f8c5f895c08f9"
+    },
+    {
+      "id": "V2N-011",
+      "verdict": "accept",
+      "reason": "7.09分展开为七点零九分，不改变评分含义或小数零位。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "7b25057d78ee0c66c19f5100cf56a88c4ed0c3f8ed0cc6652b5c605704535042",
+      "target_sha256": "a2e258f65397df1620139205efaa17207411295794a8c274bcd9ee6be603c382"
+    },
+    {
+      "id": "V2N-012",
+      "verdict": "accept",
+      "reason": "rating_7.09是索引键，作为受保护标识符原样保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9662fe4e6a2f790a2b3013a0b91f8e50c3666de85da4773dda654e7a8b112be3",
+      "target_sha256": "9662fe4e6a2f790a2b3013a0b91f8e50c3666de85da4773dda654e7a8b112be3"
+    },
+    {
+      "id": "V2N-013",
+      "verdict": "accept",
+      "reason": "18%按百分之十八展开，保留折扣率而未改成折后价格。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "b32bd6748e18dfdcc4696cff9d989896364895d94f625dd8801e120cfc67f667",
+      "target_sha256": "9dcd5f356a3f30fed0a00626fafd7a9e9e1833e3263acb6f547776f661c220ad"
+    },
+    {
+      "id": "V2N-014",
+      "verdict": "accept",
+      "reason": "完整URL中的18%25保持原样，未误读百分号编码。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "0e34cd49dcc09db3ee30c07be6f66b563ea42a10fcf0413e8e91239d9b5e458e",
+      "target_sha256": "0e34cd49dcc09db3ee30c07be6f66b563ea42a10fcf0413e8e91239d9b5e458e"
+    },
+    {
+      "id": "V2N-015",
+      "verdict": "accept",
+      "reason": "62.5%展开为百分之六十二点五，下降方向和数值都不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "8fb116fd821e8f800d9d72fe1566658bf7056717a8ee5ae6c946a3053ead2779",
+      "target_sha256": "9202da05f6789207718a34d89f5a801ca38b85006e0d010b0084201d4aaccafa"
+    },
+    {
+      "id": "V2N-016",
+      "verdict": "accept",
+      "reason": "humidity赋值行是代码，字符串、空格及百分号全部保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "d5d939e6b1cfecdb89c9364621baae4633ad08c84f5725e889c14d515b90efd4",
+      "target_sha256": "d5d939e6b1cfecdb89c9364621baae4633ad08c84f5725e889c14d515b90efd4"
+    },
+    {
+      "id": "V2N-017",
+      "verdict": "accept",
+      "reason": "81%展开为百分之八十一，没有增添充满或不足等状态。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9ff9d69e31826fc0ef5bc5de2e2f140ebd432e6d8fe7961345ecbde59d3fb9a4",
+      "target_sha256": "8107c300863e6330cc30d3b098601d6b77e497c29222614f7166b2c8a0b0dc26"
+    },
+    {
+      "id": "V2N-018",
+      "verdict": "accept",
+      "reason": "逐字转录的81%保护范围明确，数字百分号及引号均未改动。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "f151acb5f7afeba73a7b6065e05b68709505b84094a91d7cf7bc574c1bae5f9e",
+      "target_sha256": "f151acb5f7afeba73a7b6065e05b68709505b84094a91d7cf7bc574c1bae5f9e"
+    },
+    {
+      "id": "V2N-019",
+      "verdict": "accept",
+      "reason": "6.4mm为孔径长度，六点四毫米保留了数值和单位。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "88338cad586d39536145b61d5d9caa46682160ea328bebfbc22de5ac74d08971",
+      "target_sha256": "df55838f54f907642d59201a04d5085b93905f1c1a94c09c2d5b06e4836aada1"
+    },
+    {
+      "id": "V2N-020",
+      "verdict": "accept",
+      "reason": "diameter_mm = 6.4属于参数代码，变量、空格和小数原样保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "748b828dabc999acee499cf7a6c67f0b3a1a31fd04e4ac51942ca9e2e786e5ea",
+      "target_sha256": "748b828dabc999acee499cf7a6c67f0b3a1a31fd04e4ac51942ca9e2e786e5ea"
+    },
+    {
+      "id": "V2N-021",
+      "verdict": "accept",
+      "reason": "730克展开为七百三十克，质量及称量事实不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "1608313274cb5ddb448b9d99c9f2b39a7bb636e07d0ebbc5f3898a6cf29ad237",
+      "target_sha256": "35c26de447a3624f8da7c3834a8299786e2958162682cab56e1bcc68880d231c"
+    },
+    {
+      "id": "V2N-022",
+      "verdict": "accept",
+      "reason": "明确照抄的730克面粉属于保护字符串，保持原样符合政策。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "dd1a6e7314b839a5f8647e54ec13e53362ec0f1b9bf7f8e5a6939399765023e4",
+      "target_sha256": "dd1a6e7314b839a5f8647e54ec13e53362ec0f1b9bf7f8e5a6939399765023e4"
+    },
+    {
+      "id": "V2N-023",
+      "verdict": "accept",
+      "reason": "1.8升展开为一点八升，额定容量限定和单位不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "89a3de11ca1a699716a6d6c93c6378024832f74ba43bb1d0a6131a390ff9355a",
+      "target_sha256": "fcba102d1445ecc92b8283bf8595ea281405d266e7767f7062ef06dde95929eb"
+    },
+    {
+      "id": "V2N-024",
+      "verdict": "accept",
+      "reason": "/vessels/1.8L/spec.txt是文件路径，数字与单位字母不单独展开。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "306c255c560a482ee231dff5735011b7497ed8f75f37b62667ce81fd8296dfc8",
+      "target_sha256": "306c255c560a482ee231dff5735011b7497ed8f75f37b62667ce81fd8296dfc8"
+    },
+    {
+      "id": "V2N-025",
+      "verdict": "accept",
+      "reason": "1996年份逐位为一九九六、9点为九点，两个时间事实均完整。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "b35d87d04ab32b5a6088fc7ca56e6646d91e8903dd07e9f1ab53daebc6e5ff74",
+      "target_sha256": "28818387d41ea8fdc1b1dba754fbe4049f51031c6bc69b08377434ef37c8cbc8"
+    },
+    {
+      "id": "V2N-026",
+      "verdict": "accept",
+      "reason": "workshop_1996.txt是文件名，不把内部年份规范化。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "5ec598c0ef2b7a143810ba0ef34be55e5319101a9b1ed924216bc8790b783461",
+      "target_sha256": "5ec598c0ef2b7a143810ba0ef34be55e5319101a9b1ed924216bc8790b783461"
+    },
+    {
+      "id": "V2N-027",
+      "verdict": "accept",
+      "reason": "11月26日14点分别展开为十一月二十六日十四点，顺序及单位不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "3819b7e6136f98adf8409713589a1a27de1365011346e7aa476b4cf81256a4cb",
+      "target_sha256": "de8dda2925dc1ff1f8397ed0b66df87315846d78091d579baaf55107c3d657cf"
+    },
+    {
+      "id": "V2N-028",
+      "verdict": "accept",
+      "reason": "明确逐字保留的日期时间串不展开，引号及原句保持。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "dc2b44847078fef7ebea0236d466fd6dfa1a8575228acfd1444ea52d488dc27c",
+      "target_sha256": "dc2b44847078fef7ebea0236d466fd6dfa1a8575228acfd1444ea52d488dc27c"
+    },
+    {
+      "id": "V2N-029",
+      "verdict": "accept",
+      "reason": "18点37分展开为十八点三十七分，未换时制或增添单位。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "b5e7f1c1cc16d365ebf87ab2e364be33ed863208ec9e8b2f7f1e5f28fa0c64e6",
+      "target_sha256": "c2ce8dc9fc5dcd543cc6e2f348d9edf1cd9f2aa9748172a310ca4e995ca82ced"
+    },
+    {
+      "id": "V2N-030",
+      "verdict": "accept",
+      "reason": "cue_time配置代码及内部18:37全部保留，未破坏引号冒号。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "29b3f0c2b103913288e24cc65ab3e39e088668eb3e11370c8ffcf8b2140bc221",
+      "target_sha256": "29b3f0c2b103913288e24cc65ab3e39e088668eb3e11370c8ffcf8b2140bc221"
+    },
+    {
+      "id": "V2N-031",
+      "verdict": "accept",
+      "reason": "64展开为六十四，最多与不得超量均保留，上限方向不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "6ded54d801f129e1edb51ef3ec8f654f3209ada3a0f5767d52432704d300f32e",
+      "target_sha256": "6f5fe4d867b1c13734c454065a5914585d7742131375f37693179c991ae0272c"
+    },
+    {
+      "id": "V2N-032",
+      "verdict": "accept",
+      "reason": "64展开为六十四，至少与不得不足均保留，下限方向不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "7e6bb261f887e1ec60207d64c54f495553470809316b21074658f6d7d177b06d",
+      "target_sha256": "b51e29c8b8b07aff777902945568651e5f94cb81f2d47a525f1a7bcef51c9d81"
+    },
+    {
+      "id": "V2N-033",
+      "verdict": "accept",
+      "reason": "87元展开为八十七元，不收取的否定完整保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "7e0f69f5e7e65332b65f35262e27377a66e85acdf44431769a93a3c6dfb77094",
+      "target_sha256": "c047a0c7eeafea4ebc9cda5f08b82ef25380ef07ac683fc731e225a03a418d7c"
+    },
+    {
+      "id": "V2N-034",
+      "verdict": "accept",
+      "reason": "87元展开为八十七元，肯定收费事实未被变成免收。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "e355e059a50caa6cce4e5d7b128af4a5898d8369519bbd05386f6fff96271068",
+      "target_sha256": "d8e428478b75b2513a0b75d53e00a9bf39f06069e67f2af5f1713eaaabc84fca"
+    },
+    {
+      "id": "V2N-035",
+      "verdict": "accept",
+      "reason": "53与5分别展开正确，并非、只和两个损坏数量的关系保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9f1f41df11dc31fd0ffe1cc7fdbd44922658112098e86f2f74ef4cdaba2dcad2",
+      "target_sha256": "021e7159e6f5b3e0dfe4cd2118e82a587030e6d888e8da7a5ac0ace7caa7db82"
+    },
+    {
+      "id": "V2N-036",
+      "verdict": "accept",
+      "reason": "原文已用规范汉字数量，未产生多余改写，否定范围保持。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "37bd0a41fce867b8e7b2d96d2cf605d59d6596c23442b7be80395f2756453606",
+      "target_sha256": "37bd0a41fce867b8e7b2d96d2cf605d59d6596c23442b7be80395f2756453606"
+    },
+    {
+      "id": "V2C-001",
+      "verdict": "accept",
+      "reason": "YYDS按项目政策展开为Y Y D S，未词义扩展，逗号与其余正文不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "19f0ac92d302f930db74e02f4e6263a04f8373b2df0962b9cbd8d425bac4253f",
+      "target_sha256": "995a7650b029c7013855514911f9cc04d05beda264af96f530af64defbd0aa0f"
+    },
+    {
+      "id": "V2C-002",
+      "verdict": "accept",
+      "reason": "明确逐字保留YYDS口号，保持大小写和字母连续形式。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "0aa1ee2b7112b6b586d4ae97b4b8b7fb94aaf819bfdd368398bdd2f6cf1e9a2d",
+      "target_sha256": "0aa1ee2b7112b6b586d4ae97b4b8b7fb94aaf819bfdd368398bdd2f6cf1e9a2d"
+    },
+    {
+      "id": "V2C-003",
+      "verdict": "accept",
+      "reason": "JDK展开为J D K，重装范围及不用重装操作系统的否定保持。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "5320e134d1ee79fad91260dc03e8c374856c19d9a2393bff378462fdc34692a7",
+      "target_sha256": "1d1d65798311106f50b2dffdb42ad7b3934c63a94f3456e4d5462ac3a50f3ad9"
+    },
+    {
+      "id": "V2C-004",
+      "verdict": "accept",
+      "reason": "JDK_HOME是脚本变量名，整体保留而不拆出JDK。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "af46c71306600e00c9faff0f30663900b014604aad4192b83d27d69043c4821c",
+      "target_sha256": "af46c71306600e00c9faff0f30663900b014604aad4192b83d27d69043c4821c"
+    },
+    {
+      "id": "V2C-005",
+      "verdict": "accept",
+      "reason": "API为接口缩写，展开为A P I，文档缺失事实及逗号不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "474e78a5694a92f5c1edec30535df1605a1b75dfa66811f17365af3593c6af7c",
+      "target_sha256": "ddec3b22e2d6e49b4c227b1143b329feed5918c1cc2a66cf5a4e5a4243c52831"
+    },
+    {
+      "id": "V2C-006",
+      "verdict": "accept",
+      "reason": "API作为需逐字符照抄的索引键保留，不按缩写拆读。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "8e33593e2ec2f1ef8b81b4ec878b735cbce0165238ccc22e6416c6fc8147450d",
+      "target_sha256": "8e33593e2ec2f1ef8b81b4ec878b735cbce0165238ccc22e6416c6fc8147450d"
+    },
+    {
+      "id": "V2C-007",
+      "verdict": "accept",
+      "reason": "up保持词本体，17秒展开为十七秒，没有删掉采访的否定保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9ceae5b62a326fe7b88b51eb0b3e1715e2958a45eee7cd8bb43ec232a786d35e",
+      "target_sha256": "344ee542321b7b83cf8d60cd25389c47dffd5a70531fc9fbff8ae2ee4b2e89e6"
+    },
+    {
+      "id": "V2C-008",
+      "verdict": "accept",
+      "reason": "up与其余原文均无需转换，整句保持正确。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "1bbe6bfcf375cd656c048989ea94153a57100006d6f1fb57161bc863307a0abc",
+      "target_sha256": "1bbe6bfcf375cd656c048989ea94153a57100006d6f1fb57161bc863307a0abc"
+    },
+    {
+      "id": "V2C-009",
+      "verdict": "accept",
+      "reason": "tomcat不拆字母，6次转为六次，故障仍未消失完整保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "205f9cd63d43d0badf6777c4146a40f757aefb1f8648ab95295dacdf2d68de9d",
+      "target_sha256": "6725dd16d5ae3705ed0afea7bcf3f9390ce25286ef4db81de65441d6ad97d483"
+    },
+    {
+      "id": "V2C-010",
+      "verdict": "accept",
+      "reason": "tomcat作为词本体保留，关闭前先结束任务的顺序保持。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "ff7334a67fffa7941050702303818ddf75cbc5d8b683cb4cf11079b388194bcb",
+      "target_sha256": "ff7334a67fffa7941050702303818ddf75cbc5d8b683cb4cf11079b388194bcb"
+    },
+    {
+      "id": "V2C-011",
+      "verdict": "accept",
+      "reason": "save保持英文词，1次展开为一次，不要连点的限制不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "c2d190465e6455158995b99a1f8890b3484f23043e1a95da488a6124ac8ee92f",
+      "target_sha256": "9aed03d0f39bcabda00970e022bb37fb696eb30e77715708c4deb73ce71a00ab"
+    },
+    {
+      "id": "V2C-012",
+      "verdict": "accept",
+      "reason": "save按钮文字保持原拼写，未擅自翻译或拆字母。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "fa2b246a32ca81981ce268c4377a84c915058e07af411e024c97b58056f9599d",
+      "target_sha256": "fa2b246a32ca81981ce268c4377a84c915058e07af411e024c97b58056f9599d"
+    },
+    {
+      "id": "V2C-013",
+      "verdict": "accept",
+      "reason": "未知ZK4-L9整体保留，只展开外围8个库存，别拆封限制不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "b5dcbfec449de9fcbcfee5fc2ed7227ce08d992fded6b021a6bd0441fe27d3b1",
+      "target_sha256": "759c45255d8754f5bc7f70f1a1ac3851f3937e640a7e36ce15b25c115ba98d71"
+    },
+    {
+      "id": "V2C-014",
+      "verdict": "accept",
+      "reason": "型号读法明确未知，ZK4-L9完整保留，不猜测数字读法。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "cdf625455ff074bdac1d952ab9f3845e9a9fb847ffc8660c8c23f46532510a6a",
+      "target_sha256": "cdf625455ff074bdac1d952ab9f3845e9a9fb847ffc8660c8c23f46532510a6a"
+    },
+    {
+      "id": "V2C-015",
+      "verdict": "accept",
+      "reason": "RUV-6B工单标记保留，仅13条回复展开，尚未关闭限定不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "9c5b7ec3b3950b35fd8dc968124838e90185c935fa086dc5bfe246783bf32e6c",
+      "target_sha256": "f350b301bba7b7f68dde41d5e92ae95cbc42425d16ff74ae65a0c8ec63542e0c"
+    },
+    {
+      "id": "V2C-016",
+      "verdict": "accept",
+      "reason": "RUV-6B作为标记保持，口头描述不能替代的否定保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "0e3ae25a96d24bdf18184f9bfa0987b391a56db8b2e97c237a4b71d68c0211cb",
+      "target_sha256": "0e3ae25a96d24bdf18184f9bfa0987b391a56db8b2e97c237a4b71d68c0211cb"
+    },
+    {
+      "id": "V2C-017",
+      "verdict": "accept",
+      "reason": "N7K/VP组合保留，仅4套变四套，采购数量和只的限定不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "fef2c749b41f7d06dcf2ca4a9f9877a0af332a01d1c7f7bf3105a77af40f548a",
+      "target_sha256": "7ce780aba88aa4e5808072bbce50af60b48e16d8f98c5a7c92f67407d1ea1d86"
+    },
+    {
+      "id": "V2C-018",
+      "verdict": "accept",
+      "reason": "配件身份不明，N7K/VP及其余正文保持，未补猜实体含义。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "f31806187d008606497a249351ea2c32862fb1fe8a3e8cae900e7ef46ae08511",
+      "target_sha256": "f31806187d008606497a249351ea2c32862fb1fe8a3e8cae900e7ef46ae08511"
+    },
+    {
+      "id": "V2C-019",
+      "verdict": "accept",
+      "reason": "句首回复署名及分隔冒号被省略，码头方向和别绕围栏的正文保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "eee95aea9dca4ccf3c63bbfa4f89354b4024ed9ce0a8ff95cf23512c14240009",
+      "target_sha256": "d84993755018adfe8869cb906513fbefb45efb4b75369c727ef45efd42f13d43"
+    },
+    {
+      "id": "V2C-020",
+      "verdict": "accept",
+      "reason": "回复格式处在明确逐字引用内，整段引文及标点原样保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "ee14e501af337ab83b153e4500a97e5a2d2a6d550a17021116093bfdeb3b464e",
+      "target_sha256": "ee14e501af337ab83b153e4500a97e5a2d2a6d550a17021116093bfdeb3b464e"
+    },
+    {
+      "id": "V2C-021",
+      "verdict": "accept",
+      "reason": "句首回复署名被省略，围巾已交值班员的事实完整保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "e7908d20db82c7fa2c7bfa0db3f14c9a80481d927c6fe9934b44a49ef78075d9",
+      "target_sha256": "629ea8da0a3797530d65ecb704f3fcffae7847d5ab47ffd908e3ec0d849cd486"
+    },
+    {
+      "id": "V2C-022",
+      "verdict": "accept",
+      "reason": "@灰雀是正文通知对象，不能删除，原样保留正确。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "7399337bfad078732670f365f7572d9c5575dc1fd0d39a7bed5801cf62fd6785",
+      "target_sha256": "7399337bfad078732670f365f7572d9c5575dc1fd0d39a7bed5801cf62fd6785"
+    },
+    {
+      "id": "V2C-023",
+      "verdict": "accept",
+      "reason": "句首回复署名省略；支持延期与不同意取消展览两种立场均保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "bd0ce1505f2251c893677be2bfff940e06409c7654a3ec2f28c48b8bc075221e",
+      "target_sha256": "eac420b3df65e57c129f7138f9d7c14dac0fe58a0affc299949793a6631fa296"
+    },
+    {
+      "id": "V2C-024",
+      "verdict": "accept",
+      "reason": "正文@枫桥及我却赞成的立场对照保持，未误删为界面署名。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "3be68cf9fcad8d4669e629baa7b0749a6ef8f21015fe1a1ef2e229c3e4d8fe02",
+      "target_sha256": "3be68cf9fcad8d4669e629baa7b0749a6ef8f21015fe1a1ef2e229c3e4d8fe02"
+    },
+    {
+      "id": "V2C-025",
+      "verdict": "accept",
+      "reason": "果盘和切开提供明确水果语境，苹果展开合理；另一盘的对照保持。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "50818f3a3c6fe8f415e20b49745f352af05cda73b78f953d3a378704430c9250",
+      "target_sha256": "e967bfd0b242840192d63c59601d6dca69164e9e1146886b76afeed4a9a87213"
+    },
+    {
+      "id": "V2C-026",
+      "verdict": "accept",
+      "reason": "明确照抄图标且禁止换汉字，苹果图形保持原样。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "796d095ae0821ff37cabee9ae4c93b218dad1976b0eae8ffa9ff9a6b3fd628ea",
+      "target_sha256": "796d095ae0821ff37cabee9ae4c93b218dad1976b0eae8ffa9ff9a6b3fd628ea"
+    },
+    {
+      "id": "V2C-027",
+      "verdict": "accept",
+      "reason": "完整陈述后的笑脸是附加情绪，删除后保留原感叹号。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "1df61e74868cf0ec1dd3adda51a9fe2e8133d17ae915060da7cc3c5bd4dcdfeb",
+      "target_sha256": "0140e1cee430dd2252e81570038bc528e8b8e84a587054f3e626aa3f28cbd9a2"
+    },
+    {
+      "id": "V2C-028",
+      "verdict": "accept",
+      "reason": "表情属于按原字符填写的密码提示，保护范围明确，不能删除。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "ba566ac77b8c9915d9afc554f8596eb7a3cb9c9e7ada42911037c7c74a74fae9",
+      "target_sha256": "ba566ac77b8c9915d9afc554f8596eb7a3cb9c9e7ada42911037c7c74a74fae9"
+    },
+    {
+      "id": "V2C-029",
+      "verdict": "accept",
+      "reason": "插入瓶并添水提供字面花朵语境，玫瑰展开合理，动作关系不变。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "44bf884420528d65067b7ed65ad3fa563d0e87457e94529af4f953b95f7be903",
+      "target_sha256": "31510d2133fdff43ab5c741447b78b54707abe8e732ea278df8ddd1c067063e8"
+    },
+    {
+      "id": "V2C-030",
+      "verdict": "accept",
+      "reason": "店标图形要求逐字符保留，玫瑰图形和引号原样保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "73c9f3bf2f7e1fd940865a61d0ab164cf974a69bcbb49d1f8ed4b43736bb4425",
+      "target_sha256": "73c9f3bf2f7e1fd940865a61d0ab164cf974a69bcbb49d1f8ed4b43736bb4425"
+    },
+    {
+      "id": "V2C-031",
+      "verdict": "accept",
+      "reason": "正则内部0-9和3不变，只把外部19条展开，锚点括号完整。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "8b519291f4916ff091a0de70ae6419f97f6db16add1106d9d4a94e03ce922fdb",
+      "target_sha256": "ce25ac349a0ed0556fb20d1bcf8723ddf823594b9f06df23e6d907deadc7f123"
+    },
+    {
+      "id": "V2C-032",
+      "verdict": "accept",
+      "reason": "完整正则和错误返回条件保持，原文没有需转换的外围数字。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "65c20a00d0caac3e8be519c5ef1888f0b2863251e0c73d3644281de599af7d94",
+      "target_sha256": "65c20a00d0caac3e8be519c5ef1888f0b2863251e0c73d3644281de599af7d94"
+    },
+    {
+      "id": "V2C-033",
+      "verdict": "accept",
+      "reason": "D:/archive/v6/路径不变，外围27份展开，只有的限定保留。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "1f051c17baaab3a5e25e3d6b8918864b61fa4b7bbb5ec62ab6f54af10f68ed74",
+      "target_sha256": "f8753f0880b724e9cf4eab11bb36c4d5d59d67bb97c823bb44bc24c66e34ffb4"
+    },
+    {
+      "id": "V2C-034",
+      "verdict": "accept",
+      "reason": "文件路径及恢复指令原样保留，目录名没有被修改。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "177d6bd33aa75f74c8719b44fd2ba373fa5ea574e0a3225aa9ae46654de5881a",
+      "target_sha256": "177d6bd33aa75f74c8719b44fd2ba373fa5ea574e0a3225aa9ae46654de5881a"
+    },
+    {
+      "id": "V2C-035",
+      "verdict": "accept",
+      "reason": "链接内部52不变，仅外围9个附件展开；后字仍是正文时间连接词。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "63a32b4dae38fcb53c6442398e84bb13e992b09f27bf0401f6286ef8f0442ca9",
+      "target_sha256": "9ca3e66db7d2c2298c3b02f87c39e84fd8fe0188e919bf5fa238b72e678c441f"
+    },
+    {
+      "id": "V2C-036",
+      "verdict": "accept",
+      "reason": "链接及失效事实保持原样，未修补或替换网址。",
+      "reviewer_role": "assistant",
+      "human_reviewed": false,
+      "text_sha256": "c4be1140dcad4ae7a58d0b06aebe4243443808fd490b84f8c51baa0d21a4cdf9",
+      "target_sha256": "c4be1140dcad4ae7a58d0b06aebe4243443808fd490b84f8c51baa0d21a4cdf9"
+    }
+  ]
+}

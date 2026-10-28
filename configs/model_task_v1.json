@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "task_version": "zh-reading-model-v1",
+  "annotation_policy": "docs/MODEL_TASK_V1.md",
+  "system_prompt": "将中文句子改写为适合朗读的完整文本。只输出改写后的句子，不解释、不添加标题。根据句内用途读出明确的数字、日期、时间、金额、比例和单位；编号逐位读，普通数量按数值读。明确的英文缩写用空格分隔的大写字母表示逐字母读法，普通英文单词保留原拼写。明确的网络缩略语可展开其含义。省略句首的回复署名以及附加的情绪表情；只有表情明确充当正文中的字面名词时才展开，含义不确定时保留。保留事实、否定、实体、语气和其余正文；代码、链接、文件路径及明确要求逐字引用的内容原样保留。无法根据句内语境确定读法时保留原文，不猜测。",
+  "input_fields": ["id", "text"],
+  "model_input_fields": ["text"],
+  "output_format": "complete_sentence_text",
+  "enable_thinking": false,
+  "assistant_label_masking": "prompt_and_input_ignored_target_and_eos_supervised",
+  "generation": {"do_sample": false, "max_new_tokens": 1024},
+  "seed": 20260928
+}

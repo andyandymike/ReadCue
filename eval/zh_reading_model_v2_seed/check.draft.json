@@ -1,0 +1,367 @@
+{
+  "blockers": [],
+  "counts": {
+    "by_role": {
+      "train": 48,
+      "validation": 24
+    },
+    "by_track": {
+      "context_reading": 24,
+      "core_tn": 17,
+      "preservation": 31
+    },
+    "groups": 36,
+    "skills": 12,
+    "total": 72,
+    "valid_schema": 72
+  },
+  "coverage": {
+    "date_time_reading": {
+      "train": {
+        "group_ids": [
+          "v2n-archive_year",
+          "v2n-scheduled_inspection"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-theater_cue"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "decimal_reading": {
+      "train": {
+        "group_ids": [
+          "v2n-account_gain",
+          "v2n-instrument_value"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-manuscript_rating"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "emoji_context": {
+      "train": {
+        "group_ids": [
+          "v2c_fruit_literal",
+          "v2c_relief_suffix"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_flower_object"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "english_word_boundary": {
+      "train": {
+        "group_ids": [
+          "v2c_creator_noun",
+          "v2c_service_restart"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_menu_term"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "initialism_reading": {
+      "train": {
+        "group_ids": [
+          "v2c_fan_reaction",
+          "v2c_installation_choice"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_interface_documentation"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "measurement_reading": {
+      "train": {
+        "group_ids": [
+          "v2n-bore_diameter",
+          "v2n-flour_mass"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-bottle_volume"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "percentage_reading": {
+      "train": {
+        "group_ids": [
+          "v2n-discount_report",
+          "v2n-warehouse_humidity"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-charge_status"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "protected_literal": {
+      "train": {
+        "group_ids": [
+          "v2c_backup_path",
+          "v2c_regular_expression"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_web_address"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "quantity_identifier": {
+      "train": {
+        "group_ids": [
+          "v2n-refund_amount_or_serial",
+          "v2n-tray_count_or_number"
+        ],
+        "groups": 2,
+        "operations": {
+          "transform": 4
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-school_exhibit"
+        ],
+        "groups": 1,
+        "operations": {
+          "transform": 2
+        },
+        "rows": 2
+      }
+    },
+    "quantity_negation": {
+      "train": {
+        "group_ids": [
+          "v2n-batch_limit",
+          "v2n-waived_charge"
+        ],
+        "groups": 2,
+        "operations": {
+          "transform": 4
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2n-inventory_correction"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "reply_signature": {
+      "train": {
+        "group_ids": [
+          "v2c_object_return",
+          "v2c_route_correction"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_disagreement"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    },
+    "unknown_identifier": {
+      "train": {
+        "group_ids": [
+          "v2c_hardware_label",
+          "v2c_ticket_tracking"
+        ],
+        "groups": 2,
+        "operations": {
+          "preserve": 2,
+          "transform": 2
+        },
+        "rows": 4
+      },
+      "validation": {
+        "group_ids": [
+          "v2c_catalog_reference"
+        ],
+        "groups": 1,
+        "operations": {
+          "preserve": 1,
+          "transform": 1
+        },
+        "rows": 2
+      }
+    }
+  },
+  "history_checks": {
+    "old_heldout_inputs_only": {
+      "performed": true,
+      "rows": 55
+    },
+    "v1_train_validation": {
+      "performed": true,
+      "rows": 147
+    }
+  },
+  "independent_test_eligible": false,
+  "input_evidence": [
+    {
+      "path": "D:\\Code\\ReadCue\\eval\\zh_reading_model_v2_seed\\numeric.draft.jsonl",
+      "rows": 36,
+      "sha256": "46e4e219ab328988f8079ec37b1f47fbd537e233ba28fd71287263a5b8ece8a8"
+    },
+    {
+      "path": "D:\\Code\\ReadCue\\eval\\zh_reading_model_v2_seed\\context.draft.jsonl",
+      "rows": 36,
+      "sha256": "b2e8ad413a9d2a5d2656aa04a2476767de1173302091a17dd679e477926e353e"
+    },
+    {
+      "path": "E:\\CodexRuntime\\ReadCue\\runs\\model-experiment-v1-2026-10-01\\dataset\\manifest.json",
+      "sha256": "906b83491d88f768974b2cacd85705c0b5ae78c60a27e19d21c36e26cc71186b"
+    },
+    {
+      "path": "E:\\CodexRuntime\\ReadCue\\runs\\model-experiment-v1-2026-10-01\\dataset\\train.jsonl",
+      "rows": 118,
+      "sha256": "f4c20f9038f0681246db1a035da6e8060d9a4361b74ee8e369d9490a4b12757c"
+    },
+    {
+      "path": "E:\\CodexRuntime\\ReadCue\\runs\\model-experiment-v1-2026-10-01\\dataset\\validation.jsonl",
+      "rows": 29,
+      "sha256": "02c11aa1e5e99f843bdf756556a0583408c002a42ba6c9b18841650416a02c2b"
+    },
+    {
+      "path": "E:\\CodexRuntime\\ReadCue\\runs\\model-experiment-v1-2026-10-01\\heldout\\inputs.jsonl",
+      "rows": 55,
+      "sha256": "9b2e35a03a283a64cbf98b9d643f7dcf6ec5d605433cd2f5032a2504e5dee69f"
+    }
+  ],
+  "limitations": "Heuristic duplicate screening does not establish semantic independence or target correctness. No training export or test freeze is produced.",
+  "schema_version": 1,
+  "semantic_review_complete": false,
+  "similarity_method": "input_only_nfkc_casefold_no_whitespace_numeric_template_sequence_matcher",
+  "similarity_threshold": 0.82,
+  "status": "draft_checks_passed",
+  "training_ready": false,
+  "warnings": []
+}

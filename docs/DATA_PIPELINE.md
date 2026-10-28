@@ -12,7 +12,7 @@ python -m readcue data prepare --source-root 'E:\CodexRuntime\ReadCue\data\newer
 
 这里的 E 盘路径只是当前机器的捕获位置。其他机器把 `--source-root` 替换为自己的原始文件目录；配置内文件路径相对于这个目录。源 CSV、README 和采集脚本必须与[固定来源配置](../configs/bilibili_recent_v1.json)的字节数、SHA-256、Git blob SHA 全部一致。命令只读本地文件，没有下载入口。
 
-`--output` 必须为新目录，位于 Git checkout 外，或确实被 Git 忽略。相同配置重跑时换一个输出目录。失败留下 `run.json` 和已形成的证据，不覆盖原始文件或旧运行。
+`--output` 必须为新目录，位于 Git checkout 外，或全部实际产物都被 Git 忽略。写入前检查 JSONL、含原文的 `review.md`、JSON 和源码快照等具体路径；仅忽略 `*.jsonl` 或带有放行例外的目录不足以通过。相同配置重跑时换一个输出目录。失败留下已安全建立的运行记录，不覆盖原始文件或旧运行。
 
 ## 每一步做什么
 
@@ -73,12 +73,17 @@ python -m readcue data export --prepared 'E:\CodexRuntime\ReadCue\data\bilibili-
 
 导出检查准备包哈希、审核 ID 全量一致和原文字段不变。仍有 `pending`、缺少参考、未知上下文依赖等情况会拒绝形成评测输入，并保存失败状态。
 
+默认导出对象是**已经保存的人工标注快照**。新建议尚未确认时，旧批准不会自动撤回，也不能据此宣称当前建议轮次已完成。新产物 `review_binding.json` 记录提交标注及准备包哈希、当前建议版本和轮次状态，纳入导出清单；摘要明确导出范围与未确认情况。
+
+要将“当前建议全部处理完成”作为导出条件，在上述命令追加 `--require-current-round`。该模式读取与审阅页相同的建议绑定和回执规则，存在尚未确认的建议或草稿时拒绝导出。待讨论和排除也必须是已保存的本轮决定；它们仍不进入批准参考。
+
 成功导出只将 approved 条目写入：
 
 - `inputs.jsonl`：严格只有 `id/text`，接现有 `readcue run`。
 - `cases.jsonl`：另外保存参考、track 和 family，接现有 `readcue score`。
 - `provenance.jsonl`：来源、组、上下文限制和审核者，不传入模型。
 - `review_decisions.jsonl`、`submitted_annotations.jsonl`：全部审核决定及提交的原始字节，包含 excluded / uncertain，避免把难例悄悄移出记录。
+- `review_binding.json`：导出采用的标注快照与建议轮次身份，不进入模型输入。
 
 导出包记录原始抽样、提交审核、准备包和各产物哈希。它是新探索材料，不能使用仅接受历史72条案例的旧 `archive` 命令冒充 v1。后续根据这些材料调参或训练时，需另建独立评估。TTS 接入和听感审查仍是后续工作，文本匹配不等于发音收益。
 

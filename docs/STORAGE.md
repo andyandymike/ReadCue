@@ -1,6 +1,62 @@
 # 本地存储与缓存恢复
 
-## 本机当前存放位置（2026-09-28 后续迁移）
+## v2准备区（2026-10-27）
+
+当前会话无法启动WSL，且D:/workspace父目录创建被拒绝，因此v2数据包和隔离评测先保存在Git忽略的 `D:/Code/ReadCue/runs/model-experiment-v2-prepared-2026-10-27/`。该目录是受限会话的准备区，不是正式GPU预算根；其中含训练标签和评测参考，不提交Git、不按临时缓存删除。首次构建保存在 `dataset-build-1/`，补齐组件合并后的覆盖检查后重新构建 `dataset/`，原文、目标和角色未改变。
+
+正式运行仍使用仓库外的新目录，计划为 `E:/CodexRuntime/ReadCue/runs/model-experiment-v2-2026-10-27/`；此目录尚未因本轮训练而创建。[启动脚本](../scripts/run_model_experiment_v2.ps1)默认只显示参数，实际执行时拒绝已有预算根，逐阶段保存收据并沿用5GiB检查。当前WSL/GPU环境没有被修改或重新安装。详见[v2状态](MODEL_EXPERIMENT_RUN_V2.md)。
+
+## 当前目录与环境（2026-10-01）
+
+源码和轻量开发环境在 D 盘，模型、GPU 依赖、原始数据和实验产物集中在 `E:\CodexRuntime\ReadCue`。下表是本机布局，其他机器可以自行选择位置；它不是安装必须使用的盘符。
+
+| 内容 | 实际位置 | 保留方式 |
+|---|---|---|
+| 源码、测试、协议与可公开报告 | `D:\Code\ReadCue` | Git 管理；排除模型、原始数据、运行输出和环境 |
+| Windows 轻量环境 | `D:\Code\ReadCue\.venv` | editable 安装当前 `src`；不安装 ML 运行依赖 |
+| 唯一 GPU 环境（训练与推理） | `E:\CodexRuntime\ReadCue\.venv-linux` | WSL Python；按 `requirements-model-v1.lock` 核对，保留使用中的依赖 |
+| 基座模型与中文 TN 模型 | `E:\CodexRuntime\ReadCue\models` | 保留冻结资产及哈希；不混入缓存或 adapter |
+| 原始数据 | `E:\CodexRuntime\ReadCue\data` | 保留来源、原始字节与哈希；不进 Git |
+| 人工审阅、数据版本、预测与训练产物 | `E:\CodexRuntime\ReadCue\runs` | 保留输入、审阅版本、源码快照、结果、选点记录和检查点 |
+| 维护记录与本轮验证 | `E:\CodexRuntime\ReadCue\maintenance` | 保留小型清单、收据、日志和发行包；验证环境完成用途后清理 |
+| 旧备份 | `maintenance\wsl-2026-09-28`、`archives\cleanup-2026-09-28` | 两份旧备份共 12.09 GiB 已核验可退役，但删除仍被执行策略拦截，当前实际存在 |
+
+`D:\Code\ReadCue\models` 和 `.venv-linux` 仍是指向 E 盘的 junction。旧训练入口 `E:\CodexRuntime\ReadCue\.venv-train-v1` 现在也指向唯一 GPU 环境，保留旧命令可用性，不再通过 `.pth` 借用另一套环境。Windows 与 WSL 的 ReadCue 都直接加载当前 checkout 的 `src`，修改源码不再需要重复安装旧副本。GPU 环境原有 43 个推理依赖的版本、位置和 RECORD 哈希未变；训练依赖已离线并入。
+
+Ubuntu 自身仍使用 Windows 注册的 `C:\Users\Born Lu\AppData\Local\wsl\{29157921-02d0-41a3-a851-62ea50e9aee1}\ext4.vhdx`，它是当前运行中的系统盘，与 E 盘旧回退备份不同，本轮不修改它。
+
+## 新实验的缓存、临时文件和空间限制
+
+`scripts/run_model_experiment.py` 的 `preflight`、`train`、`predict` 都必须明确传入同一个实验的 `--budget-root`，各自 `--output` 必须是根目录下不同的新目录。例如：
+
+```text
+E:/CodexRuntime/ReadCue/runs/<new-experiment>/    ← --budget-root
+  runtime-cache-v1/
+    readcue-runtime.json                       ← 共享缓存归属
+    cache/                                    ← HF / Torch / Triton / CUDA 缓存
+  preflight/                                  ← --output
+    tmp/
+  train/
+    tmp/
+  predict/
+    tmp/
+```
+
+程序在加载模型库之前覆盖继承的缓存路径和 `TEMP/TMP/TMPDIR`，也重置 Python 已缓存的临时目录。5 GiB 上限统计整个预算根中的普通文件，包括共享缓存、各阶段临时文件及结果；这是定期检查，不是操作系统硬配额。预算根不能放在 Git checkout 内。使用时应为本实验单独设置预算根，不要指向包含模型或其他实验的整个运行区；程序不识别其中哪些文件属于其他实验。预算根中存在 symlink、junction、其他重解析点或无法读取的目录时会拒绝运行。已有共享缓存必须具有正确的归属标记，不自动接管其他缓存。
+
+每个阶段用全新进程启动。推荐脚本入口，它在导入 ReadCue 前禁写字节码；使用模块入口时，应在启动前设置 `PYTHONDONTWRITEBYTECODE=1` 或运行 `python -B -m readcue.model_experiment ...`。无 `-B` 的模块启动可能先在安装目录生成 `.pyc`，这部分发生在程序配置缓存之前，不能算作上述预算内缓存保证。
+
+当前新入口执行前会核对实际加载源码与 `--project` 的文件内容，拒绝 checkout A 的脚本配 checkout B；依赖缺失或版本偏离锁文件会在导入 ML 库前失败，并在新运行目录留下失败记录。缓存路径、依赖版本、锁文件及实际加载模块的路径和哈希写入新收据。历史 runner 与已冻结实验仍遵循其原记录，本轮没有将这些改动补写到旧结果。
+
+## 保留与清理规则
+
+原始数据、人工审阅版本、冻结输入和协议、历史源码快照、原始预测、评分、训练记录与模型权重属于研究依据。保留这些材料，避免把 `runs/` 或所有“archive”目录一并删除。Git 中早期路线的少量文档也保留为决策依据。
+
+已安装的下载包、完成发行验证的临时环境和解包目录可以重建。清理前核对确切路径、链接、文件清单和来源；保留最终发行包、验证日志及删除清单。维护备份完成回退用途后可以退役，不再为删除旧大备份制造另一份大备份。不要清空整棵 `.cache`：旧 WeText 规则缓存仍被历史基线使用。
+
+本轮已删除 11 个完成用途的旧验证环境／解包目录，以及 3 份 uv 自举残留，共 187,543,291 字节（178.86 MiB）。两份大备份的删除未执行，不能计入回收量。后续维护收尾、验证和精确清单见[本轮优化记录](maintenance/2026-10-01-runtime-optimization.md)。
+
+## 2026-09-28 迁移记录（历史时点）
 
 源码仓库继续位于 `D:\Code\ReadCue`。两个大目录已迁到 E 盘，原入口使用 Windows junction，保留 WSL 环境中的旧路径和脚本 shebang：
 

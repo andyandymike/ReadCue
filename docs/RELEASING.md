@@ -1,8 +1,10 @@
 # 发布说明
 
-源码工具与 Hugging Face 模型是不同交付。当前只有研究工具、原创 pilot 和现成基线的实测记录；没有ReadCue权重；当前[首轮中文模型实验](MODEL_EXPERIMENT_V1.md)是待满足数据和运行条件的方案，不是已完成训练。包中的版本号不表示已向 PyPI 或 Hugging Face 发布。
+源码工具与 Hugging Face 模型是不同交付。首轮中文模型实验已在本地完成LoRA训练、重新加载与固定对照，生成指定基座上的adapter；实际测量及局限见[本轮运行记录](MODEL_EXPERIMENT_RUN_V1.md)，加载与发布边界见[本地模型卡](MODEL_CARD_V1.md)。尚未公开上传ReadCue权重。包中的版本号不表示已向 PyPI 或 Hugging Face 发布。
 
-提交或推送源码仓库不等于发布Python包、创建发行版或上传模型权重。本轮源码中包含`audit-corrected-v1`规则修正和已有TN候选的校验入口；它不自动执行神经模型，也没有新的组合效果测量。
+2026-10-28更新：v2已完成训练、评测、独立语义审查和开发诊断，并形成[本地研究发布候选](MODEL_RELEASE_CANDIDATE_V2.md)。当前可用候选为`readcue-v2-candidate-2026-10-28-r2`，包含原选中adapter与脱离源码checkout的推理入口；完整CPU加载与3条GPU执行等价检查通过。初版保留但不可作为发布候选，原因及修复见交付说明。当前未上传，最终adapter条款、公开位置和再分发内容尚待确定；Python源码包仍不携带权重或运行数据。
+
+提交或推送源码仓库不等于发布Python包、创建发行版或上传模型权重。`audit-corrected-v1`仍是独立规则对照；新的模型入口执行有界LoRA训练与裸模型预测，二者的结果和来源分别记录。
 
 ## 源码与 Python 包
 

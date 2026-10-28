@@ -11,13 +11,15 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
 
 from readcue.artifacts import hash_file, read_json, read_jsonl
 from readcue.baselines import validate_inputs
-from readcue.data_pipeline import export_review, prepare_data
+from readcue.data_pipeline import PREPARE_CODE_FILES, export_review, prepare_data
+from readcue.review_contract import ReviewRound
 
 
 PROJECT = Path(__file__).resolve().parents[1]
@@ -440,6 +442,150 @@ class DataPipelineTests(unittest.TestCase):
                 with self.assertRaises((FileExistsError, ValueError)):
                     export_review(prepared, review_path, destination)
                 self.assertEqual(before, digest_tree(destination))
+
+    def test_prepare_checks_every_git_output_before_writing_any_capture(self):
+        repo = self.root / "git-output"
+        repo.mkdir()
+        subprocess.run(["git", "init", "--quiet", str(repo)], check=True)
+        rules = {
+            "jsonl-only": "*.jsonl\n",
+            "markdown-exception": "/prepared/**\n!/prepared/review.md\n",
+            "source-exception": "/prepared/*\n!/prepared/code/\n/prepared/code/*\n!/prepared/code/review_contract.py\n",
+        }
+        for label, ignore in rules.items():
+            with self.subTest(ignore=label):
+                (repo / ".gitignore").write_text(ignore, encoding="utf-8")
+                output = repo / "prepared"
+                with self.assertRaisesRegex(ValueError, "Every data output"):
+                    prepare_data(self.source_root, self.config_path, output)
+                self.assertFalse(output.exists(), "Git rejection must precede all capture writes")
+        (repo / ".gitignore").write_text("/prepared/\n", encoding="utf-8")
+        prepare_data(self.source_root, self.config_path, repo / "prepared")
+        unignored = subprocess.check_output(
+            ["git", "-C", str(repo), "ls-files", "--others", "--exclude-standard"], text=True)
+        self.assertEqual(unignored.strip(), ".gitignore")
+        for name in PREPARE_CODE_FILES:
+            self.assertEqual((repo / "prepared" / "code" / name).read_bytes(),
+                             (PROJECT / "src" / "readcue" / name).read_bytes())
+
+    def test_export_checks_all_actual_git_paths_including_binding(self):
+        prepared = self.prepare()
+        annotations = prepared / "annotations.jsonl"
+        write_rows(annotations, self.reviewed(prepared))
+        repo = self.root / "git-export"
+        repo.mkdir()
+        subprocess.run(["git", "init", "--quiet", str(repo)], check=True)
+        for ignore in ("*.jsonl\n", "/exported/**\n!/exported/review_binding.json\n"):
+            with self.subTest(ignore=ignore):
+                (repo / ".gitignore").write_text(ignore, encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "Every data output"):
+                    export_review(prepared, annotations, repo / "exported")
+                self.assertFalse((repo / "exported").exists())
+        (repo / ".gitignore").write_text("/exported/\n", encoding="utf-8")
+        export_review(prepared, annotations, repo / "exported")
+        self.assertEqual(subprocess.check_output(
+            ["git", "-C", str(repo), "ls-files", "--others", "--exclude-standard"], text=True).strip(),
+            ".gitignore")
+
+    def test_export_binding_identifies_saved_snapshot_without_claiming_a_round(self):
+        prepared = self.prepare()
+        output, review_path = self.export(prepared, self.reviewed(prepared))
+        binding = read_json(output / "review_binding.json")
+        self.assertEqual(binding["contract"], "saved_annotation_snapshot_v1")
+        self.assertEqual(binding["annotation_snapshot"]["sha256"], hash_file(review_path))
+        self.assertEqual(binding["prepared_manifest_sha256"], hash_file(prepared / "manifest.json"))
+        self.assertEqual(binding["frozen_review_sha256"], hash_file(prepared / "review.jsonl"))
+        self.assertIsNone(binding["current_suggestions"])
+        self.assertIsNone(binding["round"]["complete"])
+        self.assertEqual(binding["round"]["items"], [])
+        binding_hash = hash_file(output / "review_binding.json")
+        self.assertEqual(read_json(output / "summary.json")["review_binding_sha256"], binding_hash)
+        manifest = read_json(output / "manifest.json")
+        self.assertEqual(manifest["review_binding_sha256"], binding_hash)
+        self.assertEqual(manifest["files"]["review_binding.json"]["sha256"], binding_hash)
+        self.assertFalse(read_json(output / "summary.json")["require_current_round"])
+
+    def write_round_suggestions(self, prepared, rows):
+        suggestions = {"schema_version": 2, "prepared_manifest_sha256": hash_file(prepared / "manifest.json"),
+                       "generator": "Codex assistant", "human_reviewed": False,
+                       "policy_version": "bilibili-ai-review-v6", "created_at_utc": "2026-10-01T09:00:00+00:00",
+                       "items": [{"id": row["id"], "text_sha256": hashlib.sha256(row["text"].encode("utf-8")).hexdigest(),
+                                  "decision": "keep", "acceptable_outputs": [row["text"]], "track": "preservation",
+                                  "family": "synthetic-source-preservation", "context_required": False,
+                                  "reason": "Synthetic suggestion requiring human confirmation.", "flags": [],
+                                  "reading_audit": {"status": "text_only_ok", "summary": "Synthetic reading check.",
+                                                    "spans": [], "issues": []}}
+                                 for row in rows]}
+        path = prepared / "ai-suggestions.json"
+        path.write_text(json.dumps(suggestions, ensure_ascii=False), encoding="utf-8")
+        return suggestions
+
+    def test_new_unconfirmed_suggestions_preserve_saved_labels_but_strict_export_refuses(self):
+        prepared = self.prepare()
+        rows = self.reviewed(prepared)
+        annotations = prepared / "annotations.jsonl"
+        write_rows(annotations, rows)
+        self.write_round_suggestions(prepared, rows[:1])
+        original = digest_tree(prepared)
+        output = self.root / "saved-snapshot"
+        summary = export_review(prepared, annotations, output)
+        self.assertEqual(summary["approved"], len(rows))
+        self.assertEqual(read_jsonl(output / "cases.jsonl")[0]["acceptable_outputs"], [rows[0]["text"]])
+        binding = read_json(output / "review_binding.json")
+        self.assertEqual(binding["current_suggestions"]["sha256"], hash_file(prepared / "ai-suggestions.json"))
+        self.assertEqual(binding["round"]["unconfirmed"], 1)
+        self.assertFalse(binding["round"]["complete"])
+        self.assertEqual(binding["round"]["items"][0]["state"], "unreviewed")
+        self.assertEqual(binding["round"]["items"][0]["basis"], "no_committed_receipt")
+        strict_output = self.root / "strict-round"
+        with self.assertRaisesRegex(ValueError, "未确认"):
+            export_review(prepared, annotations, strict_output, require_current_round=True)
+        self.assertFalse((strict_output / "inputs.jsonl").exists())
+        self.assertFalse((strict_output / "cases.jsonl").exists())
+        self.assertEqual(read_json(strict_output / "run.json")["status"], "failed")
+        self.assertEqual(digest_tree(prepared), original, "Export must never write annotations or history")
+
+    def test_export_uses_the_same_round_evidence_as_the_workbench_after_suggestion_update(self):
+        # The HTTP adapter owns saving; round state and export do not depend on it.
+        from readcue.review_server import _ReviewStore
+        prepared = self.prepare()
+        rows = self.reviewed(prepared)
+        annotations = prepared / "annotations.jsonl"
+        write_rows(annotations, rows)
+        bundle = self.write_round_suggestions(prepared, rows[:2])
+        store = _ReviewStore(prepared, annotations)
+        for row in rows[:2]:
+            store.save(row["id"], row["review"], store.state()["version"], "keep")
+        output = self.root / "complete-round"
+        export_review(prepared, annotations, output, require_current_round=True)
+        binding = read_json(output / "review_binding.json")
+        self.assertTrue(binding["round"]["complete"])
+        self.assertEqual(binding["round"]["counts"], {"reviewed": 2, "draft": 0, "unreviewed": 0})
+        ui_state = store.state()
+        self.assertEqual({item["id"]: item["state"] for item in binding["round"]["items"]},
+                         ui_state["suggestion_review_state"])
+        for item in binding["round"]["items"]:
+            self.assertEqual(item["receipt"]["sha256"], hash_file(store.history / item["receipt"]["path"]))
+        # Only a changed item loses round acknowledgement; labels are preserved.
+        bundle["items"][1]["reason"] = "A revised synthetic reason requiring a new check."
+        (prepared / "ai-suggestions.json").write_text(json.dumps(bundle, ensure_ascii=False), encoding="utf-8")
+        new_store = _ReviewStore(prepared, annotations)
+        self.assertEqual(new_store.state()["suggestion_review_state"], {rows[0]["id"]: "reviewed"})
+        updated_output = self.root / "updated-round-snapshot"
+        export_review(prepared, annotations, updated_output)
+        updated = read_json(updated_output / "review_binding.json")
+        self.assertEqual(updated["round"]["unconfirmed"], 1)
+        self.assertEqual(updated["round"]["items"][0]["suggestion_match"]["kind"], "unchanged_item_sha256")
+        self.assertEqual(updated["round"]["items"][1]["state"], "unreviewed")
+        self.assertEqual(read_jsonl(updated_output / "cases.jsonl"), read_jsonl(output / "cases.jsonl"))
+        with self.assertRaisesRegex(ValueError, "未确认"):
+            export_review(prepared, annotations, self.root / "updated-strict", require_current_round=True)
+        snapshot = digest_tree(prepared)
+        reader = ReviewRound(prepared, annotations, {row["id"]: row for row in rows},
+                             hash_file(prepared / "manifest.json"))
+        self.assertEqual(reader.suggestion_review_metadata(rows)["suggestion_review_state"],
+                         new_store.state()["suggestion_review_state"])
+        self.assertEqual(digest_tree(prepared), snapshot)
 
 
 if __name__ == "__main__":

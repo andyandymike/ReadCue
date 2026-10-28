@@ -41,7 +41,10 @@ class ReviewedBaselineTests(unittest.TestCase):
             self.assertEqual(meta["input_sha256"], runner.hash_file(args.inputs))
             self.assertEqual(meta["predictions_sha256"], runner.hash_file(output / "predictions.jsonl"))
             self.assertEqual(meta["max_new_tokens"], 1024)
-            self.assertEqual(len(meta["source_sha256"]), 4)
+            self.assertEqual(len(meta["source_sha256"]), 6)
+            for helper in ("inference_contract", "pilot_adapter"):
+                relative = f"src/readcue/{helper}.py"
+                self.assertEqual(meta["source_sha256"][relative], runner.hash_file(PROJECT / relative))
             self.assertEqual(meta["case_count"], 1)
             self.assertEqual(meta["failed_cases"], 0)
 

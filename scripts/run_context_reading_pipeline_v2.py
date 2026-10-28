@@ -102,7 +102,8 @@ def run(args, *, executor=subprocess.run):
         names = ("scripts/run_context_reading_pipeline_v2.py", "src/readcue/context_reading_policy_v2.py",
                  "src/readcue/reading_policy.py", "src/readcue/comment_policy.py", "scripts/run_comment_pipeline.py",
                  "scripts/run_zh_reviewed_baseline.py", "scripts/run_zh_baseline.py",
-                 "src/readcue/artifacts.py", "src/readcue/baselines.py")
+                 "src/readcue/artifacts.py", "src/readcue/baselines.py",
+                 "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py")
         sources = {name: hash_file(PROJECT / name) for name in names}
         meta = dict(schema_version=1, experiment=state["experiment"], baseline=state["baseline"],
                     started_at_utc=state["started_at_utc"], training=False, external_api_cost_usd=0,

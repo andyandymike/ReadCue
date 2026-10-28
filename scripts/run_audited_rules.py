@@ -36,7 +36,8 @@ def run(args):
     output.mkdir(parents=True, exist_ok=False)
     source_files = ["src/readcue/" + name + ".py" for name in (
         "audit_policy_adapter", "comment_policy", "comment_policy_v2", "reading_policy",
-        "context_reading_policy_v3", "semantic_emoji_policy", "artifacts", "baselines")]
+        "context_reading_policy_v3", "semantic_emoji_policy", "artifacts", "baselines",
+        "inference_contract", "pilot_adapter")]
     source_files += ["scripts/run_audited_rules.py", "scripts/run_comment_pipeline.py"]
     hashes = {name: hash_file(PROJECT / name) for name in source_files}
     state = dict(schema_version=1, policy_version=policy.POLICY_VERSION,

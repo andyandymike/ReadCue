@@ -38,10 +38,12 @@ def main(argv=None):
     prepare.add_argument("--source-root", type=Path, required=True, help="Local directory containing config-relative source files")
     prepare.add_argument("--config", type=Path, required=True)
     prepare.add_argument("--output", type=Path, required=True, help="New external or Git-ignored directory")
-    export = data_commands.add_parser("export", help="Validate completed review and isolate inputs from references")
+    export = data_commands.add_parser("export", help="Export a saved annotation snapshot and bind observed round status")
     export.add_argument("--prepared", type=Path, required=True)
     export.add_argument("--review", type=Path, required=True, help="Completed annotations.jsonl copy")
     export.add_argument("--output", type=Path, required=True, help="New external or Git-ignored directory")
+    export.add_argument("--require-current-round", action="store_true",
+                        help="Refuse export while current suggestions lack matching completed review receipts")
     review = data_commands.add_parser("review", help="Open a local, resumable human-review workbench")
     review.add_argument("--prepared", type=Path, required=True)
     review.add_argument("--annotations", type=Path, help="Existing editable copy (default: prepared/annotations.jsonl)")
@@ -81,7 +83,8 @@ def main(argv=None):
                     server.server_close()
                 return 0
             else:
-                result = export_review(args.prepared, args.review, args.output)
+                result = export_review(args.prepared, args.review, args.output,
+                                       require_current_round=args.require_current_round)
         else:
             result = archive_pilot(args.project, args.run, args.output)
         print(json.dumps(result, ensure_ascii=False, indent=2))

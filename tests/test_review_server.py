@@ -5,6 +5,7 @@ import http.client
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 import threading
 import unittest
 from unittest.mock import patch
@@ -510,7 +511,7 @@ class ReviewServerTests(unittest.TestCase):
         self.assertEqual(read_json(failed)["status"], "failed")
 
         def fail_commit_receipt(source, destination):
-            if Path(destination).name == "change.json":
+            if Path(destination).name == "change.json" and read_json(source)["status"] == "committed":
                 raise OSError("Synthetic receipt completion failure")
             return actual_replace(source, destination)
 
@@ -1019,6 +1020,51 @@ class ReviewServerTests(unittest.TestCase):
         status, _, _ = self.request("POST", "api/save", self.payload(state), path="/incorrect/api/save")
         self.assertIn(status, {403, 404})
         self.assertEqual(before, self.annotations.read_bytes())
+
+    def test_git_ignored_saves_check_actual_history_and_temporary_files(self):
+        self.stop_server()
+        ignored_rules = {
+            "history-jsonl": "/annotations.jsonl\n*.json\n*.lock\n",
+            "history-exception": "/annotations.jsonl\n*.lock\n/annotations.history/**\n!/annotations.history/*/\n!/annotations.history/*/before.jsonl\n",
+            "annotation-temp": "/annotations.jsonl\n*.lock\n/annotations.history/\n",
+            "receipt-temp": "/annotations.jsonl\n*.lock\n/.annotations.jsonl.*.tmp\n/annotations.history/**\n!/annotations.history/*/\n!/annotations.history/*/*.tmp\n",
+        }
+        original = self.annotations.read_bytes()
+        for label, rules in ignored_rules.items():
+            with self.subTest(rule=label):
+                repo = self.fixture.root / ("git-" + label)
+                repo.mkdir()
+                subprocess.run(["git", "init", "--quiet", str(repo)], check=True)
+                (repo / ".gitignore").write_text(rules, encoding="utf-8")
+                annotations = repo / "annotations.jsonl"
+                annotations.write_bytes(original)
+                store = review_server._ReviewStore(self.prepared, annotations)
+                state = store.state()
+                item = state["items"][0]
+                with self.assertRaises(ReviewError):
+                    store.save(item["id"], self.approved_review(item), state["version"])
+                self.assertEqual(annotations.read_bytes(), original)
+                unignored = subprocess.check_output(
+                    ["git", "-C", str(repo), "ls-files", "--others", "--exclude-standard"], text=True)
+                self.assertEqual(unignored.strip(), ".gitignore", "No original or temporary bytes may become committable")
+                self.assertFalse(list(repo.rglob("*.tmp")))
+        # A fully ignored working directory supports a real persisted save.
+        repo = self.fixture.root / "git-allowed"
+        repo.mkdir()
+        subprocess.run(["git", "init", "--quiet", str(repo)], check=True)
+        (repo / ".gitignore").write_text("/work/\n", encoding="utf-8")
+        work = repo / "work"
+        work.mkdir()
+        annotations = work / "annotations.jsonl"
+        annotations.write_bytes(original)
+        store = review_server._ReviewStore(self.prepared, annotations)
+        state = store.state()
+        item = state["items"][0]
+        saved = store.save(item["id"], self.approved_review(item), state["version"])
+        self.assertEqual(saved["item"]["review"]["status"], "approved")
+        self.assertNotEqual(annotations.read_bytes(), original)
+        self.assertEqual(subprocess.check_output(
+            ["git", "-C", str(repo), "ls-files", "--others", "--exclude-standard"], text=True).strip(), ".gitignore")
 
 
 if __name__ == "__main__":

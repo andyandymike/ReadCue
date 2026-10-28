@@ -1,0 +1,886 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "status": "completed_local_training_evaluation_and_independent_assistant_review",
+  "external_cost_usd": 0,
+  "run_root": "E:/CodexRuntime/ReadCue/runs/model-experiment-v2-2026-10-27",
+  "prior_preparation_receipt_preserved": "docs/model-v2-preparation.json",
+  "base_repo": "Qwen/Qwen3-0.6B",
+  "base_revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "dataset": {
+    "version": "model-data-v2",
+    "counts": {
+      "train": 166,
+      "validation": 53
+    },
+    "manifest_sha256": "2fdd14f3f32a285b61f770978ad45e09305dea5d5b9226d83f83c718fa4289d1",
+    "original_targets_changed": 0,
+    "original_roles_changed": 0
+  },
+  "heldout": {
+    "counts": {
+      "total": 45,
+      "core_tn": 16,
+      "context_reading": 16,
+      "preservation": 13
+    },
+    "proof_sha256": "e8a4870b1555fdf9a1c34f77d6d5a578f25b405257de82b738bfd31034280d95",
+    "references_changed": 0,
+    "root_reference_contents_read_before_selection": false,
+    "is_random_blind_test": false,
+    "limitation": "Assistant-authored synthetic cases; prior root exposure to input-side overlap summaries is retained in freeze records."
+  },
+  "training": {
+    "initialization": "fresh_fixed_base",
+    "optimizer_updates": 63,
+    "completed_epochs": 3,
+    "elapsed_seconds": 713.043695366,
+    "trainable_parameters": 1146880,
+    "independent_reload_verified": true,
+    "independent_reload_validation_loss": 0.18220968505130256,
+    "peak_cuda_allocated_bytes": 1678069248,
+    "peak_cuda_reserved_bytes": 4601151488
+  },
+  "selection": {
+    "epoch": 3,
+    "validation_loss": 0.18220968505130256,
+    "relative_directory": "train/checkpoints/step-0063-epoch-3",
+    "adapter_bytes": 4602248,
+    "adapter_sha256": "27ab01f82e6811cd48ebb846cdf31c1d9adad746aa0370ec6ae8dd77f50b0f75",
+    "metadata_sha256": "f971371a015c8cfb187d77658c2215e035a0a496935861c48c11e15b1833eab2"
+  },
+  "automatic_results": {
+    "identity": {
+      "overall": {
+        "total": 45,
+        "completed": 45,
+        "failed_or_missing": 0,
+        "strict_correct": 17,
+        "strict_accuracy": 0.37777777777777777,
+        "surface_correct": 17,
+        "surface_accuracy": 0.37777777777777777,
+        "preservation_total": 13,
+        "preservation_changed": 0,
+        "preservation_failed_or_missing": 0,
+        "preservation_violation_rate": 0.0
+      },
+      "by_track": {
+        "context_reading": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 4,
+          "strict_accuracy": 0.25,
+          "surface_correct": 4,
+          "surface_accuracy": 0.25,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "core_tn": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 0,
+          "strict_accuracy": 0.0,
+          "surface_correct": 0,
+          "surface_accuracy": 0.0,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "preservation": {
+          "total": 13,
+          "completed": 13,
+          "failed_or_missing": 0,
+          "strict_correct": 13,
+          "strict_accuracy": 1.0,
+          "surface_correct": 13,
+          "surface_accuracy": 1.0,
+          "preservation_total": 13,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": 0.0
+        }
+      },
+      "families": {
+        "total": 45,
+        "all_correct": 17
+      },
+      "total_cases": 45,
+      "reference_coverage": {
+        "scored": 45,
+        "pending": 0
+      },
+      "execution_statuses": {
+        "ok": 45
+      },
+      "local_targets": {
+        "total": 28,
+        "unmatched": 28,
+        "mechanically_matched_rate": 0.0
+      },
+      "protected_spans": {
+        "preserved": 67
+      }
+    },
+    "base": {
+      "overall": {
+        "total": 45,
+        "completed": 42,
+        "failed_or_missing": 3,
+        "strict_correct": 0,
+        "strict_accuracy": 0.0,
+        "surface_correct": 0,
+        "surface_accuracy": 0.0,
+        "preservation_total": 13,
+        "preservation_changed": 13,
+        "preservation_failed_or_missing": 0,
+        "preservation_violation_rate": 1.0
+      },
+      "by_track": {
+        "context_reading": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 0,
+          "strict_accuracy": 0.0,
+          "surface_correct": 0,
+          "surface_accuracy": 0.0,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "core_tn": {
+          "total": 16,
+          "completed": 13,
+          "failed_or_missing": 3,
+          "strict_correct": 0,
+          "strict_accuracy": 0.0,
+          "surface_correct": 0,
+          "surface_accuracy": 0.0,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "preservation": {
+          "total": 13,
+          "completed": 13,
+          "failed_or_missing": 0,
+          "strict_correct": 0,
+          "strict_accuracy": 0.0,
+          "surface_correct": 0,
+          "surface_accuracy": 0.0,
+          "preservation_total": 13,
+          "preservation_changed": 13,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": 1.0
+        }
+      },
+      "families": {
+        "total": 45,
+        "all_correct": 0
+      },
+      "total_cases": 45,
+      "reference_coverage": {
+        "scored": 45,
+        "pending": 0
+      },
+      "execution_statuses": {
+        "ok": 42,
+        "truncated": 3
+      },
+      "local_targets": {
+        "total": 28,
+        "unmatched": 18,
+        "failed": 3,
+        "unresolved_alignment": 7,
+        "mechanically_matched_rate": 0.0
+      },
+      "protected_spans": {
+        "changed": 53,
+        "failed": 6,
+        "unresolved_alignment": 8
+      }
+    },
+    "adapted": {
+      "overall": {
+        "total": 45,
+        "completed": 45,
+        "failed_or_missing": 0,
+        "strict_correct": 32,
+        "strict_accuracy": 0.7111111111111111,
+        "surface_correct": 32,
+        "surface_accuracy": 0.7111111111111111,
+        "preservation_total": 13,
+        "preservation_changed": 1,
+        "preservation_failed_or_missing": 0,
+        "preservation_violation_rate": 0.07692307692307693
+      },
+      "by_track": {
+        "context_reading": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 8,
+          "strict_accuracy": 0.5,
+          "surface_correct": 8,
+          "surface_accuracy": 0.5,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "core_tn": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 12,
+          "strict_accuracy": 0.75,
+          "surface_correct": 12,
+          "surface_accuracy": 0.75,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "preservation": {
+          "total": 13,
+          "completed": 13,
+          "failed_or_missing": 0,
+          "strict_correct": 12,
+          "strict_accuracy": 0.9230769230769231,
+          "surface_correct": 12,
+          "surface_accuracy": 0.9230769230769231,
+          "preservation_total": 13,
+          "preservation_changed": 1,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": 0.07692307692307693
+        }
+      },
+      "families": {
+        "total": 45,
+        "all_correct": 32
+      },
+      "total_cases": 45,
+      "reference_coverage": {
+        "scored": 45,
+        "pending": 0
+      },
+      "execution_statuses": {
+        "ok": 45
+      },
+      "local_targets": {
+        "total": 28,
+        "matched": 16,
+        "unmatched": 12,
+        "mechanically_matched_rate": 0.5714285714285714
+      },
+      "protected_spans": {
+        "preserved": 66,
+        "changed": 1
+      }
+    },
+    "rules": {
+      "overall": {
+        "total": 45,
+        "completed": 45,
+        "failed_or_missing": 0,
+        "strict_correct": 25,
+        "strict_accuracy": 0.5555555555555556,
+        "surface_correct": 25,
+        "surface_accuracy": 0.5555555555555556,
+        "preservation_total": 13,
+        "preservation_changed": 0,
+        "preservation_failed_or_missing": 0,
+        "preservation_violation_rate": 0.0
+      },
+      "by_track": {
+        "context_reading": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 12,
+          "strict_accuracy": 0.75,
+          "surface_correct": 12,
+          "surface_accuracy": 0.75,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "core_tn": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 0,
+          "strict_accuracy": 0.0,
+          "surface_correct": 0,
+          "surface_accuracy": 0.0,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "preservation": {
+          "total": 13,
+          "completed": 13,
+          "failed_or_missing": 0,
+          "strict_correct": 13,
+          "strict_accuracy": 1.0,
+          "surface_correct": 13,
+          "surface_accuracy": 1.0,
+          "preservation_total": 13,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": 0.0
+        }
+      },
+      "families": {
+        "total": 45,
+        "all_correct": 25
+      },
+      "total_cases": 45,
+      "reference_coverage": {
+        "scored": 45,
+        "pending": 0
+      },
+      "execution_statuses": {
+        "ok": 45
+      },
+      "local_targets": {
+        "total": 28,
+        "unmatched": 20,
+        "matched": 8,
+        "mechanically_matched_rate": 0.2857142857142857
+      },
+      "protected_spans": {
+        "preserved": 67
+      }
+    },
+    "previous": {
+      "overall": {
+        "total": 45,
+        "completed": 45,
+        "failed_or_missing": 0,
+        "strict_correct": 28,
+        "strict_accuracy": 0.6222222222222222,
+        "surface_correct": 28,
+        "surface_accuracy": 0.6222222222222222,
+        "preservation_total": 13,
+        "preservation_changed": 1,
+        "preservation_failed_or_missing": 0,
+        "preservation_violation_rate": 0.07692307692307693
+      },
+      "by_track": {
+        "context_reading": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 7,
+          "strict_accuracy": 0.4375,
+          "surface_correct": 7,
+          "surface_accuracy": 0.4375,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "core_tn": {
+          "total": 16,
+          "completed": 16,
+          "failed_or_missing": 0,
+          "strict_correct": 9,
+          "strict_accuracy": 0.5625,
+          "surface_correct": 9,
+          "surface_accuracy": 0.5625,
+          "preservation_total": 0,
+          "preservation_changed": 0,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": null
+        },
+        "preservation": {
+          "total": 13,
+          "completed": 13,
+          "failed_or_missing": 0,
+          "strict_correct": 12,
+          "strict_accuracy": 0.9230769230769231,
+          "surface_correct": 12,
+          "surface_accuracy": 0.9230769230769231,
+          "preservation_total": 13,
+          "preservation_changed": 1,
+          "preservation_failed_or_missing": 0,
+          "preservation_violation_rate": 0.07692307692307693
+        }
+      },
+      "families": {
+        "total": 45,
+        "all_correct": 28
+      },
+      "total_cases": 45,
+      "reference_coverage": {
+        "scored": 45,
+        "pending": 0
+      },
+      "execution_statuses": {
+        "ok": 45
+      },
+      "local_targets": {
+        "total": 28,
+        "matched": 13,
+        "unmatched": 15,
+        "mechanically_matched_rate": 0.4642857142857143
+      },
+      "protected_spans": {
+        "preserved": 65,
+        "changed": 2
+      }
+    }
+  },
+  "previous_to_adapter": {
+    "new_matches": [
+      "HEV2-002",
+      "HEV2-015",
+      "HEV2-020",
+      "HEV2-026"
+    ],
+    "regressions": [],
+    "both_match": 28,
+    "both_unmatched": 13
+  },
+  "rules_to_adapter": {
+    "new_matches": [
+      "HEV2-001",
+      "HEV2-002",
+      "HEV2-003",
+      "HEV2-005",
+      "HEV2-006",
+      "HEV2-011",
+      "HEV2-013",
+      "HEV2-015",
+      "HEV2-016",
+      "HEV2-017",
+      "HEV2-018",
+      "HEV2-020"
+    ],
+    "regressions": [
+      "HEV2-022",
+      "HEV2-029",
+      "HEV2-030",
+      "HEV2-039",
+      "HEV2-054"
+    ],
+    "both_match": 20,
+    "both_unmatched": 8
+  },
+  "semantic_review": {
+    "status": "complete_independent_assistant_blinded_review",
+    "coverage": {
+      "cases": 45,
+      "candidates": 225,
+      "reviewers": 2,
+      "reviews_per_candidate": 1
+    },
+    "results": {
+      "identity": {
+        "reviewed_candidates": 45,
+        "local_targets": {
+          "incomplete": 28
+        },
+        "semantic_error_ids": [],
+        "semantic_uncertain_ids": [],
+        "any_uncertainty_ids": [],
+        "preservation_semantic_error_ids": [],
+        "outside_target_edit_ids": [],
+        "policy_violation_ids": [
+          "HEV2-001",
+          "HEV2-002",
+          "HEV2-003",
+          "HEV2-005",
+          "HEV2-006",
+          "HEV2-009",
+          "HEV2-010",
+          "HEV2-011",
+          "HEV2-012",
+          "HEV2-013",
+          "HEV2-015",
+          "HEV2-016",
+          "HEV2-017",
+          "HEV2-018",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-031",
+          "HEV2-033",
+          "HEV2-034",
+          "HEV2-035",
+          "HEV2-039",
+          "HEV2-040"
+        ],
+        "semantic_error_types": {},
+        "semantic_error_sentences": 0,
+        "semantic_uncertain_sentences": 0,
+        "any_uncertainty_sentences": 0,
+        "preservation_semantic_error_sentences": 0,
+        "outside_target_edit_sentences": 0,
+        "policy_violation_sentences": 28
+      },
+      "base": {
+        "reviewed_candidates": 45,
+        "local_targets": {
+          "incomplete": 24,
+          "complete": 4
+        },
+        "semantic_error_ids": [
+          "HEV2-001",
+          "HEV2-002",
+          "HEV2-003",
+          "HEV2-005",
+          "HEV2-006",
+          "HEV2-009",
+          "HEV2-010",
+          "HEV2-011",
+          "HEV2-012",
+          "HEV2-013",
+          "HEV2-015",
+          "HEV2-016",
+          "HEV2-017",
+          "HEV2-018",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-025",
+          "HEV2-026",
+          "HEV2-027",
+          "HEV2-028",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-031",
+          "HEV2-033",
+          "HEV2-034",
+          "HEV2-039",
+          "HEV2-040",
+          "HEV2-041",
+          "HEV2-042",
+          "HEV2-043",
+          "HEV2-045",
+          "HEV2-046",
+          "HEV2-047",
+          "HEV2-052",
+          "HEV2-053",
+          "HEV2-054",
+          "HEV2-055",
+          "HEV2-057",
+          "HEV2-059"
+        ],
+        "semantic_uncertain_ids": [],
+        "any_uncertainty_ids": [
+          "HEV2-016"
+        ],
+        "preservation_semantic_error_ids": [
+          "HEV2-041",
+          "HEV2-042",
+          "HEV2-043",
+          "HEV2-045",
+          "HEV2-046",
+          "HEV2-047",
+          "HEV2-052",
+          "HEV2-053",
+          "HEV2-054",
+          "HEV2-055",
+          "HEV2-057",
+          "HEV2-059"
+        ],
+        "outside_target_edit_ids": [
+          "HEV2-001",
+          "HEV2-002",
+          "HEV2-003",
+          "HEV2-005",
+          "HEV2-006",
+          "HEV2-009",
+          "HEV2-010",
+          "HEV2-011",
+          "HEV2-012",
+          "HEV2-013",
+          "HEV2-015",
+          "HEV2-016",
+          "HEV2-017",
+          "HEV2-018",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-025",
+          "HEV2-026",
+          "HEV2-027",
+          "HEV2-028",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-031",
+          "HEV2-033",
+          "HEV2-034",
+          "HEV2-035",
+          "HEV2-039",
+          "HEV2-040",
+          "HEV2-041",
+          "HEV2-042",
+          "HEV2-043",
+          "HEV2-045",
+          "HEV2-046",
+          "HEV2-047",
+          "HEV2-052",
+          "HEV2-053",
+          "HEV2-054",
+          "HEV2-055",
+          "HEV2-057",
+          "HEV2-058",
+          "HEV2-059"
+        ],
+        "policy_violation_ids": [
+          "HEV2-001",
+          "HEV2-002",
+          "HEV2-003",
+          "HEV2-005",
+          "HEV2-006",
+          "HEV2-009",
+          "HEV2-010",
+          "HEV2-011",
+          "HEV2-012",
+          "HEV2-013",
+          "HEV2-015",
+          "HEV2-016",
+          "HEV2-017",
+          "HEV2-018",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-025",
+          "HEV2-026",
+          "HEV2-027",
+          "HEV2-028",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-031",
+          "HEV2-033",
+          "HEV2-034",
+          "HEV2-035",
+          "HEV2-039",
+          "HEV2-040",
+          "HEV2-041",
+          "HEV2-042",
+          "HEV2-043",
+          "HEV2-045",
+          "HEV2-046",
+          "HEV2-047",
+          "HEV2-052",
+          "HEV2-053",
+          "HEV2-054",
+          "HEV2-055",
+          "HEV2-057",
+          "HEV2-058",
+          "HEV2-059"
+        ],
+        "semantic_error_types": {
+          "quantity": 3,
+          "meaning": 40,
+          "entity": 24,
+          "protected_literal": 1,
+          "negation": 1
+        },
+        "semantic_error_sentences": 43,
+        "semantic_uncertain_sentences": 0,
+        "any_uncertainty_sentences": 1,
+        "preservation_semantic_error_sentences": 12,
+        "outside_target_edit_sentences": 45,
+        "policy_violation_sentences": 45
+      },
+      "adapted": {
+        "reviewed_candidates": 45,
+        "local_targets": {
+          "complete": 19,
+          "incomplete": 9
+        },
+        "semantic_error_ids": [
+          "HEV2-054"
+        ],
+        "semantic_uncertain_ids": [
+          "HEV2-010"
+        ],
+        "any_uncertainty_ids": [
+          "HEV2-010"
+        ],
+        "preservation_semantic_error_ids": [
+          "HEV2-054"
+        ],
+        "outside_target_edit_ids": [
+          "HEV2-039",
+          "HEV2-054"
+        ],
+        "policy_violation_ids": [
+          "HEV2-010",
+          "HEV2-019",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-039",
+          "HEV2-040",
+          "HEV2-054"
+        ],
+        "semantic_error_types": {
+          "meaning": 1,
+          "entity": 1
+        },
+        "semantic_error_sentences": 1,
+        "semantic_uncertain_sentences": 1,
+        "any_uncertainty_sentences": 1,
+        "preservation_semantic_error_sentences": 1,
+        "outside_target_edit_sentences": 2,
+        "policy_violation_sentences": 11
+      },
+      "rules": {
+        "reviewed_candidates": 45,
+        "local_targets": {
+          "incomplete": 20,
+          "complete": 8
+        },
+        "semantic_error_ids": [],
+        "semantic_uncertain_ids": [],
+        "any_uncertainty_ids": [],
+        "preservation_semantic_error_ids": [],
+        "outside_target_edit_ids": [],
+        "policy_violation_ids": [
+          "HEV2-001",
+          "HEV2-002",
+          "HEV2-003",
+          "HEV2-005",
+          "HEV2-006",
+          "HEV2-009",
+          "HEV2-010",
+          "HEV2-011",
+          "HEV2-012",
+          "HEV2-013",
+          "HEV2-015",
+          "HEV2-016",
+          "HEV2-017",
+          "HEV2-018",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-040"
+        ],
+        "semantic_error_types": {},
+        "semantic_error_sentences": 0,
+        "semantic_uncertain_sentences": 0,
+        "any_uncertainty_sentences": 0,
+        "preservation_semantic_error_sentences": 0,
+        "outside_target_edit_sentences": 0,
+        "policy_violation_sentences": 20
+      },
+      "previous": {
+        "reviewed_candidates": 45,
+        "local_targets": {
+          "complete": 16,
+          "incomplete": 12
+        },
+        "semantic_error_ids": [
+          "HEV2-015",
+          "HEV2-020"
+        ],
+        "semantic_uncertain_ids": [
+          "HEV2-010",
+          "HEV2-054"
+        ],
+        "any_uncertainty_ids": [
+          "HEV2-010",
+          "HEV2-054"
+        ],
+        "preservation_semantic_error_ids": [],
+        "outside_target_edit_ids": [
+          "HEV2-026",
+          "HEV2-039",
+          "HEV2-054"
+        ],
+        "policy_violation_ids": [
+          "HEV2-002",
+          "HEV2-010",
+          "HEV2-015",
+          "HEV2-019",
+          "HEV2-020",
+          "HEV2-021",
+          "HEV2-022",
+          "HEV2-023",
+          "HEV2-024",
+          "HEV2-026",
+          "HEV2-029",
+          "HEV2-030",
+          "HEV2-039",
+          "HEV2-040",
+          "HEV2-054"
+        ],
+        "semantic_error_types": {
+          "quantity": 2
+        },
+        "semantic_error_sentences": 2,
+        "semantic_uncertain_sentences": 2,
+        "any_uncertainty_sentences": 2,
+        "preservation_semantic_error_sentences": 0,
+        "outside_target_edit_sentences": 3,
+        "policy_violation_sentences": 15
+      }
+    },
+    "protocol_sha256": "cfdb099dfa50cf4f6d4a431ab0431f8c87c8f37d5baa4d6ca8cf018f17dd591e",
+    "judgments_sha256": "9ae0ba36116744c51b6c0863b7cd67cb85ea65d15460ac4fdece42013935ddc0"
+  },
+  "verification": {
+    "linux_tests": {
+      "total": 312,
+      "passed": 312,
+      "skipped": 0
+    },
+    "training_integrity_checks": 161,
+    "result_integrity_checks": 198,
+    "record_hashes": {
+      "linux-unittest-20261027.json": "e96ed9b74b44ef66a58bdf47895816607b8809e0a3b4b4e8411ba81ab9604987",
+      "training-integrity-review.json": "e95e422fe7ba9f587a356832fbf5bcd437355a57ccc53e42e8447ae32d2eeaa3",
+      "result-integrity-review.json": "04a99c7bb7ce1cb5763c0230c02d6a7b71056ed34010dec5f44358ced1be21d7"
+    }
+  },
+  "source_receipts": {
+    "train_run_sha256": "670a9dd8f54e14d728a5d5bddabd413563cdf519a9e44288bb106cf53a4c4002",
+    "automatic_summary_sha256": "c2226b233abd4ea09377b17e7f76a12256ad8b979a6d4f4f42f14cf31694e42e",
+    "final_summary_sha256": "248b4bfa947400c34e388731e7a3739cda78f40eb489d0da75807dd96d61560e",
+    "preparation_receipt_sha256": "8e413d8aaf39f16d8f1c5616cf1b88a11d75d2347171afe896eb6b3912ddf80b"
+  },
+  "limitations": [
+    "Assistant text judgments, not user approval or listening evaluation.",
+    "Review partitions are disjoint; no inter-rater agreement was measured.",
+    "Assistant-authored synthetic evaluation with documented pretraining input-summary exposure; not random blind testing.",
+    "No training, prompt, reference, rule, or checkpoint changes based on evaluation.",
+    "Original exact-match and mechanical scores remain unchanged; semantic uncertainty stays in the denominator."
+  ],
+  "speech_quality_measured": false,
+  "public_weights_uploaded": false,
+  "post_evaluation_training_or_tuning": false
+}

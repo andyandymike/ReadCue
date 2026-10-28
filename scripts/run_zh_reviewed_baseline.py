@@ -62,7 +62,8 @@ def run(args):
         inputs = validate_inputs(inputs_path)
         settings = validate_settings(read_json(settings_path))
         source_paths = ("scripts/run_zh_reviewed_baseline.py", "scripts/run_zh_baseline.py",
-                        "src/readcue/artifacts.py", "src/readcue/baselines.py")
+                        "src/readcue/artifacts.py", "src/readcue/baselines.py",
+                        "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py")
         sources = {name: hash_file(PROJECT / name) for name in source_paths}
         meta = dict(schema_version=1, experiment=settings["experiment"], baseline=args.baseline,
                     model_dir=str(Path(args.model_dir).resolve()) if args.model_dir else None,

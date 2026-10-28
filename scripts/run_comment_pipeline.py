@@ -17,6 +17,13 @@ from readcue.artifacts import hash_file, read_json, read_jsonl, verify_pilot, wr
 from readcue.baselines import validate_inputs
 
 
+TN_COMPONENT_SOURCES = (
+    "scripts/run_zh_reviewed_baseline.py", "scripts/run_zh_baseline.py",
+    "src/readcue/artifacts.py", "src/readcue/baselines.py",
+    "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py",
+)
+
+
 def now():
     return datetime.now(timezone.utc).isoformat()
 
@@ -107,7 +114,10 @@ def _validate_component(output, transformed, transformed_hash, settings_hash, ar
         raise ValueError("TN component model revision mismatch")
     if meta.get("training") is not False or meta.get("external_api_cost_usd") != 0:
         raise ValueError("TN component must remain free local inference")
-    for relative, digest in meta.get("source_sha256", {}).items():
+    component_sources = meta.get("source_sha256")
+    if not isinstance(component_sources, dict) or set(component_sources) != set(TN_COMPONENT_SOURCES):
+        raise ValueError("TN component source manifest is incomplete or unexpected")
+    for relative, digest in component_sources.items():
         if sources.get(relative) != digest:
             raise ValueError("TN component source mismatch: " + relative)
     if meta.get("runner_sha256") != sources["scripts/run_zh_reviewed_baseline.py"]:
@@ -143,7 +153,8 @@ def run(args, *, executor=subprocess.run):
         policy = load_policy()
         source_paths = ("scripts/run_comment_pipeline.py", "src/readcue/comment_policy.py",
                         "scripts/run_zh_reviewed_baseline.py", "scripts/run_zh_baseline.py",
-                        "src/readcue/artifacts.py", "src/readcue/baselines.py")
+                        "src/readcue/artifacts.py", "src/readcue/baselines.py",
+                        "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py")
         sources = {relative: hash_file(PROJECT / relative) for relative in source_paths}
         watched = {str(path): hash_file(path) for path in (inputs_path, resources_path, settings_path)}
         meta = dict(schema_version=1, experiment=state["experiment"], baseline=state["baseline"],

@@ -50,6 +50,8 @@ def check_wheel(path):
             if not (name.startswith("readcue/") and name.endswith(".py")) and name != "readcue/review.html" and not name.startswith(metadata_root + "/"):
                 raise ValueError("Unexpected payload in core wheel: " + name)
         for name in ("readcue/__init__.py", "readcue/__main__.py", "readcue/cli.py", "readcue/review.html",
+                     "readcue/inference_contract.py", "readcue/pilot_adapter.py", "readcue/review_contract.py",
+                     "readcue/model_experiment.py", "readcue/model_scoring.py",
                      metadata_root + "/entry_points.txt", metadata_root + "/licenses/LICENSE"):
             if name not in names:
                 raise ValueError("Missing wheel member: " + name)
@@ -77,6 +79,11 @@ def check_sdist(path):
             raise ValueError("Duplicate source members")
         required = ("LICENSE", "README.md", "CONTRIBUTING.md", "SECURITY.md", "pyproject.toml",
                     "src/readcue/cli.py", "src/readcue/review.html", "tests/test_architecture.py", "tests/test_zh_pilot.py",
+                    "src/readcue/inference_contract.py", "src/readcue/pilot_adapter.py", "src/readcue/review_contract.py",
+                    "src/readcue/model_experiment.py", "src/readcue/model_scoring.py",
+                    "scripts/run_model_experiment.py", "tools/prepare_model_data_v1.py", "tools/score_model_experiment.py",
+                    "configs/model_task_v1.json", "docs/MODEL_TASK_V1.md", "requirements-model-v1.lock",
+                    "docs/MODEL_EXPERIMENT_RUN_V1.md", "docs/MODEL_CARD_V1.md",
                     "eval/zh_reading_pilot_v1/freeze.json", "reports/zh-pilot-v1/summary.json",
                     "scripts/archive_zh_pilot.py", "docs/REPRODUCING_ZH_PILOT.md",
                     "tools/synthesize_reading_demo.ps1")

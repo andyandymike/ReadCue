@@ -8,8 +8,7 @@ import shutil
 import statistics
 
 from .artifacts import BASELINE_REPOS, hash_file, project_path, read_json, read_jsonl, verify_pilot, write_json
-
-BASELINES = ("identity", "wetext", "tn", "qwen")
+from .pilot_adapter import BASELINES, validate_neural_configuration
 
 
 def _run_files(run, name):
@@ -18,13 +17,29 @@ def _run_files(run, name):
     if legacy.exists() and wrapped.exists():
         raise ValueError("Ambiguous legacy and wrapped results: " + name)
     if wrapped.exists():
-        state = read_json(run / name / "run.json")
+        state_path = run / name / "run.json"
+        state = read_json(state_path)
         if state.get("status") != "complete" or state.get("baseline") != name:
             raise ValueError("Wrapped run is incomplete or mislabeled: " + name)
         if state.get("predictions_sha256") != hash_file(wrapped):
             raise ValueError("Wrapped prediction hash mismatch: " + name)
-        return wrapped, run / name / "predictions.meta.json"
-    return legacy, run / f"{name}.meta.json"
+        evidence = {"run.json": state_path}
+        for path_field, filename, hash_field in (("original_input_file", "inputs.original.jsonl", "original_input_sha256"),
+                                                 ("runner_input_file", "inputs.runner.jsonl", "runner_input_sha256"),
+                                                 ("model_manifest_file", "model_manifest.json", "model_manifest_sha256")):
+            if path_field in state:
+                if state[path_field] != filename:
+                    raise ValueError("Unexpected wrapped run evidence path: " + path_field)
+                path = project_path(run / name, filename)
+                if hash_file(path) != state.get(hash_field):
+                    raise ValueError("Wrapped run evidence hash mismatch: " + path_field)
+                evidence[filename] = path
+        for filename in ("stdout.log", "stderr.log"):
+            path = run / name / filename
+            if path.exists():
+                evidence[filename] = path
+        return wrapped, run / name / "predictions.meta.json", evidence
+    return legacy, run / f"{name}.meta.json", {}
 
 
 def frozen_scorer(project):
@@ -62,6 +77,7 @@ def validate_run_metadata(name, predictions, metadata, freeze):
         expected = next(asset for asset in freeze["baseline_assets"] if asset["repo"] == BASELINE_REPOS[name])
         if metadata.get("revision") != expected["revision"]:
             raise ValueError("Model revision mismatch: " + name)
+        validate_neural_configuration(name, metadata)
     elif metadata.get("revision") is not None:
         raise ValueError("Unexpected model revision for non-model baseline: " + name)
     if name == "wetext":
@@ -85,7 +101,7 @@ def archive_pilot(project, run, output):
     case_path = project_path(project, "eval/zh_reading_pilot_v1/cases.jsonl")
     cases, prepared = read_jsonl(case_path), {}
     for name in BASELINES:
-        path, metadata_path = _run_files(run, name)
+        path, metadata_path, evidence = _run_files(run, name)
         predictions = read_jsonl(path)
         metadata = read_json(metadata_path)
         validate_run_metadata(name, path, metadata, freeze)
@@ -93,16 +109,21 @@ def archive_pilot(project, run, output):
             raise ValueError("Incomplete prediction count: " + name)
         result = scorer(cases, predictions)
         result.update(cases_sha256=hash_file(case_path), predictions_sha256=hash_file(path))
-        prepared[name] = predictions, metadata, result, (path, metadata_path)
+        prepared[name] = predictions, metadata, result, (path, metadata_path), evidence
     output.mkdir(parents=True)
     archive_state = {"status": "writing", "experiment": "zh_reading_pilot_v1"}
     write_json(output / "archive.json", archive_state)
     try:
         summary = {}
-        for name, (predictions, metadata, result, paths) in prepared.items():
+        for name, (predictions, metadata, result, paths, evidence) in prepared.items():
             write_json(output / f"{name}.score.json", result)
             for source, suffix in zip(paths, ("jsonl", "meta.json")):
                 shutil.copyfile(source, output / f"{name}.{suffix}")
+            if evidence:
+                evidence_directory = output / "run_evidence" / name
+                evidence_directory.mkdir(parents=True)
+                for filename, source in evidence.items():
+                    shutil.copyfile(source, evidence_directory / filename)
             timings = [record["latency_ms"] for record in predictions]
             summary[name] = dict(overall=result["overall"], by_track=result["by_track"], families=result["families"],
                 latency_ms_median=statistics.median(timings), latency_ms_max=max(timings),

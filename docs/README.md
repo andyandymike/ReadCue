@@ -1,11 +1,16 @@
 # ReadCue 文档导航
 
-当前工作回到一次有界的中文小模型研究实验。没有ReadCue自训检查点；先补齐明确的数据和实验条件，不再以继续修规则或完整TTS验收作为训练讨论前提。
+当前已完成第二轮本地ReadCue LoRA训练、独立重载和新45条固定合成情境对照：v2整句匹配32/45、原v1为28/45、规则25/45；v1→v2新增4条匹配，无匹配退步。训练使用166条、验证53条，共3轮、63次更新，权重未公开上传。分项局限、完整性核验及独立匿名审查见[v2运行记录](MODEL_EXPERIMENT_RUN_V2.md)。首轮旧55条的28/55等结果继续保存在[首轮记录](MODEL_EXPERIMENT_RUN_V1.md)及[v1模型卡](MODEL_CARD_V1.md)，不与本批分母混用。
 
 | 要做什么 | 从哪里开始 |
 | --- | --- |
 | 安装核心工具，运行无 GPU 示例 | [项目 README](../README.md#lightweight-development) |
 | 了解当前目标与继续条件 | [项目计划](PROJECT_PLAN.md)、[首轮模型实验](MODEL_EXPERIMENT_V1.md) |
+| 查看v2数据准备和正式划分 | [v2覆盖矩阵与方案](MODEL_DATA_V2.md)、[首批原创开发样例](../eval/zh_reading_model_v2_seed/README.md)；正式数据为166训练／53验证 |
+| 复查v2模型实验 | [v2固定协议](MODEL_EXPERIMENT_V2.md)、[实际运行与评估](MODEL_EXPERIMENT_RUN_V2.md)、[v2模型卡](MODEL_CARD_V2.md)、[聚合收据](model-v2-results.json)；保留启动前阻塞历史与冻结收据 |
+| 查看固定v2的训练／验证诊断与下一版范围 | [诊断报告、技能表和独立不匹配审查](MODEL_DEVELOPMENT_DIAGNOSTIC_V2.md)、[聚合收据](model-v2-development-diagnostic.json)；不是独立泛化测量 |
+| 使用本地v2研究发布候选 | [候选构建、独立加载与GPU执行等价检查](MODEL_RELEASE_CANDIDATE_V2.md)；未公开上传，条款与发布位置尚未最终确定 |
+| 运行首轮模型预检、训练、推理和离线评分 | [实际运行与复现入口](MODEL_EXPERIMENT_RUN_V1.md)、[固定标注政策](MODEL_TASK_V1.md)；模型依赖单独安装，核心工具仍无强制ML依赖 |
 | 查看最近工作的撤回、修正与缺项 | [近期复查与处置](WORK_REVIEW_2026-10-01.md) |
 | 使用当前审计规则或检查已有TN候选 | [规则入口](../scripts/run_audited_rules.py)、[修正及验证边界](WORK_REVIEW_2026-10-01.md)；不自动加载模型 |
 | 查看已完成的对照与局限 | [中文 pilot 报告](../reports/zh-pilot-v1/REPORT.md) |
@@ -21,6 +26,7 @@
 | 核对助手预填的读法与分类 | [AI 预标注口径与人工核对](AI_PREANNOTATION.md) |
 | 复现四组本地基线 | [复现流程](REPRODUCING_ZH_PILOT.md) |
 | 修改代码或检查来源条款 | [参与说明](../CONTRIBUTING.md)、[架构](ARCHITECTURE.md)、[数据与许可](DATA_AND_LICENSES.md) |
+| 查看模型、依赖、缓存与临时文件位置 | [当前存储布局与清理规则](STORAGE.md)、[本轮优化记录](maintenance/2026-10-01-runtime-optimization.md) |
 | 准备源码或未来模型发布 | [发布说明](RELEASING.md)、[本次开源检查](maintenance/2026-10-01-open-source-review.md) |
 
 以下为历史探索结果，后续行动以当前计划和复查处置为准。

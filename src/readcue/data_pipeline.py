@@ -15,10 +15,17 @@ import unicodedata
 
 from .artifacts import hash_file, project_path, read_json, read_jsonl, write_json
 from .comment_sources import import_comments
+from .inference_contract import validate_inputs, write_jsonl
+from .review_contract import REVIEW_KEYS, ReviewRound, validate_review_rows
 
 
 VERSION = "comment-preparation-v1"
-REVIEW_KEYS = {"status", "reviewer", "acceptable_outputs", "track", "family", "context_required", "notes"}
+PREPARE_CODE_FILES = ("data_pipeline.py", "comment_sources.py", "artifacts.py",
+                      "inference_contract.py", "review_contract.py")
+PREPARE_FROZEN_FILES = ("config.json", "records.jsonl", "rejected.jsonl", "duplicates.jsonl", "groups.jsonl",
+                        "review.jsonl", "sources.json", "selection.json", "summary.json", "review.md")
+EXPORT_FILES = ("inputs.jsonl", "cases.jsonl", "provenance.jsonl", "review_decisions.jsonl",
+                "submitted_annotations.jsonl", "review_binding.json", "summary.json")
 
 
 def _now():
@@ -26,17 +33,10 @@ def _now():
 
 
 def _jsonl(path, rows):
-    with Path(path).open("w", encoding="utf-8", newline="\n") as stream:
-        for row in rows:
-            encoded = json.dumps(row, ensure_ascii=False, sort_keys=True)
-            # Preserve string values while remaining readable by the frozen v1
-            # runner, whose JSONL reader uses str.splitlines().
-            for separator in ("\u0085", "\u2028", "\u2029"):
-                encoded = encoded.replace(separator, f"\\u{ord(separator):04x}")
-            stream.write(encoded + "\n")
+    write_jsonl(path, rows, sort_keys=True)
 
 
-def _new_output(output, protected=()):
+def _new_output(output, protected=(), *, filenames):
     output = Path(output).resolve()
     for other in protected:
         other = Path(other).resolve()
@@ -45,11 +45,15 @@ def _new_output(output, protected=()):
     # Third-party text must not become an accidentally committable research file.
     for ancestor in output.parents:
         if (ancestor / ".git").exists():
-            checked = subprocess.run(
-                ["git", "-C", str(ancestor), "check-ignore", "--quiet", "--",
-                 str(output / "readcue-data.jsonl")], capture_output=True, check=False)
-            if checked.returncode != 0:
-                raise ValueError("Data output inside a Git checkout must be Git-ignored")
+            # Extensions and negated rules can make siblings committable even
+            # when one probe is ignored. Check every actual output before mkdir
+            # or any write, including failure records and source snapshots.
+            for name in filenames:
+                checked = subprocess.run(
+                    ["git", "-C", str(ancestor), "check-ignore", "--quiet", "--",
+                     str(output / name)], capture_output=True, check=False)
+                if checked.returncode != 0:
+                    raise ValueError("Every data output inside a Git checkout must be Git-ignored: " + name)
             break
     output.mkdir(parents=True, exist_ok=False)
     return output
@@ -276,7 +280,9 @@ def _review_markdown(reviews, summary):
 
 def prepare_data(source_root, config_path, output):
     source_root, config_path = Path(source_root).resolve(), Path(config_path).resolve()
-    output = _new_output(output, (source_root,))
+    filenames = [*PREPARE_FROZEN_FILES, *("code/" + name for name in PREPARE_CODE_FILES)]
+    output = _new_output(output, (source_root,),
+                         filenames=[*filenames, "annotations.jsonl", "manifest.json", "run.json"])
     state = {"status": "started", "stage": "prepare", "pipeline_version": VERSION,
              "started_at_utc": _now(), "source_root": str(source_root), "config_path": str(config_path)}
     write_json(output / "run.json", state)
@@ -353,12 +359,9 @@ def prepare_data(source_root, config_path, output):
             "quality_exclusions": sorted(bad_text), "selected": selections})
         write_json(output / "summary.json", summary)
         (output / "review.md").write_text(_review_markdown(reviews, summary), encoding="utf-8", newline="\n")
-        filenames = ["config.json", "records.jsonl", "rejected.jsonl", "duplicates.jsonl", "groups.jsonl",
-                     "review.jsonl", "sources.json", "selection.json", "summary.json", "review.md"]
         (output / "code").mkdir()
-        for name in ("data_pipeline.py", "comment_sources.py", "artifacts.py"):
+        for name in PREPARE_CODE_FILES:
             shutil.copyfile(Path(__file__).with_name(name), output / "code" / name)
-            filenames.append("code/" + name)
         _manifest(output, "prepare", filenames, editable_files=["annotations.jsonl"],
                   config_sha256=hashlib.sha256(config_bytes).hexdigest(), source_root=str(source_root))
         state.update(status="complete", completed_at_utc=_now(), manifest_sha256=hash_file(output / "manifest.json"))
@@ -369,9 +372,16 @@ def prepare_data(source_root, config_path, output):
         raise
 
 
-def export_review(prepared, review_path, output):
+def export_review(prepared, review_path, output, *, require_current_round=False):
+    """Export saved human labels; optionally require current suggestions checked.
+
+    A newer suggestion does not revoke a saved approval. Every export records
+    the exact annotation snapshot and separately observed round state.
+    """
+    if type(require_current_round) is not bool:
+        raise ValueError("require_current_round must be a boolean")
     prepared, review_path = Path(prepared).resolve(), Path(review_path).resolve()
-    output = _new_output(output, (prepared,))
+    output = _new_output(output, (prepared,), filenames=[*EXPORT_FILES, "manifest.json", "run.json"])
     state = {"status": "started", "stage": "review_export", "pipeline_version": VERSION,
              "started_at_utc": _now(), "prepared": str(prepared), "review_path": str(review_path)}
     write_json(output / "run.json", state)
@@ -379,46 +389,21 @@ def export_review(prepared, review_path, output):
         verify_prepared(prepared)
         frozen = read_jsonl(prepared / "review.jsonl")
         review_bytes = review_path.read_bytes()
-        reviewed = [json.loads(line) for line in review_bytes.decode("utf-8").split("\n") if line.strip()]
         state.update(review_sha256=hashlib.sha256(review_bytes).hexdigest(),
                      frozen_review_sha256=hash_file(prepared / "review.jsonl"),
                      prepared_manifest_sha256=hash_file(prepared / "manifest.json"))
         expected = {row["id"]: row for row in frozen}
-        if len(reviewed) != len(frozen) or {row["id"] for row in reviewed} != set(expected):
-            raise ValueError("Review must contain every frozen ID exactly once")
+        reviewed = validate_review_rows(review_bytes, expected)
         inputs, cases, provenance, ordered = [], [], [], []
-        by_id = {row["id"]: row for row in reviewed}
-        for template in frozen:
-            row = by_id[template["id"]]
-            immutable = {key: value for key, value in row.items() if key != "review"}
-            if immutable != {key: value for key, value in template.items() if key != "review"}:
-                raise ValueError("Only review fields may change: " + row["id"])
+        for row in reviewed:
             review = row["review"]
-            if set(review) != REVIEW_KEYS:
-                raise ValueError("Unexpected or missing review fields: " + row["id"])
             status = review["status"]
-            if status not in {"approved", "excluded", "uncertain"}:
+            if status == "pending":
                 raise ValueError("All review decisions must be resolved; pending is not approved")
-            if not isinstance(review["reviewer"], str) or not review["reviewer"].strip():
-                raise ValueError("Each decision must identify its reviewer")
-            if not isinstance(review["notes"], str):
-                raise ValueError("Review notes must be text")
             ordered.append(row)
             if status != "approved":
-                if not review["notes"].strip():
-                    raise ValueError("Excluded/uncertain decisions need a reason")
                 continue
             refs = review["acceptable_outputs"]
-            if not isinstance(refs, list) or not refs or any(not isinstance(ref, str) or not ref.strip() for ref in refs):
-                raise ValueError("Approved rows need nonempty acceptable_outputs")
-            if review["context_required"] is not False:
-                raise ValueError("Context-dependent/unknown cases cannot be scored as text-only inputs")
-            if review["track"] not in {"core_tn", "context_reading", "preservation"}:
-                raise ValueError("Unknown review track")
-            if not isinstance(review["family"], str) or not review["family"].strip():
-                raise ValueError("Approved rows need a family")
-            if review["track"] == "preservation" and any(ref != row["text"] for ref in refs):
-                raise ValueError("Preservation references must retain the exact source text")
             inputs.append({"id": row["id"], "text": row["text"]})
             cases.append({"id": row["id"], "text": row["text"], "acceptable_outputs": refs,
                           "track": review["track"], "family": review["family"]})
@@ -428,25 +413,32 @@ def export_review(prepared, review_path, output):
                                "reviewer": review["reviewer"], "notes": review["notes"]})
         if not inputs:
             raise ValueError("No approved cases to export")
+        round_evidence = ReviewRound(prepared, review_path, expected, state["prepared_manifest_sha256"])
+        binding = round_evidence.export_binding(
+            ordered, review_bytes, state["frozen_review_sha256"], require_current_round=require_current_round)
         _jsonl(output / "inputs.jsonl", inputs)
         _jsonl(output / "cases.jsonl", cases)
         _jsonl(output / "provenance.jsonl", provenance)
         _jsonl(output / "review_decisions.jsonl", ordered)
         # Preserve the submitted bytes as well as the canonical decision ordering.
         (output / "submitted_annotations.jsonl").write_bytes(review_bytes)
-        from .baselines import validate_inputs
         validate_inputs(output / "inputs.jsonl")
+        write_json(output / "review_binding.json", binding)
+        binding_sha256 = hash_file(output / "review_binding.json")
         summary = {"reviewed": len(ordered), "approved": len(inputs),
                    "decisions": dict(Counter(row["review"]["status"] for row in ordered)),
                    "input_fields": ["id", "text"], "split": "exploratory_only_no_train_test_split",
                    "license": read_json(prepared / "config.json")["license"],
-                   "training": False, "model_inference": False,
-                   "note": "Recorded reviewer attestations; software cannot prove human review or TTS correctness."}
+                    "training": False, "model_inference": False,
+                    "review_contract": binding["contract"], "review_binding_sha256": binding_sha256,
+                    "require_current_round": require_current_round,
+                    "current_round_unconfirmed": binding["round"]["unconfirmed"],
+                    "current_round_complete": binding["round"]["complete"],
+                    "note": "Recorded reviewer attestations; software cannot prove human review or TTS correctness."}
         write_json(output / "summary.json", summary)
-        _manifest(output, "review_export", ["inputs.jsonl", "cases.jsonl", "provenance.jsonl",
-                  "review_decisions.jsonl", "submitted_annotations.jsonl", "summary.json"],
+        _manifest(output, "review_export", EXPORT_FILES,
                   review_sha256=state["review_sha256"], frozen_review_sha256=state["frozen_review_sha256"],
-                  prepared_manifest_sha256=state["prepared_manifest_sha256"])
+                  prepared_manifest_sha256=state["prepared_manifest_sha256"], review_binding_sha256=binding_sha256)
         state.update(status="complete", completed_at_utc=_now(), manifest_sha256=hash_file(output / "manifest.json"))
         write_json(output / "run.json", state)
         return summary

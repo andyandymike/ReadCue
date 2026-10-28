@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-27",
+  "status": "prepared_blocked_before_gpu_preflight",
+  "training_started": false,
+  "weights_created": false,
+  "measured_v2_scores": null,
+  "external_cost_usd": 0,
+  "dataset": {
+    "train": 166,
+    "validation": 53,
+    "manifest_sha256": "2fdd14f3f32a285b61f770978ad45e09305dea5d5b9226d83f83c718fa4289d1",
+    "targets_changed": 0,
+    "roles_changed": 0
+  },
+  "heldout": {
+    "counts": {
+      "draft": 60,
+      "retained": 45,
+      "excluded": 15,
+      "by_track": {
+        "core_tn": 16,
+        "context_reading": 16,
+        "preservation": 13
+      },
+      "local_targets": 28,
+      "protected_spans": 67
+    },
+    "references_revised": 0,
+    "proof_sha256": "e8a4870b1555fdf9a1c34f77d6d5a578f25b405257de82b738bfd31034280d95",
+    "case_bytes_sha256": "f8c1c0df88802f732fee698bf9bcf7da3e46af360f44bb0009d44f47f225efe4",
+    "input_bytes_sha256": "99850a0861969ec6153d19741e7bf41e28e4501b929719dc64ab2bdd12cca0fa",
+    "files_verified": 22,
+    "root_read_reference_contents": false,
+    "root_input_summary_exposure": "Agent status inventory automatically displayed input-side overlap summaries; no training data, policy or model configuration changed in response."
+  },
+  "tests": {
+    "total": 312,
+    "passed": 309,
+    "skipped": 3,
+    "platform": "Windows",
+    "log_sha256": "eeb6d4dc9a0dcdae3ca9954c988e77b4fa4c47429e473bf7bdfaddd1d831736e"
+  },
+  "pilot_frozen_files_verified": 7,
+  "blocker": "WSL service E_ACCESSDENIED",
+  "preparation_path": "D:\\Code\\ReadCue\\runs\\model-experiment-v2-prepared-2026-10-27",
+  "files_sha256": {
+    "tools/prepare_model_data_v2.py": "c2f2a7b8840051cce473e884c1ae7453e3884906a0d7c7c2d6b8db8a61d3ed67",
+    "src/readcue/model_experiment.py": "8c34cd140d0e621e0444eeeec313da69b9044e84f6b8c11cdd9aea9333e465ce",
+    "tools/score_model_experiment.py": "fff06351f9a1f04cf4cb43c41f38a14d9b2f9b488b8487e1285da183b51bbc2a",
+    "scripts/run_model_experiment_v2.ps1": "4e6a6e9ccaa230bf1401e037acd5fa8a9214db1adb5ba4c6ec8687646e3107cd",
+    "configs/model_task_v1.json": "09eaef3f2d88416abf7f2b1ce00b4eba5b0e849f05f2ae8783e3be6e711bb904",
+    "docs/MODEL_TASK_V1.md": "10c12a8dc40bc0153ef769072f3d3e57de7d2e04f280face61169fb65181a684"
+  }
+}

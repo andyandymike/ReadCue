@@ -1,7 +1,8 @@
 """Bounded audit of the already completed ReadCue exploration, without rescoring.
 
-The default audit writes a NEW directory. --check-cases rejects known withdrawn,
-pending, changed, or untracked references; a pass is not training/license approval.
+The default audit writes a NEW directory. --check-cases requires a successful v2
+--audit-report bound to the exact dispositions bytes. Historical unbound audits
+are not upgraded; a pass is not training/license approval.
 """
 from __future__ import annotations
 
@@ -11,6 +12,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import re
 import wave
 
 
@@ -22,6 +24,13 @@ FEEDBACK_RUNS = (
     "semantic-context-v4-listening-2026-10-01",
 )
 REAL_GROUPS = {"development", "seen_real_24", "seen_supplement_6", "new_real_8"}
+AUDIT_SCHEMA_VERSION = 2
+AUDIT_VERSION = "reference-integrity-v2"
+INTEGRITY_CHECKS = frozenset({
+    "completed_archives_unchanged", "export_archive_unchanged", "feedback_hashes_match",
+    "frozen_dataset_hashes_match", "original_pilot_freeze_matches", "inference_schema_gold_free",
+    "references_read_after_batch_complete", "export_matches_current_annotations", "finalization_readings_unchanged",
+})
 
 
 def read_json(path):
@@ -45,11 +54,50 @@ def text_hash(text):
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def check_candidates(rows, dispositions):
-    """Fail closed on untracked/changed references, not only the known bad string."""
+def dispositions_bytes(rows):
+    return "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows).encode("utf-8")
+
+
+def check_candidates(rows, dispositions_data, audit_report=None):
+    """Check candidates only against bytes bound to a successful current audit.
+
+    Accepting the bytes that are hashed and parsed avoids a separate file-read
+    race. A bare disposition table or old report cannot authorize references.
+    """
+    def rejected(reason):
+        return [{"id": None, "reason": reason}]
+
+    if (not isinstance(audit_report, dict)
+            or audit_report.get("schema_version") != AUDIT_SCHEMA_VERSION
+            or audit_report.get("audit_version") != AUDIT_VERSION):
+        return rejected("current_bound_audit_required")
+    checks = audit_report.get("critical_integrity_checks")
+    if (audit_report.get("status") != "verified_with_reference_erratum"
+            or not isinstance(checks, dict) or set(checks) != INTEGRITY_CHECKS
+            or any(value is not True for value in checks.values())):
+        return rejected("audit_integrity_not_verified")
+    binding = audit_report.get("reference_dispositions")
+    if (not isinstance(dispositions_data, bytes) or not isinstance(binding, dict)
+            or binding.get("file") != "reference-dispositions.jsonl"
+            or binding.get("sha256") != hashlib.sha256(dispositions_data).hexdigest()):
+        return rejected("dispositions_hash_mismatch")
+    dispositions = [json.loads(line) for line in dispositions_data.decode("utf-8-sig").split("\n") if line.strip()]
+    if (type(binding.get("count")) is not int or binding["count"] != len(dispositions)
+            or not dispositions):
+        return rejected("invalid_dispositions_count")
+    index = {}
+    allowed_statuses = {"retained_exploratory_candidate", "withdrawn_for_future_use", "needs_review"}
+    for item in dispositions:
+        if (not isinstance(item, dict) or not isinstance(item.get("id"), str) or not item["id"].strip()
+                or item["id"] in index or item.get("disposition") not in allowed_statuses
+                or type(item.get("eligible_as_reference_candidate")) is not bool
+                or item["eligible_as_reference_candidate"] != (item["disposition"] == "retained_exploratory_candidate")
+                or any(not isinstance(item.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", item[key])
+                       for key in ("text_sha256", "acceptable_outputs_sha256"))):
+            return rejected("invalid_dispositions")
+        index[item["id"]] = item
     if not isinstance(rows, list) or not rows:
         return [{"id": None, "reason": "empty_or_invalid_candidate_set"}]
-    index = {row["id"]: row for row in dispositions}
     failures = []
     seen = set()
     for row in rows:
@@ -88,6 +136,26 @@ def inspect_manifest(path):
     return {"path": str(path), "sha256": file_hash(path), "checked_files": len(obj["files"]), "failures": failures}
 
 
+def inspect_pilot_freeze(project):
+    """Verify every declared pilot file, including mandatory cases and inputs."""
+    project = project.resolve()
+    path = project / "eval/zh_reading_pilot_v1/freeze.json"
+    expected = read_json(path)["files_sha256"]
+    required = {"eval/zh_reading_pilot_v1/" + name for name in ("cases.jsonl", "inputs.jsonl")}
+    if not isinstance(expected, dict) or not required.issubset(expected):
+        raise ValueError("Pilot freeze must bind both cases.jsonl and inputs.jsonl")
+    failures = []
+    for name, digest in expected.items():
+        item = (project / name).resolve()
+        if (not item.is_relative_to(project) or not isinstance(digest, str)
+                or not re.fullmatch(r"[0-9a-f]{64}", digest)):
+            raise ValueError("Invalid pilot freeze entry: " + name)
+        if not item.is_file() or file_hash(item) != digest:
+            failures.append(name)
+    return ({"path": str(path), "sha256": file_hash(path), "checked_files": len(expected), "failures": failures},
+            {Path(name).name: expected[name] for name in required})
+
+
 def audit(runtime, project):
     run = runtime / "runs" / V4
     freeze = read_json(run / "freeze.json")
@@ -102,19 +170,22 @@ def audit(runtime, project):
     datasets, dispositions, all_rows = [], [], []
     frozen_dataset_hashes_ok = True
     groups = dict(freeze["datasets"])
-    groups["original_pilot"] = {"path": str(project / "eval/zh_reading_pilot_v1"), "count": 72, "hashes": {}}
+    pilot_integrity, pilot_hashes = inspect_pilot_freeze(project)
+    groups["original_pilot"] = {"path": str(project / "eval/zh_reading_pilot_v1"), "count": 72, "hashes": pilot_hashes}
     for name, info in groups.items():
         folder = Path(info["path"])
         rows = read_rows(folder / "cases.jsonl")
         inputs = read_rows(folder / "inputs.jsonl")
-        assert len(rows) == info["count"] == len(inputs)
-        assert [{"id": r["id"], "text": r["text"]} for r in rows] == inputs
+        if len(rows) != info["count"] or len(inputs) != len(rows):
+            raise ValueError("Frozen dataset count mismatch: " + name)
+        if [{"id": r["id"], "text": r["text"]} for r in rows] != inputs:
+            raise ValueError("Frozen cases and inputs differ: " + name)
         hashes = {filename: file_hash(folder / filename) for filename in ("inputs.jsonl", "cases.jsonl")}
-        hashes_ok = all(hashes[n] == h for n, h in info["hashes"].items())
+        hashes_ok = set(info["hashes"]) == set(hashes) and all(hashes[n] == h for n, h in info["hashes"].items())
         frozen_dataset_hashes_ok &= hashes_ok
         dataset = {"name": name, "path": str(folder), "count": len(rows), "nonempty_reference_count": sum(bool(r["acceptable_outputs"]) for r in rows),
                    "pending_reference_count": sum(not r["acceptable_outputs"] for r in rows), "hashes": hashes,
-                   "matches_run_freeze": hashes_ok if info["hashes"] else "pilot_separate_archive", "origin": "real_comment" if name in REAL_GROUPS else "assistant_original",
+                   "matches_run_freeze": hashes_ok, "origin": "real_comment" if name in REAL_GROUPS else "assistant_original",
                    "user_approved_text_count": len(rows) if name == "development" else 0,
                    "independent_test_eligible_count": 0, "assigned_training_count": 0}
         datasets.append(dataset)
@@ -129,9 +200,11 @@ def audit(runtime, project):
                                  "blockers": (["source_rights_unresolved"] if name in REAL_GROUPS else []) + ["no_training_assignment_or_split", "task_contract_review_needed"],
                                  "human_text_review": name == "development"})
         all_rows.extend(rows)
-    assert len({r["id"] for r in all_rows}) == len(all_rows)
+    if len({r["id"] for r in all_rows}) != len(all_rows):
+        raise ValueError("Duplicate dataset case id")
     defect = next(r for r in all_rows if r["id"] == DEFECT_ID)
-    assert len(defect["acceptable_outputs"]) == 1 and defect["acceptable_outputs"][0].count("[吃瓜]") == 1
+    if len(defect["acceptable_outputs"]) != 1 or defect["acceptable_outputs"][0].count("[吃瓜]") != 1:
+        raise ValueError("Recorded withdrawn reference changed")
     candidate = [defect["acceptable_outputs"][0].replace("[吃瓜]", "")]
     errata = {"schema_version": 1, "version": "reference-errata-v1", "scope": "proposed overlay only; old packages and first-run scores unchanged",
               "items": [{"id": DEFECT_ID, "dataset": "new_real_8", "dataset_index": 5,
@@ -170,7 +243,8 @@ def audit(runtime, project):
     before_path = runtime / "data/bilibili-pipeline-2026-09-29/finalize-review-2026-10-01/annotations.jsonl.before"
     final_path = runtime / "data/bilibili-pipeline-2026-09-29/prepare-02/annotations.jsonl"
     before, after = read_rows(before_path), read_rows(final_path)
-    assert [r["id"] for r in before] == [r["id"] for r in after]
+    if [r["id"] for r in before] != [r["id"] for r in after]:
+        raise ValueError("Annotation finalization ids changed")
     changes = [{"row": n, "id": a["id"], "changed_review_fields": sorted(k for k in a["review"] if a["review"][k] != b["review"][k])}
                for n, (a, b) in enumerate(zip(before, after), 1) if a != b]
     readings_unchanged = all(a["review"]["acceptable_outputs"] == b["review"]["acceptable_outputs"] for a, b in zip(before, after))
@@ -180,13 +254,22 @@ def audit(runtime, project):
     export_matches_current = file_hash(final_path) == file_hash(export / "submitted_annotations.jsonl")
     integrity_checks = {"completed_archives_unchanged": not failures, "export_archive_unchanged": not export_integrity["failures"],
                         "feedback_hashes_match": not feedback_failures, "frozen_dataset_hashes_match": frozen_dataset_hashes_ok,
+                        "original_pilot_freeze_matches": not pilot_integrity["failures"],
                         "inference_schema_gold_free": not any(i["extra_field_rows"] for i in inputs_checked),
                         "references_read_after_batch_complete": time_order_ok, "export_matches_current_annotations": export_matches_current,
                         "finalization_readings_unchanged": readings_unchanged}
     integrity_ok = all(integrity_checks.values())
-    result = {"schema_version": 1, "status": "verified_with_reference_erratum" if integrity_ok else "failed", "created_at_utc": datetime.now(timezone.utc).isoformat(),
+    if not integrity_ok:
+        for item in dispositions:
+            item["eligible_as_reference_candidate"] = False
+            item["blockers"].append("audit_integrity_failed")
+    result = {"schema_version": AUDIT_SCHEMA_VERSION, "audit_version": AUDIT_VERSION,
+              "status": "verified_with_reference_erratum" if integrity_ok else "failed", "created_at_utc": datetime.now(timezone.utc).isoformat(),
               "scope": "Recent completed exploration, original 72-item pilot, frozen datasets, inference interfaces, and five accepted listening clips. No training, rescoring, or new audio judgment.",
-              "critical_integrity_checks": integrity_checks, "archives": archives, "export_integrity": export_integrity, "datasets": datasets,
+              "critical_integrity_checks": integrity_checks, "archives": archives, "export_integrity": export_integrity,
+              "original_pilot_integrity": pilot_integrity, "datasets": datasets,
+              "reference_dispositions": {"file": "reference-dispositions.jsonl", "count": len(dispositions),
+                                         "sha256": hashlib.sha256(dispositions_bytes(dispositions)).hexdigest()},
               "inventory": {"total_case_rows_excluding_demos": len(all_rows), "real_comment_rows": sum(d["count"] for d in datasets if d["origin"] == "real_comment"),
                             "assistant_original_rows": sum(d["count"] for d in datasets if d["origin"] == "assistant_original"), "nonempty_reference_rows": sum(d["nonempty_reference_count"] for d in datasets),
                             "pending_reference_rows": sum(d["pending_reference_count"] for d in datasets), "withdrawn_nonempty_references": 1,
@@ -216,12 +299,13 @@ def main():
     parser.add_argument("--output-directory", type=Path)
     parser.add_argument("--check-cases", type=Path)
     parser.add_argument("--dispositions", type=Path)
+    parser.add_argument("--audit-report", type=Path, help="Successful v2 data-audit.json binding the exact dispositions file")
     args = parser.parse_args()
     if args.check_cases:
-        if not args.dispositions:
-            parser.error("--check-cases requires --dispositions")
+        if not args.dispositions or not args.audit_report:
+            parser.error("--check-cases requires --dispositions and --audit-report; historical unbound audits are not accepted")
         try:
-            failures = check_candidates(read_rows(args.check_cases), read_rows(args.dispositions))
+            failures = check_candidates(read_rows(args.check_cases), args.dispositions.read_bytes(), read_json(args.audit_report))
         except (ValueError, TypeError, KeyError, OSError) as error:
             failures = [{"id": None, "reason": "invalid_audit_or_candidate_file", "error_type": type(error).__name__}]
         print(json.dumps({"status": "rejected" if failures else "no_known_withdrawn_reference", "failures": failures,
@@ -236,9 +320,8 @@ def main():
     for name, obj in (("data-audit.json", result), ("reference-errata.json", errata)):
         with (args.output_directory / name).open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(json.dumps(obj, ensure_ascii=False, indent=2) + "\n")
-    with (args.output_directory / "reference-dispositions.jsonl").open("x", encoding="utf-8", newline="\n") as stream:
-        for item in dispositions:
-            stream.write(json.dumps(item, ensure_ascii=False) + "\n")
+    with (args.output_directory / "reference-dispositions.jsonl").open("xb") as stream:
+        stream.write(dispositions_bytes(dispositions))
     print(json.dumps({"status": result["status"], "inventory": result["inventory"], "output_directory": str(args.output_directory)}, ensure_ascii=True))
     return 0 if result["status"] != "failed" else 1
 

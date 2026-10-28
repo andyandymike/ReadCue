@@ -48,10 +48,20 @@
 
 - [审计修正实现](../src/readcue/audit_policy_adapter.py)与[可执行入口](../scripts/run_audited_rules.py)：`audit-corrected-v1`，规则审阅或校验已有TN候选，不加载模型。旧v4文件及预测保持原样。8条原创复现输入的[最终运行记录](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/audited-rules-smoke-final/run.json)已完成；不作为新的独立评测。
 - 对“使用API，费用30元。”另作实际候选校验：删除生成字母片段的候选被拒绝，保留“使用A P I，费用30元。”，见[拒绝记录](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/candidate-rejection-check/predictions.jsonl)。金额的普通转换仍可单独接受。该保护不保证任意候选的完整语义正确。
-- [材料审计工具](../tools/audit_research_data.py)生成[权威审计v2](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/data-audit.json)、[逐条参考处置](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/reference-dispositions.jsonl)和[标签勘误](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/reference-errata.json)。336条材料中328条有非空参考、8条待审；撤回1条错误参考后保留327条探索候选，均不自动成为已就绪训练数据。
+- [材料审计工具](../tools/audit_research_data.py)此前生成[历史审计v2](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/data-audit.json)、[逐条参考处置](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/reference-dispositions.jsonl)和[标签勘误](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/data-audit-v2/reference-errata.json)。336条材料中328条有非空参考、8条待审；撤回1条错误参考后保留327条探索候选，均不自动成为已就绪训练数据。
 - 工具的`--check-cases`实际拒绝了新真实8条中的2条待审及1条已撤回参考，返回预期退出码2，见[检查结果](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/reference-rejection-check.json)。检查绑定ID、原文和目标哈希，同时拒绝空集、重复及未登记/改动记录；通过也不代表训练用途或划分已批准。
 - 全套测试执行226项，结果OK；2个文件符号链接子检查因Windows权限不足跳过，见[最终测试日志](E:/CodexRuntime/ReadCue/runs/work-review-2026-10-01/tests-final.log)。新增11项规则修正检查与10项数据审计检查均通过。历史pilot的7项冻结文件核验通过，旧运行1006个文件完整；这些是工程和证据核验，不是新的听审或模型收益。
 
 ## 后续边界
 
 仍未完成的是新的训练/验证/独立评测材料、训练环境预检以及实际训练。它们是下一次有界实验的明确工作项，不再由不断出现的新规则错例推迟。训练完成后才报告ReadCue模型结果；效果不佳同样保留，不自动追加训练或扩充付费资源。
+
+## 代码审查后的契约修正
+
+后续代码检查发现原审计未校验72条pilot冻结清单，且失败审计仍可留下有效候选表。现已补齐验证，并将候选检查绑定到成功报告和处置表的原字节哈希；任何完整性失败均隔离所有候选，旧报告不自动升级。新的[绑定审计](E:/CodexRuntime/ReadCue/runs/code-review-fixes-2026-10-01/reference-audit/data-audit.json)使用`schema_version=2`、`reference-integrity-v2`，实际核验仍为336条、327条保留候选，来源用途和训练就绪状态不变。旧审计、参考和首次成绩保留。
+
+```sh
+python tools/audit_research_data.py --check-cases /path/to/candidates.jsonl --dispositions /path/to/new-audit/reference-dispositions.jsonl --audit-report /path/to/new-audit/data-audit.json
+```
+
+同轮维护还补齐实际数据产物的Git隔离检查、历史执行器的Unicode输入适配、神经实验归档配置校验，以及审阅/导出共享的标注与轮次契约。导出默认绑定已保存标注快照，`--require-current-round`可要求当前建议全部处理完成；不自动更改人工判断。探索脚本仅补共享依赖的源码清单，旧规则、冻结脚本和成绩不重写。以上属于工程修复，不是新的模型能力结果。

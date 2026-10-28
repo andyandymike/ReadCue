@@ -1,14 +1,17 @@
 include AGENTS.md CONTRIBUTING.md SECURITY.md
 include requirements-zh-pilot.lock
+include requirements-model-v1.lock
 recursive-include src/readcue *.py
 include src/readcue/review.html
 recursive-include tests *.py
 recursive-include scripts *.py
+include scripts/run_model_experiment_v2.ps1
 recursive-include tools *.py *.ps1
 recursive-include docs *.md *.json
 recursive-include configs *.json
 recursive-include reports/bilibili-data-v1 *.md
 recursive-include eval/zh_reading_pilot_v1 *.md *.json *.jsonl
+recursive-include eval/zh_reading_model_v2_seed *.md *.json *.jsonl
 recursive-include reports/zh-pilot-v1 *.md *.json *.jsonl *.tsv
 recursive-include research/ugtphon-2026-09-28 *.md *.json *.py
 global-exclude __pycache__ *.py[cod]
